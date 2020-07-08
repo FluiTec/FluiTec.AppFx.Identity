@@ -1,4 +1,5 @@
-﻿using FluiTec.AppFx.Data.Entities;
+﻿using System;
+using FluiTec.AppFx.Data.Entities;
 using FluiTec.AppFx.Data.EntityNameServices;
 using FluiTec.AppFx.Identity.Data.Schema;
 
@@ -26,6 +27,6 @@ namespace FluiTec.AppFx.Identity.Data.Entities
 
         /// <summary>   Gets or sets the timestamp. </summary>
         /// <value> The timestamp. </value>
-        public long TimeStamp { get; set; }
+        public DateTimeOffset TimeStamp { get; set; }
     }
 }

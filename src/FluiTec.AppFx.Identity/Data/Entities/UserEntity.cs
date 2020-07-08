@@ -84,6 +84,6 @@ namespace FluiTec.AppFx.Identity.Data.Entities
 
         /// <summary>   Gets or sets the timestamp. </summary>
         /// <value> The timestamp. </value>
-        public long TimeStamp { get; set; }
+        public DateTimeOffset TimeStamp { get; set; }
     }
 }
