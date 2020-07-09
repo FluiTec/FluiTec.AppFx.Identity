@@ -9,6 +9,8 @@ namespace FluiTec.AppFx.Identity.Data.Entities
     [EntityName(SchemaGlobals.Schema, SchemaGlobals.UserTable)]
     public class UserEntity : IKeyEntity<int>, ITimeStampedKeyEntity
     {
+        #region Properties
+
         /// <summary>   Gets or sets the identifier. </summary>
         /// <value> The identifier. </value>
         public int Id { get; set; }
@@ -85,5 +87,28 @@ namespace FluiTec.AppFx.Identity.Data.Entities
         /// <summary>   Gets or sets the timestamp. </summary>
         /// <value> The timestamp. </value>
         public DateTimeOffset TimeStamp { get; set; }
+
+        #endregion
+
+        #region Constructors
+
+        /// <summary>   Default constructor. </summary>
+        public UserEntity()
+        {
+            SecurityStamp = Guid.NewGuid().ToString();
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>   Returns a string that represents the current object. </summary>
+        /// <returns>   A string that represents the current object. </returns>
+        public override string ToString()
+        {
+            return $"UserName: {Name}";
+        }
+
+        #endregion
     }
 }

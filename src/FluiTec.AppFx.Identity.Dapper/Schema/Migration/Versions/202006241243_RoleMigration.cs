@@ -25,7 +25,8 @@ namespace FluiTec.AppFx.Identity.Dapper.Schema.Migration.Versions
                 .WithColumn("ApplicationId").AsInt32().NotNullable()
                 .WithColumn("Name").AsString(256).NotNullable().Unique(UniqueNameIndexName)
                 .WithColumn("NormalizedName").AsString(256).NotNullable().Unique(UniqueNormalizedNameIndexName)
-                .WithColumn("Description").AsString(256).Nullable();
+                .WithColumn("Description").AsString(256).Nullable()
+                .WithColumn("TimeStamp").AsDateTimeOffset().NotNullable();
 
             IfDatabase("mysql")
                 .Create
@@ -35,7 +36,8 @@ namespace FluiTec.AppFx.Identity.Dapper.Schema.Migration.Versions
                 .WithColumn("ApplicationId").AsInt32().NotNullable()
                 .WithColumn("Name").AsString(256).NotNullable().Unique(UniqueNameIndexName)
                 .WithColumn("NormalizedName").AsString(256).NotNullable().Unique(UniqueNormalizedNameIndexName)
-                .WithColumn("Description").AsString(256).Nullable();
+                .WithColumn("Description").AsString(256).Nullable()
+                .WithColumn("TimeStamp").AsDateTime().NotNullable();
         }
 
         /// <summary>   Collects the DOWN migration expressions. </summary>

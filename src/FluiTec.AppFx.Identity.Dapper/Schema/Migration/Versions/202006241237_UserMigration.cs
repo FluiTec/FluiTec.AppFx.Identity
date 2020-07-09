@@ -36,7 +36,8 @@ namespace FluiTec.AppFx.Identity.Dapper.Schema.Migration.Versions
                 .WithColumn("TwoFactorEnabled").AsBoolean().NotNullable()
                 .WithColumn("LockoutEnabled").AsBoolean().NotNullable()
                 .WithColumn("AccessFailedCount").AsInt32().NotNullable()
-                .WithColumn("LockedOutTill").AsDateTimeOffset().Nullable();
+                .WithColumn("LockedOutTill").AsDateTimeOffset().Nullable()
+                .WithColumn("TimeStamp").AsDateTimeOffset().NotNullable();
 
             IfDatabase("mysql")
                 .Create
@@ -61,7 +62,8 @@ namespace FluiTec.AppFx.Identity.Dapper.Schema.Migration.Versions
                 .WithColumn("TwoFactorEnabled").AsBoolean().NotNullable()
                 .WithColumn("LockoutEnabled").AsBoolean().NotNullable()
                 .WithColumn("AccessFailedCount").AsInt32().NotNullable()
-                .WithColumn("LockedOutTill").AsDateTime().Nullable();
+                .WithColumn("LockedOutTill").AsDateTime().Nullable()
+                .WithColumn("TimeStamp").AsDateTime().NotNullable();
         }
 
         /// <summary>   Collects the DOWN migration expressions. </summary>

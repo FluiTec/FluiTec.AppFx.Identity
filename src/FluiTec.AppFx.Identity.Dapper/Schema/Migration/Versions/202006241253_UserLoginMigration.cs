@@ -24,7 +24,8 @@ namespace FluiTec.AppFx.Identity.Dapper.Schema.Migration.Versions
                 .WithColumn("ProviderName").AsString(255).NotNullable()
                 .WithColumn("ProviderKey").AsString(45).NotNullable()
                 .WithColumn("ProviderDisplayName").AsString(255).Nullable()
-                .WithColumn("UserId").AsGuid().NotNullable();
+                .WithColumn("UserId").AsGuid().NotNullable()
+                .WithColumn("TimeStamp").AsDateTimeOffset().NotNullable();
             IfDatabase("sqlserver", "postgres")
                 .Create
                 .Index(UniqueNameAndKeyIndexName)
@@ -50,7 +51,8 @@ namespace FluiTec.AppFx.Identity.Dapper.Schema.Migration.Versions
                 .WithColumn("ProviderName").AsString(255).NotNullable()
                 .WithColumn("ProviderKey").AsString(45).NotNullable()
                 .WithColumn("ProviderDisplayName").AsString(255).Nullable()
-                .WithColumn("UserId").AsCustom("CHAR(36)").NotNullable();
+                .WithColumn("UserId").AsCustom("CHAR(36)").NotNullable()
+                .WithColumn("TimeStamp").AsDateTime().NotNullable();
             IfDatabase("mysql")
                 .Create
                 .Index(UniqueNameAndKeyIndexName)

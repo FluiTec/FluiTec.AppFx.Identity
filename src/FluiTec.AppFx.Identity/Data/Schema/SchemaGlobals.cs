@@ -6,14 +6,14 @@
         /// <summary>   The schema. </summary>
         public const string Schema = "AppFxIdentity";
         
+        /// <summary>   The role table. </summary>
+        public const string RoleTable = "Role";
+
         /// <summary>   The user table. </summary>
         public const string UserTable = "User";
 
         /// <summary>   The user login table. </summary>
         public const string UserLoginTable = "UserLogin";
-
-        /// <summary>   The role table. </summary>
-        public const string RoleTable = "Role";
 
         /// <summary>   The user role table. </summary>
         public const string UserRoleTable = "UserRole";
