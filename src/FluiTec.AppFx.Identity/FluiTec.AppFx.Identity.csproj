@@ -24,6 +24,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\fluitec.appfx.data\src\FluiTec.AppFx.Data\FluiTec.AppFx.Data.csproj" />
   </ItemGroup>
 

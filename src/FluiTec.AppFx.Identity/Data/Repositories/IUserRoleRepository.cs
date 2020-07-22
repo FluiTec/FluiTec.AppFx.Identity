@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using FluiTec.AppFx.Data.Repositories;
 using FluiTec.AppFx.Identity.Data.Entities;
 
@@ -11,7 +12,7 @@ namespace FluiTec.AppFx.Identity.Data.Repositories
         /// <param name="userId">   Identifier for the user. </param>
         /// <param name="roleId">   Identifier for the role. </param>
         /// <returns>   The found user identifier and role identifier. </returns>
-        UserRoleEntity FindByUserIdAndRoleId(int userId, int roleId);
+        UserRoleEntity FindByUserIdAndRoleId(Guid userId, Guid roleId);
 
         /// <summary>   Finds the users in this collection. </summary>
         /// <param name="user"> The user. </param>
