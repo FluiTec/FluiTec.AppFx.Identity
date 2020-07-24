@@ -19,6 +19,10 @@ namespace FluiTec.AppFx.Identity.Data.Entities
         /// <value> The name. </value>
         public string Name { get; set; }
 
+        /// <summary>   Gets or sets the name of the normalized. </summary>
+        /// <value> The name of the normalized. </value>
+        public string NormalizedName => Name?.ToUpper();
+
         /// <summary>	Gets or sets the phone. </summary>
         /// <value>	The phone. </value>
         public string Phone { get; set; }
@@ -30,6 +34,10 @@ namespace FluiTec.AppFx.Identity.Data.Entities
         /// <summary>	Gets or sets the email. </summary>
         /// <value>	The email. </value>
         public string Email { get; set; }
+
+        /// <summary>   Gets or sets the normalized email. </summary>
+        /// <value> The normalized email. </value>
+        public string NormalizedEmail => Email?.ToUpper();
 
         /// <summary>	Gets or sets a value indicating whether the email confirmed. </summary>
         /// <value>	True if email confirmed, false if not. </value>
@@ -70,20 +78,6 @@ namespace FluiTec.AppFx.Identity.Data.Entities
         /// <summary>	Gets or sets the Date/Time of the locked out till. </summary>
         /// <value>	The locked out till. </value>
         public DateTimeOffset? LockedOutTill { get; set; }
-
-        #endregion
-
-        #region Methods
-
-        /// <summary>   Normalize name. </summary>
-        /// <param name="name"> The name. </param>
-        /// <returns>   A string. </returns>
-        public string NormalizeName(string name) => name?.ToUpper();
-
-        /// <summary>   Normalize mail. </summary>
-        /// <param name="mail"> The mail. </param>
-        /// <returns>   A string. </returns>
-        public string NormalizeMail(string mail) => mail?.ToUpper();
 
         #endregion
     }

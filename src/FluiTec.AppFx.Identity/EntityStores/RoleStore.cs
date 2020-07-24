@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Identity;
 namespace FluiTec.AppFx.Identity.EntityStores
 {
     /// <summary>   A role store. </summary>
-    public class RoleStore : UserStore, IRoleStore<RoleEntity>, IUserRoleStore<UserEntity>
+    public class RoleStore : UserSecurityStore, IRoleStore<RoleEntity>, IUserRoleStore<UserEntity>
     {
         #region Constructors
 
@@ -188,7 +188,7 @@ namespace FluiTec.AppFx.Identity.EntityStores
         /// </returns>
         public Task<string> GetNormalizedRoleNameAsync(RoleEntity role, CancellationToken cancellationToken)
         {
-            return Task.FromResult(role.NormalizeName(role.Name));
+            return Task.FromResult(role.NormalizedName);
         }
 
         /// <summary>   Set a role's normalized name as an asynchronous operation. </summary>

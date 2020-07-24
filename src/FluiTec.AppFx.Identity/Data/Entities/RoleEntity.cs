@@ -17,12 +17,8 @@ namespace FluiTec.AppFx.Identity.Data.Entities
         /// <value> The name. </value>
         public string Name { get; set; }
 
-        /// <summary>   Normalize name. </summary>
-        /// <param name="name"> The name. </param>
-        /// <returns>   A string. </returns>
-        public string NormalizeName(string name)
-        {
-            return name?.ToUpper();
-        }
+        /// <summary>   Gets the name of the normalized. </summary>
+        /// <value> The name of the normalized. </value>
+        public string NormalizedName => Name?.ToUpper();
     }
 }

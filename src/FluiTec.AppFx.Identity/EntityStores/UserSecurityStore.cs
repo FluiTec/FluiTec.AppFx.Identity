@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Identity;
 namespace FluiTec.AppFx.Identity.EntityStores
 {
     /// <summary>   A user security store. </summary>
-    public class UserSecurityStore : UserClaimStore, IUserSecurityStampStore<UserEntity>, IUserTwoFactorStore<UserEntity>, IUserLockoutStore<UserEntity>
+    public class UserSecurityStore : UserStore, IUserSecurityStampStore<UserEntity>, IUserTwoFactorStore<UserEntity>, IUserLockoutStore<UserEntity>
     {
         #region Constructors
 

@@ -7,11 +7,11 @@ namespace FluiTec.AppFx.Identity.Data.Entities
 {
     /// <summary>   A user login entity. </summary>
     [EntityName(SchemaGlobals.Schema, SchemaGlobals.UserLoginTable)]
-    public class UserLoginEntity : IKeyEntity<Guid>
+    public class UserLoginEntity : IKeyEntity<int>
     {
         /// <summary>   Gets or sets the identifier. </summary>
         /// <value> The identifier. </value>
-        public Guid Id { get; set; }
+        public int Id { get; set; }
 
         /// <summary>	Gets or sets the identifier of the user. </summary>
         /// <value>	The identifier of the user. </value>

@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using FluiTec.AppFx.Data.Repositories;
 using FluiTec.AppFx.Identity.Data.Entities;
 
 namespace FluiTec.AppFx.Identity.Data.Repositories
 {
     /// <summary>   Interface for role repository. </summary>
-    public interface IRoleRepository : IWritableKeyTableDataRepository<RoleEntity, int>
+    public interface IRoleRepository : IWritableKeyTableDataRepository<RoleEntity, Guid>
     {
         /// <summary>   Gets a role entity using the given identifier. </summary>
         /// <param name="identifier">   The identifier to get. </param>

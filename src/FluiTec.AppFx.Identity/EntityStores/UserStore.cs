@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using FluiTec.AppFx.Identity.Data;
@@ -9,7 +12,8 @@ namespace FluiTec.AppFx.Identity.EntityStores
 {
     /// <summary>   A user store. </summary>
     // ReSharper disable once RedundantExtendsListEntry
-    public class UserStore : IUserStore<UserEntity>, IUserPhoneNumberStore<UserEntity>, IUserEmailStore<UserEntity>, IUserPasswordStore<UserEntity>
+    public class UserStore : IUserStore<UserEntity>, IUserPhoneNumberStore<UserEntity>, IUserEmailStore<UserEntity>, IUserPasswordStore<UserEntity>, 
+        IUserClaimStore<UserEntity>, IUserLoginStore<UserEntity>
     {
         #region Constructors
 
@@ -91,7 +95,7 @@ namespace FluiTec.AppFx.Identity.EntityStores
         public Task<UserEntity> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
         {
             return Task<UserEntity>.Factory.StartNew(
-                () => UnitOfWork.UserRepository.FindByLoweredName(normalizedUserName), cancellationToken);
+                () => UnitOfWork.UserRepository.FindByNormalizedName(normalizedUserName), cancellationToken);
         }
 
         /// <summary>   Updates the specified <paramref name="user" /> in the user store. </summary>
@@ -210,7 +214,7 @@ namespace FluiTec.AppFx.Identity.EntityStores
         /// </returns>
         public Task<string> GetNormalizedUserNameAsync(UserEntity user, CancellationToken cancellationToken)
         {
-            return Task.FromResult(user.NormalizeName(user.Name));
+            return Task.FromResult(user.NormalizedName);
         }
 
         /// <summary>   Sets the given normalized name for the specified <paramref name="user" />. </summary>
@@ -412,7 +416,7 @@ namespace FluiTec.AppFx.Identity.EntityStores
         /// </returns>
         public Task<string> GetNormalizedEmailAsync(UserEntity user, CancellationToken cancellationToken)
         {
-            return Task.FromResult(user.NormalizeMail(user.Email));
+            return Task.FromResult(user.NormalizedEmail);
         }
 
         /// <summary>   Sets the normalized email for the specified <paramref name="user" />. </summary>
@@ -481,6 +485,229 @@ namespace FluiTec.AppFx.Identity.EntityStores
         public Task<bool> HasPasswordAsync(UserEntity user, CancellationToken cancellationToken)
         {
             return Task.FromResult(!string.IsNullOrWhiteSpace(user.PasswordHash));
+        }
+
+        #endregion
+
+        #region IUserClaimStore
+
+        /// <summary>
+        ///     Gets a list of <see cref="T:System.Security.Claims.Claim" />s to be belonging to the
+        ///     specified <paramref name="user" /> as an asynchronous operation.
+        /// </summary>
+        /// <param name="user">                 The role whose claims to retrieve. </param>
+        /// <param name="cancellationToken">    The <see cref="T:System.Threading.CancellationToken" />
+        ///                                     used to propagate notifications that the operation should be
+        ///                                     canceled. </param>
+        /// <returns>
+        ///     A <see cref="T:System.Threading.Tasks.Task`1" /> that represents the result of the
+        ///     asynchronous query, a list of <see cref="T:System.Security.Claims.Claim" />s.
+        /// </returns>
+        public Task<IList<Claim>> GetClaimsAsync(UserEntity user, CancellationToken cancellationToken)
+        {
+            return Task<IList<Claim>>.Factory.StartNew(
+                () =>
+                {
+                    var roleIds = UnitOfWork.UserRoleRepository.FindByUser(user);
+                    var roles = UnitOfWork.RoleRepository.FindByIds(roleIds);
+                    var roleClaims = roles.Select(r => new Claim(ClaimTypes.Role, r.Name));
+                    var userClaims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.Name, user.Name)
+                    };
+
+                    if (!string.IsNullOrWhiteSpace(user.Phone))
+                        userClaims.Add(new Claim(ClaimTypes.HomePhone, user.Phone));
+
+                    var claims = UnitOfWork.ClaimRepository.GetByUser(user).Select(c => new Claim(c.Type, c.Value)).Concat(roleClaims).Concat(userClaims).ToList();
+                    if (!string.IsNullOrWhiteSpace(user.FullName))
+                        claims.Add(new Claim(ClaimTypes.GivenName, user.FullName));
+                    return claims;
+                },
+                cancellationToken);
+        }
+
+        /// <summary>   Add claims to a user as an asynchronous operation. </summary>
+        /// <param name="user">                 The user to add the claim to. </param>
+        /// <param name="claims">               The collection of
+        ///                                     <see cref="T:System.Security.Claims.Claim" />s to add. </param>
+        /// <param name="cancellationToken">    The <see cref="T:System.Threading.CancellationToken" />
+        ///                                     used to propagate notifications that the operation should be
+        ///                                     canceled. </param>
+        /// <returns>   The task object representing the asynchronous operation. </returns>
+        public Task AddClaimsAsync(UserEntity user, IEnumerable<Claim> claims, CancellationToken cancellationToken)
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                var identityClaims = claims.Select(c =>
+                    new ClaimEntity {UserId = user.Id, Type = c.Type, Value = c.Value});
+                UnitOfWork.ClaimRepository.AddRange(identityClaims);
+            }, cancellationToken);
+        }
+
+        /// <summary>
+        ///     Replaces the given <paramref name="claim" /> on the specified <paramref name="user" />
+        ///     with the <paramref name="newClaim" />
+        /// </summary>
+        /// <param name="user">                 The user to replace the claim on. </param>
+        /// <param name="claim">                The claim to replace. </param>
+        /// <param name="newClaim">             The new claim to replace the existing
+        ///                                     <paramref name="claim" /> with. </param>
+        /// <param name="cancellationToken">    The <see cref="T:System.Threading.CancellationToken" />
+        ///                                     used to propagate notifications that the operation should be
+        ///                                     canceled. </param>
+        /// <returns>   The task object representing the asynchronous operation. </returns>
+        public Task ReplaceClaimAsync(UserEntity user, Claim claim, Claim newClaim, CancellationToken cancellationToken)
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                var entity = UnitOfWork.ClaimRepository.GetByUserAndType(user, claim.Type);
+                entity.Type = newClaim.Type;
+                entity.Value = newClaim.Value;
+                UnitOfWork.ClaimRepository.Update(entity);
+            }, cancellationToken);
+        }
+
+        /// <summary>
+        ///     Removes the specified <paramref name="claims" /> from the given <paramref name="user" />.
+        /// </summary>
+        /// <param name="user">                 The user to remove the specified
+        ///                                     <paramref name="claims" /> from. </param>
+        /// <param name="claims">               A collection of
+        ///                                     <see cref="T:System.Security.Claims.Claim" />s to remove. </param>
+        /// <param name="cancellationToken">    The <see cref="T:System.Threading.CancellationToken" />
+        ///                                     used to propagate notifications that the operation should be
+        ///                                     canceled. </param>
+        /// <returns>   The task object representing the asynchronous operation. </returns>
+        public Task RemoveClaimsAsync(UserEntity user, IEnumerable<Claim> claims, CancellationToken cancellationToken)
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                var claimTypes = claims.Select(c => c.Type).ToList();
+                var entities = UnitOfWork.ClaimRepository.GetByUser(user).Where(c => claimTypes.Contains(c.Type));
+                foreach (var entity in entities)
+                    UnitOfWork.ClaimRepository.Delete(entity);
+            }, cancellationToken);
+        }
+
+        /// <summary>
+        ///     Returns a list of users who contain the specified
+        ///     <see cref="T:System.Security.Claims.Claim" />.
+        /// </summary>
+        /// <param name="claim">                The claim to look for. </param>
+        /// <param name="cancellationToken">    The <see cref="T:System.Threading.CancellationToken" />
+        ///                                     used to propagate notifications that the operation should be
+        ///                                     canceled. </param>
+        /// <returns>
+        ///     A <see cref="T:System.Threading.Tasks.Task`1" /> that represents the result of the
+        ///     asynchronous query, a list of who contain the specified
+        ///     claim.
+        /// </returns>
+        public Task<IList<UserEntity>> GetUsersForClaimAsync(Claim claim, CancellationToken cancellationToken)
+        {
+            return Task<IList<UserEntity>>.Factory.StartNew(() =>
+            {
+                var userIds = UnitOfWork.ClaimRepository.GetUserIdsForClaimType(claim.Type);
+                var users = UnitOfWork.UserRepository.FindByIds(userIds);
+                return users.ToList();
+            }, cancellationToken);
+        }
+
+        #endregion 
+
+        #region IUserLoginStore
+
+        /// <summary>
+        ///     Adds an external <see cref="T:Microsoft.AspNetCore.Identity.UserLoginInfo" /> to the
+        ///     specified <paramref name="user" />.
+        /// </summary>
+        /// <param name="user">                 The user to add the login to. </param>
+        /// <param name="login">                The external
+        ///                                     <see cref="T:Microsoft.AspNetCore.Identity.UserLoginInfo" />
+        ///                                     to add to the specified <paramref name="user" />. </param>
+        /// <param name="cancellationToken">    The <see cref="T:System.Threading.CancellationToken" />
+        ///                                     used to propagate notifications that the operation should be
+        ///                                     canceled. </param>
+        /// <returns>
+        ///     The <see cref="T:System.Threading.Tasks.Task" /> that represents the asynchronous
+        ///     operation.
+        /// </returns>
+        public Task AddLoginAsync(UserEntity user, UserLoginInfo login, CancellationToken cancellationToken)
+        {
+            return Task<UserEntity>.Factory.StartNew(() =>
+            {
+                UnitOfWork.LoginRepository.Add(new UserLoginEntity
+                {
+                    ProviderName = login.LoginProvider,
+                    ProviderKey = login.ProviderKey,
+                    ProviderDisplayName = login.ProviderDisplayName,
+                    UserId = user.Id
+                });
+                return user;
+            }, cancellationToken);
+        }
+
+        /// <summary>
+        ///     Attempts to remove the provided login information from the specified
+        ///     <paramref name="user" />. and returns a flag indicating whether the removal succeed or
+        ///     not.
+        /// </summary>
+        /// <param name="user">                 The user to remove the login information from. </param>
+        /// <param name="loginProvider">        The login provide whose information should be removed. </param>
+        /// <param name="providerKey">          The key given by the external login provider for the
+        ///                                     specified user. </param>
+        /// <param name="cancellationToken">    The <see cref="T:System.Threading.CancellationToken" />
+        ///                                     used to propagate notifications that the operation should be
+        ///                                     canceled. </param>
+        /// <returns>
+        ///     The <see cref="T:System.Threading.Tasks.Task" /> that represents the asynchronous
+        ///     operation.
+        /// </returns>
+        public Task RemoveLoginAsync(UserEntity user, string loginProvider, string providerKey, CancellationToken cancellationToken)
+        {
+            return Task.Factory.StartNew(
+                () => { UnitOfWork.LoginRepository.RemoveByNameAndKey(loginProvider, providerKey); },
+                cancellationToken);
+        }
+
+        /// <summary>   Retrieves the associated logins for the specified <param ref="user" />. </summary>
+        /// <param name="user">                 The user whose associated logins to retrieve. </param>
+        /// <param name="cancellationToken">    The <see cref="T:System.Threading.CancellationToken" />
+        ///                                     used to propagate notifications that the operation should be
+        ///                                     canceled. </param>
+        /// <returns>
+        ///     The <see cref="T:System.Threading.Tasks.Task" /> for the asynchronous operation,
+        ///     containing a list of <see cref="T:Microsoft.AspNetCore.Identity.UserLoginInfo" /> for the
+        ///     specified <paramref name="user" />, if any.
+        /// </returns>
+        public Task<IList<UserLoginInfo>> GetLoginsAsync(UserEntity user, CancellationToken cancellationToken)
+        {
+            return Task<IList<UserLoginInfo>>.Factory.StartNew(() =>
+            {
+                var entities = UnitOfWork.LoginRepository.FindByUserId(user.Id);
+                return entities.Select(e => new UserLoginInfo(e.ProviderName, e.ProviderKey, e.ProviderDisplayName))
+                    .ToList();
+            }, cancellationToken);
+        }
+
+        /// <summary>
+        ///     Retrieves the user associated with the specified login provider and login provider key.
+        /// </summary>
+        /// <param name="loginProvider">        The login provider who provided the
+        ///                                     <paramref name="providerKey" />. </param>
+        /// <param name="providerKey">          The key provided by the <paramref name="loginProvider" />
+        ///                                     to identify a user. </param>
+        /// <param name="cancellationToken">    The <see cref="T:System.Threading.CancellationToken" />
+        ///                                     used to propagate notifications that the operation should be
+        ///                                     canceled. </param>
+        /// <returns>
+        ///     The <see cref="T:System.Threading.Tasks.Task" /> for the asynchronous operation,
+        ///     containing the user, if any which matched the specified login provider and key.
+        /// </returns>
+        public Task<UserEntity> FindByLoginAsync(string loginProvider, string providerKey, CancellationToken cancellationToken)
+        {
+            return Task<UserEntity>.Factory.StartNew(
+                () => UnitOfWork.UserRepository.FindByLogin(loginProvider, providerKey), cancellationToken);
         }
 
         #endregion
