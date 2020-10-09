@@ -80,6 +80,10 @@ namespace FluiTec.AppFx.Identity.Data.Entities
         /// <value>	The locked out till. </value>
         public DateTimeOffset? LockedOutTill { get; set; }
 
+        /// <summary>   Gets or sets a value indicating whether the locked out permanently.</summary>
+        /// <value> True if locked out permanently, false if not.</value>
+        public bool LockedOutPermanently { get; set; }
+
         #endregion
     }
 
