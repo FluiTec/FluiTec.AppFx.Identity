@@ -18,19 +18,19 @@ namespace FluiTec.AppFx.Identity.Dapper.Schema.Migration.Versions
                 .Create
                 .Table(SchemaGlobals.RoleClaimTable)
                 .InSchema(SchemaGlobals.Schema)
-                .WithColumn("Id").AsInt32().NotNullable().PrimaryKey().Identity()
-                .WithColumn("RoleId").AsGuid().NotNullable()
+                .WithColumn(nameof(RoleClaimEntity.Id)).AsInt32().NotNullable().PrimaryKey().Identity()
+                .WithColumn(nameof(RoleClaimEntity.RoleId)).AsGuid().NotNullable()
                     .ForeignKey(ForeignKeyRoleRoleClaim, nameof(SchemaGlobals.RoleTable), nameof(RoleEntity.Id))
-                .WithColumn("Type").AsString(256).NotNullable()
-                .WithColumn("Value").AsString(256).Nullable();
+                .WithColumn(nameof(RoleClaimEntity.Type)).AsString(256).NotNullable()
+                .WithColumn(nameof(RoleClaimEntity.Value)).AsString(256).Nullable();
 
             IfDatabase("mysql")
                 .Create
                 .Table($"{SchemaGlobals.Schema}_{SchemaGlobals.RoleClaimTable}")
-                .WithColumn("Id").AsInt32().NotNullable().PrimaryKey().Identity()
-                .WithColumn("RoleId").AsCustom("CHAR(36)").NotNullable()
-                .WithColumn("Type").AsString(256).NotNullable()
-                .WithColumn("Value").AsString(256).Nullable();
+                .WithColumn(nameof(RoleClaimEntity.Id)).AsInt32().NotNullable().PrimaryKey().Identity()
+                .WithColumn(nameof(RoleClaimEntity.RoleId)).AsCustom("CHAR(36)").NotNullable()
+                .WithColumn(nameof(RoleClaimEntity.Type)).AsString(256).NotNullable()
+                .WithColumn(nameof(RoleClaimEntity.Value)).AsString(256).Nullable();
         }
 
         /// <summary>   Collects the DOWN migration expressions.</summary>
