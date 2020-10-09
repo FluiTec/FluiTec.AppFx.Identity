@@ -12,7 +12,7 @@ namespace FluiTec.AppFx.Identity.Dapper.Schema.Migration.Versions
         private const string UniqueNameIndexName = "UX_RoleName";
 
         /// <summary>   Name of the unique, normalized name index. </summary>
-        private const string UniqueNormalizedNameIndexName = "UX_LoweredRoleName";
+        private const string UniqueNormalizedNameIndexName = "UX_NormalizedRoleName";
 
         /// <summary>   Collect the UP migration expressions.</summary>
         public override void Up()

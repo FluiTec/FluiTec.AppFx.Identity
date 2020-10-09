@@ -124,7 +124,7 @@ namespace FluiTec.AppFx.Identity.EntityStores
         /// </returns>
         public Task<DateTimeOffset?> GetLockoutEndDateAsync(UserEntity user, CancellationToken cancellationToken)
         {
-            return Task.FromResult(user.LockedOutTill);
+            return Task.FromResult(user.LockedOutPermanently == false ? user.LockedOutTill : DateTimeOffset.MaxValue);
         }
 
         /// <summary>
