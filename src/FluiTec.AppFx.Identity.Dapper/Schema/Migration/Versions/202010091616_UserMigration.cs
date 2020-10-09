@@ -36,8 +36,28 @@ namespace FluiTec.AppFx.Identity.Dapper.Schema.Migration.Versions
                 .WithColumn(nameof(UserEntity.LockoutEnabled)).AsBoolean().NotNullable()
                 .WithColumn(nameof(UserEntity.AccessFailedCount)).AsInt32().NotNullable()
                 .WithColumn(nameof(UserEntity.LockedOutTill)).AsDateTimeOffset().Nullable()
-                .WithColumn(nameof(UserEntity.LockedOutPermanently)).AsBoolean().NotNullable()
-                ;
+                .WithColumn(nameof(UserEntity.LockedOutPermanently)).AsBoolean().NotNullable();
+
+            IfDatabase("mysql")
+                .Create
+                .Table(SchemaGlobals.RoleTable)
+                .InSchema(SchemaGlobals.Schema)
+                .WithColumn(nameof(UserEntity.Id)).AsCustom("CHAR(36)").NotNullable().PrimaryKey()
+                .WithColumn(nameof(UserEntity.Name)).AsString(256).NotNullable()
+                .WithColumn(nameof(UserEntity.NormalizedName)).AsString(256).NotNullable().Unique(UniqueNormalizedNameIndexName)
+                .WithColumn(nameof(UserEntity.Phone)).AsString(256).Nullable()
+                .WithColumn(nameof(UserEntity.PhoneConfirmed)).AsBoolean().NotNullable()
+                .WithColumn(nameof(UserEntity.Email)).AsString(256).NotNullable()
+                .WithColumn(nameof(UserEntity.NormalizedEmail)).AsString(256).NotNullable().Unique(UniqueNormalizedMailIndexName)
+                .WithColumn(nameof(UserEntity.EmailConfirmed)).AsBoolean().NotNullable()
+                .WithColumn(nameof(UserEntity.FullName)).AsString(256).Nullable()
+                .WithColumn(nameof(UserEntity.PasswordHash)).AsString(256).Nullable()
+                .WithColumn(nameof(UserEntity.SecurityStamp)).AsString(256).Nullable()
+                .WithColumn(nameof(UserEntity.TwoFactorEnabled)).AsBoolean().NotNullable()
+                .WithColumn(nameof(UserEntity.LockoutEnabled)).AsBoolean().NotNullable()
+                .WithColumn(nameof(UserEntity.AccessFailedCount)).AsInt32().NotNullable()
+                .WithColumn(nameof(UserEntity.LockedOutTill)).AsDateTime().Nullable()
+                .WithColumn(nameof(UserEntity.LockedOutPermanently)).AsBoolean().NotNullable();
         }
 
         /// <summary>   Collects the DOWN migration expressions.</summary>
