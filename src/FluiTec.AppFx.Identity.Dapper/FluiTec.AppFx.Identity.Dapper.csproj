@@ -28,8 +28,4 @@
     <ProjectReference Include="..\FluiTec.AppFx.Identity\FluiTec.AppFx.Identity.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Schema\Migration\Versions\" />
-  </ItemGroup>
-
 </Project>
