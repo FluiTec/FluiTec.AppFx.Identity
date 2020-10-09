@@ -19,7 +19,7 @@ namespace FluiTec.AppFx.Identity.Dapper.Schema.Migration.Versions
         {
             IfDatabase("sqlserver", "postgres")
                 .Create
-                .Table(SchemaGlobals.RoleTable)
+                .Table(SchemaGlobals.UserTable)
                 .InSchema(SchemaGlobals.Schema)
                 .WithColumn(nameof(UserEntity.Id)).AsGuid().NotNullable().PrimaryKey()
                 .WithColumn(nameof(UserEntity.Name)).AsString(256).NotNullable()
@@ -40,7 +40,7 @@ namespace FluiTec.AppFx.Identity.Dapper.Schema.Migration.Versions
 
             IfDatabase("mysql")
                 .Create
-                .Table(SchemaGlobals.RoleTable)
+                .Table(SchemaGlobals.UserTable)
                 .InSchema(SchemaGlobals.Schema)
                 .WithColumn(nameof(UserEntity.Id)).AsCustom("CHAR(36)").NotNullable().PrimaryKey()
                 .WithColumn(nameof(UserEntity.Name)).AsString(256).NotNullable()
