@@ -18,7 +18,10 @@
         /// <summary>   The user role table. </summary>
         public const string UserRoleTable = "UserRole";
 
-        /// <summary>   The claim table. </summary>
-        public const string ClaimTable = "Claim";
+        /// <summary>   The user-claim table. </summary>
+        public const string UserClaimTable = "UserClaim";
+
+        /// <summary>   The role-claim table. </summary>
+        public const string RoleClaimTable = "RoleClaim";
     }
 }

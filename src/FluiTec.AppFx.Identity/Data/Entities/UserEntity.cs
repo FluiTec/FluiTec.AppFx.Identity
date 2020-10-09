@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using FluiTec.AppFx.Data.Entities;
 using FluiTec.AppFx.Data.EntityNameServices;
 using FluiTec.AppFx.Identity.Data.Schema;
@@ -80,5 +81,47 @@ namespace FluiTec.AppFx.Identity.Data.Entities
         public DateTimeOffset? LockedOutTill { get; set; }
 
         #endregion
+    }
+
+    /// <summary>   A user comparer.</summary>
+    public class UserComparer : IEqualityComparer<UserEntity>
+    {
+        /// <summary>   Determines whether the specified objects are equal.</summary>
+        /// <param name="x">    The first object of type T to compare. </param>
+        /// <param name="y">    The second object of type T to compare. </param>
+        /// <returns>   true if the specified objects are equal; otherwise, false.</returns>
+        public bool Equals(UserEntity x, UserEntity y)
+        {
+            if (ReferenceEquals(x, y)) return true;
+            if (ReferenceEquals(x, null)) return false;
+            if (ReferenceEquals(y, null)) return false;
+            if (x.GetType() != y.GetType()) return false;
+            return x.Id.Equals(y.Id) && x.Name == y.Name && x.Phone == y.Phone && x.PhoneConfirmed == y.PhoneConfirmed && x.Email == y.Email && x.EmailConfirmed == y.EmailConfirmed && x.FullName == y.FullName && x.PasswordHash == y.PasswordHash && x.SecurityStamp == y.SecurityStamp && x.TwoFactorEnabled == y.TwoFactorEnabled && x.LockoutEnabled == y.LockoutEnabled && x.AccessFailedCount == y.AccessFailedCount && Nullable.Equals(x.LockedOutTill, y.LockedOutTill);
+        }
+
+        /// <summary>   Returns a hash code for the specified object.</summary>
+        /// <param name="obj">  The <see cref="T:System.Object"></see> for which a hash code is to be
+        ///                     returned. </param>
+        /// <returns>   A hash code for the specified object.</returns>
+        public int GetHashCode(UserEntity obj)
+        {
+            unchecked
+            {
+                var hashCode = obj.Id.GetHashCode();
+                hashCode = (hashCode * 397) ^ (obj.Name != null ? obj.Name.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (obj.Phone != null ? obj.Phone.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ obj.PhoneConfirmed.GetHashCode();
+                hashCode = (hashCode * 397) ^ (obj.Email != null ? obj.Email.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ obj.EmailConfirmed.GetHashCode();
+                hashCode = (hashCode * 397) ^ (obj.FullName != null ? obj.FullName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (obj.PasswordHash != null ? obj.PasswordHash.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (obj.SecurityStamp != null ? obj.SecurityStamp.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ obj.TwoFactorEnabled.GetHashCode();
+                hashCode = (hashCode * 397) ^ obj.LockoutEnabled.GetHashCode();
+                hashCode = (hashCode * 397) ^ obj.AccessFailedCount;
+                hashCode = (hashCode * 397) ^ obj.LockedOutTill.GetHashCode();
+                return hashCode;
+            }
+        }
     }
 }

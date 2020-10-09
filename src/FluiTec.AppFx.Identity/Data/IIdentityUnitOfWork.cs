@@ -18,10 +18,14 @@ namespace FluiTec.AppFx.Identity.Data
         /// <value> The role repository. </value>
         IRoleRepository RoleRepository { get; }
 
-        /// <summary>   Gets the claim repository. </summary>
-        /// <value> The claim repository. </value>
-        IClaimRepository ClaimRepository { get; }
-        
+        /// <summary>   Gets the user-claim repository. </summary>
+        /// <value> The user-claim repository. </value>
+        IUserClaimRepository UserClaimRepository { get; }
+
+        /// <summary>   Gets the role-claim repository. </summary>
+        /// <value> The role-claim repository. </value>
+        IRoleClaimRepository RoleClaimRepository { get; }
+
         /// <summary>   Gets the user role repository. </summary>
         /// <value> The user role repository. </value>
         IUserRoleRepository UserRoleRepository { get; }

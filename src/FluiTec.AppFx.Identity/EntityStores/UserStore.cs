@@ -510,18 +510,27 @@ namespace FluiTec.AppFx.Identity.EntityStores
                 {
                     var roleIds = UnitOfWork.UserRoleRepository.FindByUser(user);
                     var roles = UnitOfWork.RoleRepository.FindByIds(roleIds);
-                    var roleClaims = roles.Select(r => new Claim(ClaimTypes.Role, r.Name));
-                    var userClaims = new List<Claim>
+                    var rClaims = roles.Select(r => new Claim(ClaimTypes.Role, r.Name));
+                    
+                    // add basic claims
+                    var claims = new List<Claim>
                     {
                         new Claim(ClaimTypes.Name, user.Name)
                     };
-
                     if (!string.IsNullOrWhiteSpace(user.Phone))
-                        userClaims.Add(new Claim(ClaimTypes.HomePhone, user.Phone));
-
-                    var claims = UnitOfWork.ClaimRepository.GetByUser(user).Select(c => new Claim(c.Type, c.Value)).Concat(roleClaims).Concat(userClaims).ToList();
+                        claims.Add(new Claim(ClaimTypes.HomePhone, user.Phone));
                     if (!string.IsNullOrWhiteSpace(user.FullName))
                         claims.Add(new Claim(ClaimTypes.GivenName, user.FullName));
+                    claims.AddRange(rClaims);
+
+                    // add user-specific claims
+                    var userClaims = UnitOfWork.UserClaimRepository.GetByUser(user).Select(c => new Claim(c.Type, c.Value)).ToList();
+                    claims.AddRange(userClaims);
+
+                    // add role-specific claims
+                    var roleClaims = UnitOfWork.RoleClaimRepository.GetByUser(user).Select(c => new Claim(c.Type, c.Value)).ToList();
+                    claims.AddRange(roleClaims);
+
                     return claims;
                 },
                 cancellationToken);
@@ -539,9 +548,10 @@ namespace FluiTec.AppFx.Identity.EntityStores
         {
             return Task.Factory.StartNew(() =>
             {
-                var identityClaims = claims.Select(c =>
-                    new ClaimEntity {UserId = user.Id, Type = c.Type, Value = c.Value});
-                UnitOfWork.ClaimRepository.AddRange(identityClaims);
+                var identityClaims = claims.Select(c => 
+                    new UserClaimEntity {UserId = user.Id, Type = c.Type, Value = c.Value});
+                
+                UnitOfWork.UserClaimRepository.AddRange(identityClaims);
             }, cancellationToken);
         }
 
@@ -561,10 +571,10 @@ namespace FluiTec.AppFx.Identity.EntityStores
         {
             return Task.Factory.StartNew(() =>
             {
-                var entity = UnitOfWork.ClaimRepository.GetByUserAndType(user, claim.Type);
+                var entity = UnitOfWork.UserClaimRepository.GetByUserAndType(user, claim.Type);
                 entity.Type = newClaim.Type;
                 entity.Value = newClaim.Value;
-                UnitOfWork.ClaimRepository.Update(entity);
+                UnitOfWork.UserClaimRepository.Update(entity);
             }, cancellationToken);
         }
 
@@ -584,9 +594,9 @@ namespace FluiTec.AppFx.Identity.EntityStores
             return Task.Factory.StartNew(() =>
             {
                 var claimTypes = claims.Select(c => c.Type).ToList();
-                var entities = UnitOfWork.ClaimRepository.GetByUser(user).Where(c => claimTypes.Contains(c.Type));
+                var entities = UnitOfWork.UserClaimRepository.GetByUser(user).Where(c => claimTypes.Contains(c.Type));
                 foreach (var entity in entities)
-                    UnitOfWork.ClaimRepository.Delete(entity);
+                    UnitOfWork.UserClaimRepository.Delete(entity);
             }, cancellationToken);
         }
 
@@ -607,9 +617,13 @@ namespace FluiTec.AppFx.Identity.EntityStores
         {
             return Task<IList<UserEntity>>.Factory.StartNew(() =>
             {
-                var userIds = UnitOfWork.ClaimRepository.GetUserIdsForClaimType(claim.Type);
+                var userIds = UnitOfWork.UserClaimRepository.GetUserIdsForClaimType(claim.Type);
                 var users = UnitOfWork.UserRepository.FindByIds(userIds);
-                return users.ToList();
+
+                var rUserIds = UnitOfWork.RoleClaimRepository.GetUserIdsForClaimType(claim.Type);
+                var rUsers = UnitOfWork.UserRepository.FindByIds(rUserIds);
+
+                return users.Concat(rUsers).Distinct(new UserComparer()).ToList();
             }, cancellationToken);
         }
 
