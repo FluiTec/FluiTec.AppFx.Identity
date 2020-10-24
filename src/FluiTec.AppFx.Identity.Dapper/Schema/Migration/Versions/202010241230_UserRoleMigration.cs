@@ -23,9 +23,9 @@ namespace FluiTec.AppFx.Identity.Dapper.Schema.Migration.Versions
                 .InSchema(SchemaGlobals.Schema)
                 .WithColumn(nameof(UserRoleEntity.Id)).AsInt32().NotNullable().PrimaryKey().Identity()
                 .WithColumn(nameof(UserRoleEntity.UserId)).AsGuid().NotNullable()
-                .ForeignKey(ForeignKeyUserUserRole, nameof(SchemaGlobals.UserTable), nameof(UserRoleEntity.UserId))
+                .ForeignKey(ForeignKeyUserUserRole, SchemaGlobals.UserTable, nameof(UserRoleEntity.UserId))
                 .WithColumn(nameof(UserRoleEntity.RoleId)).AsGuid().NotNullable()
-                .ForeignKey(ForeignKeyUserUserRole, nameof(SchemaGlobals.RoleTable), nameof(UserRoleEntity.RoleId));
+                .ForeignKey(ForeignKeyUserUserRole, SchemaGlobals.RoleTable, nameof(UserRoleEntity.RoleId));
 
             IfDatabase("mysql")
                 .Create
