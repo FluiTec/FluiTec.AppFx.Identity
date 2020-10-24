@@ -26,7 +26,7 @@ namespace FluiTec.AppFx.Identity.Dapper.Schema.Migration.Versions
                 .WithColumn(nameof(UserLoginEntity.ProviderKey)).AsString(45).NotNullable()
                 .WithColumn(nameof(UserLoginEntity.ProviderDisplayName)).AsString(255).Nullable()
                 .WithColumn(nameof(UserLoginEntity.UserId)).AsGuid().NotNullable()
-                .ForeignKey(ForeignKeyUserUserLogin, SchemaGlobals.UserTable, nameof(UserEntity.Id));
+                    .ForeignKey(ForeignKeyUserUserLogin, SchemaGlobals.Schema, SchemaGlobals.UserTable, nameof(UserEntity.Id));
 
             IfDatabase("sqlserver", "postgres")
                 .Create
