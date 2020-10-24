@@ -11,14 +11,14 @@ using Microsoft.Extensions.Logging;
 namespace FluiTec.AppFx.Identity.Dapper.Repositories
 {
     /// <summary>   A dapper role repository.</summary>
-    public abstract class DapperRoleRepository : DapperWritableKeyTableDataRepository<RoleEntity, Guid>, IRoleRepository
+    public class DapperRoleRepository : DapperWritableKeyTableDataRepository<RoleEntity, Guid>, IRoleRepository
     {
         #region Constructors
 
         /// <summary>   Specialized constructor for use only by derived class.</summary>
         /// <param name="unitOfWork">   The unit of work. </param>
         /// <param name="logger">       The logger. </param>
-        protected DapperRoleRepository(DapperUnitOfWork unitOfWork, ILogger<IRepository> logger) : base(unitOfWork, logger)
+        public DapperRoleRepository(DapperUnitOfWork unitOfWork, ILogger<IRepository> logger) : base(unitOfWork, logger)
         {
         }
 
@@ -35,8 +35,7 @@ namespace FluiTec.AppFx.Identity.Dapper.Repositories
 
             var command = SqlBuilder.SelectByFilter(EntityType, nameof(RoleEntity.Id));
             return UnitOfWork.Connection.QuerySingleOrDefault<RoleEntity>(command,
-                new { Id = guidResult },
-                UnitOfWork.Transaction);
+                new { Id = guidResult }, UnitOfWork.Transaction);
         }
 
         /// <summary>   Searches for the first normalized name.</summary>
@@ -46,20 +45,30 @@ namespace FluiTec.AppFx.Identity.Dapper.Repositories
         {
             var command = SqlBuilder.SelectByFilter(EntityType, nameof(RoleEntity.NormalizedName));
             return UnitOfWork.Connection.QuerySingleOrDefault<RoleEntity>(command,
-                new { NormalizedName = normalizedName },
-                UnitOfWork.Transaction);
+                new { NormalizedName = normalizedName }, UnitOfWork.Transaction);
         }
 
         /// <summary>   Finds the names in this collection.</summary>
         /// <param name="names">    The names. </param>
         /// <returns>An enumerator that allows foreach to be used to process the names in this collection.</returns>
-        public abstract IEnumerable<RoleEntity> FindByNames(IEnumerable<string> names);
+        public IEnumerable<RoleEntity> FindByNames(IEnumerable<string> names)
+        {
+            var command = SqlBuilder.SelectByInFilter(EntityType, nameof(RoleEntity.Name), "Names");
+            return UnitOfWork.Connection.Query<RoleEntity>(command,
+                new { Names = names }, UnitOfWork.Transaction);
+        }
+
 
         /// <summary>   Finds the identifiers in this collection.</summary>
-        /// <param name="roleIds">    The roleIds. </param>
+        /// <param name="roleIds">  The roleIds. </param>
         /// <returns>An enumerator that allows foreach to be used to process the identifiers in this
         /// collection.</returns>
-        public abstract IEnumerable<RoleEntity> FindByIds(IEnumerable<Guid> roleIds);
+        public IEnumerable<RoleEntity> FindByIds(IEnumerable<Guid> roleIds)
+        {
+            var command = SqlBuilder.SelectByInFilter(EntityType, nameof(RoleEntity.Id), "RoleIds");
+            return UnitOfWork.Connection.Query<RoleEntity>(command,
+                new {RoleIds = roleIds}, UnitOfWork.Transaction);
+        }
 
         #endregion
     }

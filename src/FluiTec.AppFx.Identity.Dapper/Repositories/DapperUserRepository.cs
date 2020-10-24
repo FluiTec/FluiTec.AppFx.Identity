@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Dapper;
 using FluiTec.AppFx.Data.Dapper.Repositories;
 using FluiTec.AppFx.Data.Dapper.UnitsOfWork;
 using FluiTec.AppFx.Data.Repositories;
+using FluiTec.AppFx.Data.Sql;
 using FluiTec.AppFx.Identity.Data.Entities;
 using FluiTec.AppFx.Identity.Data.Repositories;
 using Microsoft.Extensions.Logging;
@@ -11,14 +13,14 @@ using Microsoft.Extensions.Logging;
 namespace FluiTec.AppFx.Identity.Dapper.Repositories
 {
     /// <summary>   A dapper user repository. </summary>
-    public abstract class DapperUserRepository : DapperWritableKeyTableDataRepository<UserEntity, Guid>, IUserRepository
+    public class DapperUserRepository : DapperWritableKeyTableDataRepository<UserEntity, Guid>, IUserRepository
     {
         #region Constructors
 
         /// <summary>   Constructor. </summary>
         /// <param name="unitOfWork">   The unit of work. </param>
         /// <param name="logger">       The logger. </param>
-        protected DapperUserRepository(DapperUnitOfWork unitOfWork, ILogger<IRepository> logger) : base(unitOfWork, logger)
+        public DapperUserRepository(DapperUnitOfWork unitOfWork, ILogger<IRepository> logger) : base(unitOfWork, logger)
         {
         }
 
@@ -65,13 +67,31 @@ namespace FluiTec.AppFx.Identity.Dapper.Repositories
         /// <param name="providerName"> Name of the provider. </param>
         /// <param name="providerKey">  The provider key. </param>
         /// <returns>   The found login. </returns>
-        public abstract UserEntity FindByLogin(string providerName, string providerKey);
+        public virtual UserEntity FindByLogin(string providerName, string providerKey)
+        {
+            var sql = SqlBuilder.Adapter;
+
+            var command =
+                $"SELECT {SqlBuilder.Adapter.RenderPropertyList(SqlCache.TypePropertiesChache(typeof(UserEntity)).ToArray())} FROM {sql.RenderTableName(EntityType)} " +
+                $"INNER JOIN {sql.RenderTableName(typeof(UserLoginEntity))} ON " +
+                $"{sql.RenderTableName(EntityType)}.{sql.RenderPropertyName(nameof(UserEntity.Id))} = {sql.RenderTableName(typeof(UserLoginEntity))}.{sql.RenderPropertyName(nameof(UserLoginEntity.UserId))} " +
+                $"WHERE {sql.RenderTableName(typeof(UserLoginEntity))}.{sql.RenderPropertyName(nameof(UserLoginEntity.ProviderName))} = @ProviderName " +
+                $"AND {sql.RenderTableName(typeof(UserLoginEntity))}.{sql.RenderPropertyName(nameof(UserLoginEntity.ProviderKey))} = @ProviderKey";
+            return UnitOfWork.Connection.QuerySingleOrDefault<UserEntity>(command,
+                new { ProviderName = providerName, ProviderKey = providerKey },
+                UnitOfWork.Transaction);
+        }
 
         /// <summary>   Finds the identifiers in this collection.</summary>
         /// <param name="userIds">  List of identifiers for the users. </param>
         /// <returns>An enumerator that allows foreach to be used to process the identifiers in this
         /// collection.</returns>
-        public abstract IEnumerable<UserEntity> FindByIds(IEnumerable<Guid> userIds);
+        public IEnumerable<UserEntity> FindByIds(IEnumerable<Guid> userIds)
+        {
+            var command = SqlBuilder.SelectByInFilter(EntityType, nameof(UserEntity.Id), "UserIds");
+            return UnitOfWork.Connection.Query<UserEntity>(command,
+                new { UserIds = userIds }, UnitOfWork.Transaction);
+        }
 
         #endregion
     }
