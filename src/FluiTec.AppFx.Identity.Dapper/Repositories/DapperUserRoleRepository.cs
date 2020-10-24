@@ -64,6 +64,22 @@ namespace FluiTec.AppFx.Identity.Dapper.Repositories
             return UnitOfWork.GetRepository<IUserRepository>().FindByIds(roleIds);
         }
 
+        /// <summary>   Removes the by user described by user.</summary>
+        /// <param name="user"> The user. </param>
+        public void RemoveByUser(UserEntity user)
+        {
+            var command = SqlBuilder.DeleteBy(EntityType, nameof(UserRoleEntity.UserId));
+            UnitOfWork.Connection.Execute(command, new {UserId = user.Id}, UnitOfWork.Transaction);
+        }
+
+        /// <summary>   Removes the by role described by role.</summary>
+        /// <param name="role"> The role. </param>
+        public void RemoveByRole(RoleEntity role)
+        {
+            var command = SqlBuilder.DeleteBy(EntityType, nameof(UserRoleEntity.RoleId));
+            UnitOfWork.Connection.Execute(command, new { RoleId = role.Id }, UnitOfWork.Transaction);
+        }
+
         #endregion
     }
 }

@@ -7,6 +7,7 @@ using FluiTec.AppFx.Data.Dapper.UnitsOfWork;
 using FluiTec.AppFx.Data.Repositories;
 using FluiTec.AppFx.Data.Sql;
 using FluiTec.AppFx.Identity.Data.Entities;
+using FluiTec.AppFx.Identity.Data.Entities.Base;
 using FluiTec.AppFx.Identity.Data.Repositories;
 using Microsoft.Extensions.Logging;
 
@@ -91,6 +92,14 @@ namespace FluiTec.AppFx.Identity.Dapper.Repositories
             var command = SqlBuilder.SelectByInFilter(EntityType, nameof(UserEntity.Id), "UserIds");
             return UnitOfWork.Connection.Query<UserEntity>(command,
                 new { UserIds = userIds }, UnitOfWork.Transaction);
+        }
+
+        /// <summary>   Finds all claims in this collection.</summary>
+        /// <param name="user"> The user. </param>
+        /// <returns>An enumerator that allows foreach to be used to process all claims in this collection.</returns>
+        public IEnumerable<ClaimEntity> FindAllClaims(UserEntity user)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion
