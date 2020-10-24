@@ -2,7 +2,6 @@
 using FluiTec.AppFx.Data.Entities;
 using FluiTec.AppFx.Data.EntityNameServices;
 using FluiTec.AppFx.Identity.Data.Schema;
-using Microsoft.AspNetCore.DataProtection.KeyManagement;
 
 namespace FluiTec.AppFx.Identity.Data.Entities
 {
