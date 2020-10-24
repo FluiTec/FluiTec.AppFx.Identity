@@ -5,27 +5,23 @@ using FluiTec.AppFx.Identity.Data.Entities;
 namespace FluiTec.AppFx.Identity.Data.Repositories
 {
     /// <summary>   Interface for role-claim repository.</summary>
-    public interface IRoleClaimRepository : IWritableKeyTableDataRepository<UserClaimEntity, int>
+    public interface IRoleClaimRepository : IWritableKeyTableDataRepository<RoleClaimEntity, int>
     {
-        /// <summary>   Gets the users in this collection. </summary>
-        /// <param name="user"> The user. </param>
-        /// <returns>
-        ///     An enumerator that allows foreach to be used to process the users in this collection.
-        /// </returns>
-        IEnumerable<UserClaimEntity> GetByUser(UserEntity user);
+        /// <summary>   Gets the roles in this collection.</summary>
+        /// <param name="role"> The role. </param>
+        /// <returns>An enumerator that allows foreach to be used to process the roles in this collection.</returns>
+        IEnumerable<RoleClaimEntity> GetByRole(RoleEntity role);
 
-        /// <summary>   Gets the user identifiers for claim types in this collection. </summary>
+        /// <summary>   Gets the role identifiers for claim types in this collection.</summary>
         /// <param name="claimType">    Type of the claim. </param>
-        /// <returns>
-        ///     An enumerator that allows foreach to be used to process the user identifiers for claim
-        ///     types in this collection.
-        /// </returns>
-        IEnumerable<int> GetUserIdsForClaimType(string claimType);
+        /// <returns>An enumerator that allows foreach to be used to process the role identifiers for
+        /// claim types in this collection.</returns>
+        IEnumerable<int> GetRoleIdsForClaimType(string claimType);
 
-        /// <summary>   Gets by user and type. </summary>
-        /// <param name="user">         The user. </param>
+        /// <summary>   Gets by role and type.</summary>
+        /// <param name="role">         The role. </param>
         /// <param name="claimType">    Type of the claim. </param>
-        /// <returns>   The by user and type. </returns>
-        UserClaimEntity GetByUserAndType(UserEntity user, string claimType);
+        /// <returns>   The by role and type.</returns>
+        RoleClaimEntity GetByRoleAndType(RoleEntity role, string claimType);
     }
 }
