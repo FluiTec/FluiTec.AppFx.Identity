@@ -13,10 +13,10 @@ namespace FluiTec.AppFx.Identity.Data.Repositories
         /// <returns>   A RoleEntity. </returns>
         RoleEntity Get(string identifier);
 
-        /// <summary>   Searches for the first lowered name. </summary>
-        /// <param name="loweredName">  Name of the lowered. </param>
-        /// <returns>   The found lowered name. </returns>
-        RoleEntity FindByLoweredName(string loweredName);
+        /// <summary>   Searches for the first normalized name.</summary>
+        /// <param name="normalizedName">   Name of the normalized. </param>
+        /// <returns>   The found normalized name.</returns>
+        RoleEntity FindByNormalizedName(string normalizedName);
 
         /// <summary>   Finds the identifiers in this collection. </summary>
         /// <param name="roleIds">  List of identifiers for the roles. </param>

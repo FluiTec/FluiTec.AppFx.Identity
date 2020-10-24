@@ -35,7 +35,7 @@ namespace FluiTec.AppFx.Identity.Dapper.Repositories
 
             var command = SqlBuilder.SelectByFilter(EntityType, nameof(UserEntity.Id));
             return UnitOfWork.Connection.QuerySingleOrDefault<UserEntity>(command,
-                new {Id = identifier},
+                new {Id = guidResult},
                 UnitOfWork.Transaction);
         }
 
