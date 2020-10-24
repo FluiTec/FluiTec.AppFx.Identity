@@ -19,6 +19,8 @@ namespace FluiTec.AppFx.Identity.Dapper
         /// <param name="logger">       The logger. </param>
         public DapperIdentityUnitOfWork(IDapperDataService dataService, ILogger<IUnitOfWork> logger) : base(dataService, logger)
         {
+            // ReSharper disable once VirtualMemberCallInConstructor
+            RegisterRepositories();
         }
 
         /// <summary>   Specialized constructor for use only by derived class.</summary>
@@ -27,6 +29,8 @@ namespace FluiTec.AppFx.Identity.Dapper
         /// <param name="logger">           The logger. </param>
         public DapperIdentityUnitOfWork(DapperUnitOfWork parentUnitOfWork, IDataService dataService, ILogger<IUnitOfWork> logger) : base(parentUnitOfWork, dataService, logger)
         {
+            // ReSharper disable once VirtualMemberCallInConstructor
+            RegisterRepositories();
         }
 
         #endregion

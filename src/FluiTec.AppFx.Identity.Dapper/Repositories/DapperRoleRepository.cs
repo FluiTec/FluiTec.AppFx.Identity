@@ -20,6 +20,7 @@ namespace FluiTec.AppFx.Identity.Dapper.Repositories
         /// <param name="logger">       The logger. </param>
         public DapperRoleRepository(DapperUnitOfWork unitOfWork, ILogger<IRepository> logger) : base(unitOfWork, logger)
         {
+            ExpectIdentityKey = false;
         }
 
         #endregion

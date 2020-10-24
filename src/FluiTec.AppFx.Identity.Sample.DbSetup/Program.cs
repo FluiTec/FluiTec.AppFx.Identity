@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using FluiTec.AppFx.Identity.Data;
+using FluiTec.AppFx.Identity.Data.Entities;
 using FluiTec.AppFx.Options.Managers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -37,6 +39,10 @@ namespace FluiTec.AppFx.Identity.Sample.DbSetup
             var sp = services.BuildServiceProvider();
 
             var dataService = sp.GetRequiredService<IIdentityDataService>();
+
+            using (var uow = dataService.BeginUnitOfWork())
+            {
+            }
         }
     }
 }
