@@ -20,7 +20,7 @@ namespace FluiTec.AppFx.Identity.Dapper.Schema.Migration.Versions
                 .InSchema(SchemaGlobals.Schema)
                 .WithColumn(nameof(UserClaimEntity.Id)).AsInt32().NotNullable().PrimaryKey().Identity()
                 .WithColumn(nameof(UserClaimEntity.UserId)).AsGuid().NotNullable()
-                    .ForeignKey(ForeignKeyUserUserClaim, nameof(SchemaGlobals.UserTable), nameof(RoleEntity.Id))
+                    .ForeignKey(ForeignKeyUserUserClaim, nameof(SchemaGlobals.UserTable), nameof(UserEntity.Id))
                 .WithColumn(nameof(UserClaimEntity.Type)).AsString(256).NotNullable()
                 .WithColumn(nameof(UserClaimEntity.Value)).AsString(256).Nullable();
 
