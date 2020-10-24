@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using FluiTec.AppFx.Data.Repositories;
 using FluiTec.AppFx.Identity.Data.Entities;
+using FluiTec.AppFx.Identity.Data.Entities.Base;
 
 namespace FluiTec.AppFx.Identity.Data.Repositories
 {
@@ -34,5 +35,10 @@ namespace FluiTec.AppFx.Identity.Data.Repositories
         /// <returns>An enumerator that allows foreach to be used to process the identifiers in this
         /// collection.</returns>
         IEnumerable<UserEntity> FindByIds(IEnumerable<Guid> userIds);
+
+        /// <summary>   Finds all claims in this collection.</summary>
+        /// <param name="user"> The user. </param>
+        /// <returns>An enumerator that allows foreach to be used to process all claims in this collection.</returns>
+        IEnumerable<ClaimEntity> FindAllClaims(UserEntity user);
     }
 }

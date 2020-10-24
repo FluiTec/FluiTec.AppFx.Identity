@@ -23,5 +23,13 @@ namespace FluiTec.AppFx.Identity.Data.Repositories
         /// <param name="role"> The role. </param>
         /// <returns>An enumerator that allows foreach to be used to process the roles in this collection.</returns>
         IEnumerable<UserEntity> FindByRole(RoleEntity role);
+
+        /// <summary>   Removes the by user described by user.</summary>
+        /// <param name="user"> The user. </param>
+        void RemoveByUser(UserEntity user);
+
+        /// <summary>   Removes the by role described by role.</summary>
+        /// <param name="role"> The role. </param>
+        void RemoveByRole(RoleEntity role);
     }
 }

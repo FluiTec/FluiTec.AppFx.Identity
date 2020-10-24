@@ -76,7 +76,7 @@ namespace FluiTec.AppFx.Identity.EntityStores
         Task<RoleEntity> IRoleStore<RoleEntity>.FindByNameAsync(string normalizedRoleName, CancellationToken cancellationToken)
         {
             return Task<RoleEntity>.Factory.StartNew(
-                () => UnitOfWork.RoleRepository.FindByLoweredName(normalizedRoleName), cancellationToken);
+                () => UnitOfWork.RoleRepository.FindByNormalizedName(normalizedRoleName), cancellationToken);
         }
 
         /// <summary>   Updates a role in a store as an asynchronous operation. </summary>
@@ -119,10 +119,7 @@ namespace FluiTec.AppFx.Identity.EntityStores
             {
                 try
                 {
-                    var roles = UnitOfWork.UserRoleRepository.FindByRole(role);
-                    foreach(var r in roles)
-                        UnitOfWork.UserRoleRepository.Delete(r);
-
+                    UnitOfWork.UserRoleRepository.RemoveByRole(role);
                     UnitOfWork.RoleRepository.Delete(role);
                     return IdentityResult.Success;
                 }
@@ -224,7 +221,7 @@ namespace FluiTec.AppFx.Identity.EntityStores
         {
             return Task.Factory.StartNew(() =>
             {
-                var role = UnitOfWork.RoleRepository.FindByLoweredName(roleName.ToUpper());
+                var role = UnitOfWork.RoleRepository.FindByNormalizedName(roleName.ToUpper());
                 UnitOfWork.UserRoleRepository.Add(new UserRoleEntity {RoleId = role.Id, UserId = user.Id});
             }, cancellationToken);
         }
@@ -243,7 +240,7 @@ namespace FluiTec.AppFx.Identity.EntityStores
         {
             return Task.Factory.StartNew(() =>
             {
-                var role = UnitOfWork.RoleRepository.FindByLoweredName(roleName.ToUpper());
+                var role = UnitOfWork.RoleRepository.FindByNormalizedName(roleName.ToUpper());
                 var userRole = UnitOfWork.UserRoleRepository.FindByUserIdAndRoleId(user.Id, role.Id);
                 UnitOfWork.UserRoleRepository.Delete(userRole);
             }, cancellationToken);
@@ -264,8 +261,7 @@ namespace FluiTec.AppFx.Identity.EntityStores
         {
             return Task<IList<string>>.Factory.StartNew(() =>
             {
-                var roleIds = UnitOfWork.UserRoleRepository.FindByUser(user);
-                return UnitOfWork.RoleRepository.FindByIds(roleIds).Select(r => r.Name).ToList();
+                return UnitOfWork.UserRoleRepository.FindByUser(user).Select(r => r.Name).ToList();
             }, cancellationToken);
         }
 
@@ -302,9 +298,8 @@ namespace FluiTec.AppFx.Identity.EntityStores
         {
             return Task<IList<UserEntity>>.Factory.StartNew(() =>
             {
-                var role = UnitOfWork.RoleRepository.FindByLoweredName(roleName.ToUpper());
-                var userIds = UnitOfWork.UserRoleRepository.FindByRole(role);
-                return UnitOfWork.UserRepository.FindByIds(userIds).ToList();
+                var role = UnitOfWork.RoleRepository.FindByNormalizedName(roleName.ToUpper());
+                return UnitOfWork.UserRoleRepository.FindByRole(role).ToList();
             }, cancellationToken);
         }
 

@@ -10,6 +10,7 @@
     <PreBuildEvent></PreBuildEvent>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+    <LangVersion>8</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,6 +22,15 @@
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\fluitec.appfx.data\src\FluiTec.AppFx.Data.Dynamic\FluiTec.AppFx.Data.Dynamic.csproj" />
+    <ProjectReference Include="..\..\fluitec.appfx.options\src\FluiTec.AppFx.Options\FluiTec.AppFx.Options.csproj" />
+    <ProjectReference Include="..\FluiTec.AppFx.Identity.Dapper.Mssql\FluiTec.AppFx.Identity.Dapper.Mssql.csproj" />
+    <ProjectReference Include="..\FluiTec.AppFx.Identity.Dapper.Mysql\FluiTec.AppFx.Identity.Dapper.Mysql.csproj" />
+    <ProjectReference Include="..\FluiTec.AppFx.Identity.Dapper.Pgsql\FluiTec.AppFx.Identity.Dapper.Pgsql.csproj" />
+    <ProjectReference Include="..\FluiTec.AppFx.Identity\FluiTec.AppFx.Identity.csproj" />
   </ItemGroup>
 
 </Project>

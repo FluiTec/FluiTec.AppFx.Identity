@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using FluiTec.AppFx.Data.Repositories;
 using FluiTec.AppFx.Identity.Data.Entities;
 
@@ -20,7 +21,7 @@ namespace FluiTec.AppFx.Identity.Data.Repositories
         ///     An enumerator that allows foreach to be used to process the user identifiers for claim
         ///     types in this collection.
         /// </returns>
-        IEnumerable<int> GetUserIdsForClaimType(string claimType);
+        IEnumerable<Guid> GetUserIdsForClaimType(string claimType);
 
         /// <summary>   Gets by user and type. </summary>
         /// <param name="user">         The user. </param>

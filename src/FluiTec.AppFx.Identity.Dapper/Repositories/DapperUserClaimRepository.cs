@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Dapper;
 using FluiTec.AppFx.Data.Dapper.Repositories;
 using FluiTec.AppFx.Data.Dapper.UnitsOfWork;
@@ -40,11 +41,11 @@ namespace FluiTec.AppFx.Identity.Dapper.Repositories
         /// <param name="claimType">    Type of the claim. </param>
         /// <returns>An enumerator that allows foreach to be used to process the user identifiers for
         /// claim types in this collection.</returns>
-        public IEnumerable<int> GetUserIdsForClaimType(string claimType)
+        public IEnumerable<Guid> GetUserIdsForClaimType(string claimType)
         {
             var command = SqlBuilder.SelectByFilter(EntityType, nameof(UserClaimEntity.Type),
                 new[] { nameof(UserClaimEntity.UserId) });
-            return UnitOfWork.Connection.Query<int>(command, new { Type = claimType },
+            return UnitOfWork.Connection.Query<Guid>(command, new { Type = claimType },
                 UnitOfWork.Transaction);
         }
 

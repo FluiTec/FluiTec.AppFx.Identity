@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Dapper;
 using FluiTec.AppFx.Data.Dapper.Repositories;
 using FluiTec.AppFx.Data.Dapper.UnitsOfWork;
@@ -40,11 +41,11 @@ namespace FluiTec.AppFx.Identity.Dapper.Repositories
         /// <param name="claimType">    Type of the claim. </param>
         /// <returns>An enumerator that allows foreach to be used to process the role identifiers for
         /// claim types in this collection.</returns>
-        public IEnumerable<int> GetRoleIdsForClaimType(string claimType)
+        public IEnumerable<Guid> GetRoleIdsForClaimType(string claimType)
         {
             var command = SqlBuilder.SelectByFilter(EntityType, nameof(RoleClaimEntity.Type),
                 new[] { nameof(RoleClaimEntity.RoleId) });
-            return UnitOfWork.Connection.Query<int>(command, new { Type = claimType },
+            return UnitOfWork.Connection.Query<Guid>(command, new { Type = claimType },
                 UnitOfWork.Transaction);
         }
 
@@ -59,6 +60,15 @@ namespace FluiTec.AppFx.Identity.Dapper.Repositories
             return UnitOfWork.Connection.QuerySingleOrDefault<RoleClaimEntity>(command,
                 new { Type = claimType, RoleId = role.Id },
                 UnitOfWork.Transaction);
+        }
+
+        /// <summary>   Gets the users for claim types in this collection.</summary>
+        /// <param name="claimType">    Type of the claim. </param>
+        /// <returns>An enumerator that allows foreach to be used to process the users for claim types in
+        /// this collection.</returns>
+        public IEnumerable<UserEntity> GetUsersForClaimType(string claimType)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

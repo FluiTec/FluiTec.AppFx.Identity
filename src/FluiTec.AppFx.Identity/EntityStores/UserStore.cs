@@ -140,10 +140,7 @@ namespace FluiTec.AppFx.Identity.EntityStores
             {
                 try
                 {
-                    var roles = UnitOfWork.UserRoleRepository.FindByUser(user);
-                    foreach(var role in roles)
-                        UnitOfWork.UserRoleRepository.Delete(role);
-
+                    UnitOfWork.UserRoleRepository.RemoveByUser(user);
                     UnitOfWork.UserRepository.Delete(user);
                     return IdentityResult.Success;
                 }
@@ -508,8 +505,8 @@ namespace FluiTec.AppFx.Identity.EntityStores
             return Task<IList<Claim>>.Factory.StartNew(
                 () =>
                 {
-                    var roleIds = UnitOfWork.UserRoleRepository.FindByUser(user);
-                    var roles = UnitOfWork.RoleRepository.FindByIds(roleIds);
+                    // add roles as claims
+                    var roles = UnitOfWork.UserRoleRepository.FindByUser(user);
                     var rClaims = roles.Select(r => new Claim(ClaimTypes.Role, r.Name));
                     
                     // add basic claims
@@ -523,13 +520,10 @@ namespace FluiTec.AppFx.Identity.EntityStores
                         claims.Add(new Claim(ClaimTypes.GivenName, user.FullName));
                     claims.AddRange(rClaims);
 
-                    // add user-specific claims
-                    var userClaims = UnitOfWork.UserClaimRepository.GetByUser(user).Select(c => new Claim(c.Type, c.Value)).ToList();
-                    claims.AddRange(userClaims);
-
-                    // add role-specific claims
-                    var roleClaims = UnitOfWork.RoleClaimRepository.GetByUser(user).Select(c => new Claim(c.Type, c.Value)).ToList();
-                    claims.AddRange(roleClaims);
+                    // fetch user- und role claims from the db
+                    var dbClaims = UnitOfWork.UserRepository.FindAllClaims(user)
+                        .Select(c => new Claim(c.Type, c.Value));
+                    claims.AddRange(dbClaims);
 
                     return claims;
                 },
@@ -620,9 +614,7 @@ namespace FluiTec.AppFx.Identity.EntityStores
                 var userIds = UnitOfWork.UserClaimRepository.GetUserIdsForClaimType(claim.Type);
                 var users = UnitOfWork.UserRepository.FindByIds(userIds);
 
-                var rUserIds = UnitOfWork.RoleClaimRepository.GetUserIdsForClaimType(claim.Type);
-                var rUsers = UnitOfWork.UserRepository.FindByIds(rUserIds);
-
+                var rUsers = UnitOfWork.RoleClaimRepository.GetUsersForClaimType(claim.Type);
                 return users.Concat(rUsers).Distinct(new UserComparer()).ToList();
             }, cancellationToken);
         }
