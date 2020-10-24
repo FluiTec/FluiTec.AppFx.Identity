@@ -50,16 +50,16 @@ namespace FluiTec.AppFx.Identity.Dapper.Repositories
                 UnitOfWork.Transaction);
         }
 
-        /// <summary>   Finds the identifiers in this collection.</summary>
-        /// <param name="roleIds">  List of identifiers for the roles. </param>
-        /// <returns>An enumerator that allows foreach to be used to process the identifiers in this
-        /// collection.</returns>
-        public abstract IEnumerable<RoleEntity> FindByIds(IEnumerable<int> roleIds);
-
         /// <summary>   Finds the names in this collection.</summary>
         /// <param name="names">    The names. </param>
         /// <returns>An enumerator that allows foreach to be used to process the names in this collection.</returns>
         public abstract IEnumerable<RoleEntity> FindByNames(IEnumerable<string> names);
+
+        /// <summary>   Finds the identifiers in this collection.</summary>
+        /// <param name="roleIds">    The roleIds. </param>
+        /// <returns>An enumerator that allows foreach to be used to process the identifiers in this
+        /// collection.</returns>
+        public abstract IEnumerable<RoleEntity> FindByIds(IEnumerable<Guid> roleIds);
 
         #endregion
     }

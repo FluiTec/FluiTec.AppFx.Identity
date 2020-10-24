@@ -18,19 +18,17 @@ namespace FluiTec.AppFx.Identity.Data.Repositories
         /// <returns>   The found normalized name.</returns>
         RoleEntity FindByNormalizedName(string normalizedName);
 
-        /// <summary>   Finds the identifiers in this collection. </summary>
-        /// <param name="roleIds">  List of identifiers for the roles. </param>
-        /// <returns>
-        ///     An enumerator that allows foreach to be used to process the identifiers in this
-        ///     collection.
-        /// </returns>
-        IEnumerable<RoleEntity> FindByIds(IEnumerable<int> roleIds);
-
         /// <summary>   Finds the names in this collection. </summary>
         /// <param name="names">    The names. </param>
         /// <returns>
         ///     An enumerator that allows foreach to be used to process the names in this collection.
         /// </returns>
         IEnumerable<RoleEntity> FindByNames(IEnumerable<string> names);
+
+        /// <summary>   Finds the identifiers in this collection.</summary>
+        /// <param name="roleIds">    The roleIds. </param>
+        /// <returns>An enumerator that allows foreach to be used to process the identifiers in this
+        /// collection.</returns>
+        IEnumerable<RoleEntity> FindByIds(IEnumerable<Guid> roleIds);
     }
 }

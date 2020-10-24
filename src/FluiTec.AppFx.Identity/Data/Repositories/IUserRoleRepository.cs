@@ -14,18 +14,14 @@ namespace FluiTec.AppFx.Identity.Data.Repositories
         /// <returns>   The found user identifier and role identifier. </returns>
         UserRoleEntity FindByUserIdAndRoleId(Guid userId, Guid roleId);
 
-        /// <summary>   Finds the users in this collection. </summary>
+        /// <summary>   Finds the users in this collection.</summary>
         /// <param name="user"> The user. </param>
-        /// <returns>
-        ///     An enumerator that allows foreach to be used to process the users in this collection.
-        /// </returns>
-        IEnumerable<int> FindByUser(UserEntity user);
+        /// <returns>An enumerator that allows foreach to be used to process the users in this collection.</returns>
+        IEnumerable<RoleEntity> FindByUser(UserEntity user);
 
-        /// <summary>   Finds the roles in this collection. </summary>
+        /// <summary>   Finds the roles in this collection.</summary>
         /// <param name="role"> The role. </param>
-        /// <returns>
-        ///     An enumerator that allows foreach to be used to process the roles in this collection.
-        /// </returns>
-        IEnumerable<int> FindByRole(RoleEntity role);
+        /// <returns>An enumerator that allows foreach to be used to process the roles in this collection.</returns>
+        IEnumerable<UserEntity> FindByRole(RoleEntity role);
     }
 }

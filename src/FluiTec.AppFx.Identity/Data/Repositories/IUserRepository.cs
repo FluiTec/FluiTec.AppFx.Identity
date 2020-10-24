@@ -23,18 +23,16 @@ namespace FluiTec.AppFx.Identity.Data.Repositories
         /// <returns>   The found normalized email. </returns>
         UserEntity FindByNormalizedEmail(string normalizedEmail);
 
-        /// <summary>   Finds the identifiers in this collection. </summary>
-        /// <param name="userIds">  List of identifiers for the users. </param>
-        /// <returns>
-        ///     An enumerator that allows foreach to be used to process the identifiers in this
-        ///     collection.
-        /// </returns>
-        IEnumerable<UserEntity> FindByIds(IEnumerable<int> userIds);
-
         /// <summary>   Searches for the first login. </summary>
         /// <param name="providerName"> Name of the provider. </param>
         /// <param name="providerKey">  The provider key. </param>
         /// <returns>   The found login. </returns>
         UserEntity FindByLogin(string providerName, string providerKey);
+
+        /// <summary>   Finds the identifiers in this collection.</summary>
+        /// <param name="userIds">  List of identifiers for the users. </param>
+        /// <returns>An enumerator that allows foreach to be used to process the identifiers in this
+        /// collection.</returns>
+        IEnumerable<UserEntity> FindByIds(IEnumerable<Guid> userIds);
     }
 }
