@@ -29,7 +29,7 @@ namespace FluiTec.AppFx.Identity.Dapper.Pgsql
         /// <returns>   An IUnitOfWork.</returns>
         public override DapperIdentityUnitOfWork BeginUnitOfWork()
         {
-            return new DapperIdentityUnitOfWork(this, LoggerFactory?.CreateLogger<IUnitOfWork>());
+            return new PgsqlDapperIdentityUnitOfWork(this, LoggerFactory?.CreateLogger<IUnitOfWork>());
         }
 
         /// <summary>   Begins unit of work.</summary>
@@ -45,7 +45,7 @@ namespace FluiTec.AppFx.Identity.Dapper.Pgsql
             if (!(other is DapperUnitOfWork))
                 throw new ArgumentException(
                     $"Incompatible implementation of UnitOfWork. Must be of type {nameof(DapperUnitOfWork)}!");
-            return new DapperIdentityUnitOfWork((DapperUnitOfWork)other, this,
+            return new PgsqlDapperIdentityUnitOfWork((DapperUnitOfWork)other, this,
                 LoggerFactory?.CreateLogger<IUnitOfWork>());
 
         }

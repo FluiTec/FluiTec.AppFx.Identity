@@ -14,14 +14,14 @@ using Microsoft.Extensions.Logging;
 namespace FluiTec.AppFx.Identity.Dapper.Repositories
 {
     /// <summary>   A dapper user repository. </summary>
-    public class DapperUserRepository : DapperWritableKeyTableDataRepository<UserEntity, Guid>, IUserRepository
+    public abstract class DapperUserRepository : DapperWritableKeyTableDataRepository<UserEntity, Guid>, IUserRepository
     {
         #region Constructors
 
         /// <summary>   Constructor. </summary>
         /// <param name="unitOfWork">   The unit of work. </param>
         /// <param name="logger">       The logger. </param>
-        public DapperUserRepository(DapperUnitOfWork unitOfWork, ILogger<IRepository> logger) : base(unitOfWork, logger)
+        protected DapperUserRepository(DapperUnitOfWork unitOfWork, ILogger<IRepository> logger) : base(unitOfWork, logger)
         {
             ExpectIdentityKey = false;
         }
@@ -95,12 +95,26 @@ namespace FluiTec.AppFx.Identity.Dapper.Repositories
                 new { UserIds = userIds }, UnitOfWork.Transaction);
         }
 
+        /// <summary>   Finds all claims including duplicates in this collection. </summary>
+        /// <param name="user"> The user. </param>
+        /// <returns>
+        ///     An enumerator that allows foreach to be used to process all claims including duplicates
+        ///     in this collection.
+        /// </returns>
+        protected abstract IEnumerable<ClaimEntity> FindAllClaimsIncludingDuplicates(UserEntity user);
+
         /// <summary>   Finds all claims in this collection.</summary>
         /// <param name="user"> The user. </param>
         /// <returns>An enumerator that allows foreach to be used to process all claims in this collection.</returns>
         public IEnumerable<ClaimEntity> FindAllClaims(UserEntity user)
         {
-            throw new NotImplementedException();
+            var claims = FindAllClaimsIncludingDuplicates(user);
+            
+            var distinctUserClaims = new List<ClaimEntity>();
+            foreach (var claim in claims)
+                if (distinctUserClaims.All(c => c.Type != claim.Type))
+                    distinctUserClaims.Add(claim);
+            return distinctUserClaims;
         }
 
         #endregion

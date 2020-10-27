@@ -40,8 +40,6 @@ namespace FluiTec.AppFx.Identity.Dapper
         /// <summary>   Registers the repositories.</summary>
         protected virtual void RegisterRepositories()
         {
-            RepositoryProviders.Add(typeof(IUserRepository),
-                (uow, log) => new DapperUserRepository((DapperIdentityUnitOfWork)uow, log));
             RepositoryProviders.Add(typeof(IUserClaimRepository),
                 (uow, log) => new DapperUserClaimRepository((DapperIdentityUnitOfWork)uow, log));
             RepositoryProviders.Add(typeof(IUserLoginRepository),
