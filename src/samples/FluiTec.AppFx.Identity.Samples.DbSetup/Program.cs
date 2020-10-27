@@ -1,7 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 using FluiTec.AppFx.Identity.Data;
-using FluiTec.AppFx.Identity.Data.Entities;
 using FluiTec.AppFx.Options.Managers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,36 +14,48 @@ namespace FluiTec.AppFx.Identity.Samples.DbSetup
     {
         static void Main(string[] args)
         {
-            var dbServer = "marble.fritz.box";
-            var dbCatalog = "wtschnell";
-
-            var configValues = new List<KeyValuePair<string, string>>(new[]
-            {
-                new KeyValuePair<string, string>("DynamicDataOptions:Provider", "Mssql"),
-                new KeyValuePair<string, string>("DynamicDataOptions:AutoMigrate", "true"),
-                new KeyValuePair<string, string>("LiteDb:DbFileName", "test.ldb"),
-                new KeyValuePair<string, string>("Dapper.Mssql:ConnectionString",
-                    $"Data Source={dbServer};Initial Catalog={dbCatalog};Integrated Security=False;User ID=appfx;Password=0pTSyNY8iwxC20J7;Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"),
-                new KeyValuePair<string, string>("Dapper.Pgsql:ConnectionString",
-                    $"User ID=appfx;Password=0pTSyNY8iwxC20J7;Host={dbServer};Port=5432;Database={dbCatalog};Pooling=true;"),
-                new KeyValuePair<string, string>("Dapper.Mysql:ConnectionString",
-                    $"Server={dbServer};Database={dbCatalog};Uid=appfx;Pwd=0pTSyNY8iwxC20J7")
-            });
-
+            // load config from json
+            var path = GetApplicationRoot();
+            Console.WriteLine($"BasePath: {path}");
             var config = new ConfigurationBuilder()
-                .AddInMemoryCollection(configValues)
+                .SetBasePath(path)
+                .AddJsonFile("appsettings.json", false, true)
+                .AddJsonFile("appsettings.secret.json", false, true)
                 .Build();
             
+            // configure
             var manager = new ConsoleReportingConfigurationManager(config);
             var services = new ServiceCollection();
             services.ConfigureDynamicIdentityDataProvider(manager);
 
+            // finish di
             var sp = services.BuildServiceProvider();
 
             var dataService = sp.GetRequiredService<IIdentityDataService>();
-
             using (var uow = dataService.BeginUnitOfWork())
             {
+            }
+        }
+
+        /// <summary>   Gets application root. </summary>
+        /// <exception cref="InvalidOperationException">    Thrown when the requested operation is
+        ///                                                 invalid. </exception>
+        /// <returns>   The application root. </returns>
+        private static string GetApplicationRoot()
+        {
+            var exePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase);
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                var appPathMatcher = new Regex(@"(?<!fil)[A-Za-z]:\\+[\S\s]*?(?=\\+bin)");
+                var appRoot = appPathMatcher.Match(exePath ?? throw new InvalidOperationException()).Value;
+                return appRoot;
+            }
+            else
+            {
+                var appPathMatcher = new Regex(@"(?<!file)\/+[\S\s]*?(?=\/+bin)");
+                var appRoot = appPathMatcher.Match(exePath ?? throw new InvalidOperationException()).Value;
+                return appRoot;
             }
         }
     }
