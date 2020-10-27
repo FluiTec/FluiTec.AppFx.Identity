@@ -6,7 +6,7 @@ using FluiTec.AppFx.Options.Managers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace FluiTec.AppFx.Identity.Sample.DbSetup
+namespace FluiTec.AppFx.Identity.Samples.DbSetup
 {
     class Program
     {
