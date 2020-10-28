@@ -35,10 +35,12 @@ namespace FluiTec.AppFx.Identity.Samples.DbSetup
             var dataService = sp.GetRequiredService<IIdentityDataService>();
             using (var uow = dataService.BeginUnitOfWork())
             {
-                //CreateSampleData(uow);
+                CreateSampleData(uow);
 
                 var user = uow.UserRepository.GetAll().First();
                 var claims = uow.UserRepository.FindAllClaims(user);
+                
+                uow.Commit();
             }
         }
 
@@ -89,8 +91,6 @@ namespace FluiTec.AppFx.Identity.Samples.DbSetup
                 RoleId = role.Id,
                 UserId = user.Id
             });
-
-            uow.Commit();
         }
     }
 }
