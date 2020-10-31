@@ -14,6 +14,7 @@ namespace FluiTec.AppFx.Identity.TestLibrary
             using var uow = DataService.BeginUnitOfWork();
             var entity = uow.UserRepository.Add(new UserEntity
             {
+                Id = Guid.NewGuid(),
                 Name = "m.mustermann@musterfirma.de", Email = "m.mustermann@musterfirma.de", EmailConfirmed = false,
                 FullName = "Max Mustermann", AccessFailedCount = 0, LockedOutPermanently = false, LockedOutTill = null,
                 LockoutEnabled = false, PasswordHash = "<>", Phone = "<>", PhoneConfirmed = false, SecurityStamp = "<>",

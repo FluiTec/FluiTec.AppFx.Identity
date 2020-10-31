@@ -14,7 +14,7 @@ namespace FluiTec.AppFx.Identity.TestLibrary
             AssertDbAvailable();
 
             using var uow = DataService.BeginUnitOfWork();
-            var entity = uow.RoleRepository.Add(new RoleEntity {Name = "TestRole"});
+            var entity = uow.RoleRepository.Add(new RoleEntity {Id = Guid.NewGuid(), Name = "TestRole"});
             Assert.IsTrue(entity.Id != Guid.Empty);
         }
 
@@ -25,7 +25,7 @@ namespace FluiTec.AppFx.Identity.TestLibrary
             AssertDbAvailable();
 
             using var uow = DataService.BeginUnitOfWork();
-            var entity = uow.RoleRepository.Add(new RoleEntity { Name = "TestRole" });
+            var entity = uow.RoleRepository.Add(new RoleEntity { Id = Guid.NewGuid(), Name = "TestRole" });
             var dbEntity = uow.RoleRepository.Get(entity.Id);
 
             Assert.AreEqual(entity.Name, dbEntity.Name);
@@ -38,7 +38,7 @@ namespace FluiTec.AppFx.Identity.TestLibrary
             AssertDbAvailable();
 
             using var uow = DataService.BeginUnitOfWork();
-            var entity = uow.RoleRepository.Add(new RoleEntity { Name = "TestRole" });
+            var entity = uow.RoleRepository.Add(new RoleEntity { Id = Guid.NewGuid(), Name = "TestRole" });
             entity.Name = "TestRole2";
 
             uow.RoleRepository.Update(entity);
@@ -54,7 +54,7 @@ namespace FluiTec.AppFx.Identity.TestLibrary
             AssertDbAvailable();
 
             using var uow = DataService.BeginUnitOfWork();
-            var entity = uow.RoleRepository.Add(new RoleEntity { Name = "TestRole" });
+            var entity = uow.RoleRepository.Add(new RoleEntity { Id = Guid.NewGuid(), Name = "TestRole" });
             entity.Name = "Test2";
 
             uow.RoleRepository.Delete(entity);
