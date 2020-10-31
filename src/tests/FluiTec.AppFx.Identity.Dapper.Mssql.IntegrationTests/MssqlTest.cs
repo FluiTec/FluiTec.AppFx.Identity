@@ -34,7 +34,7 @@ namespace FluiTec.AppFx.Identity.Dapper.Mssql.IntegrationTests
         {
             AssertDbAvailable();
 
-            var migrator = new DapperDataMigrator(ServiceOptions.ConnectionString, new[] { DataService.GetType().Assembly }, ((IDapperDataService)DataService).MetaData,
+            var migrator = new DapperDataMigrator(ServiceOptions.ConnectionString, new[] { typeof(DapperIdentityDataService).Assembly }, ((IDapperDataService)DataService).MetaData,
                 builder => builder.AddSqlServer());
             migrator.Migrate();
         }

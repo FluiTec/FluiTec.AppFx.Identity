@@ -15,6 +15,7 @@ namespace FluiTec.AppFx.Identity.TestLibrary
 
             using var uow = DataService.BeginUnitOfWork();
             var entity = uow.RoleRepository.Add(new RoleEntity {Name = "TestRole"});
+            Console.WriteLine($"RoleId: {entity.Id}");
             Assert.IsTrue(entity.Id != Guid.Empty);
         }
 
