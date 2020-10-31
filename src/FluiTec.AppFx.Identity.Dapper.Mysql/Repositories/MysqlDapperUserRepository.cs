@@ -30,13 +30,13 @@ namespace FluiTec.AppFx.Identity.Dapper.Mysql.Repositories
         {
             var command = @"SELECT uclaim.Type, uclaim.Value
                             FROM AppFxIdentity_UserClaim AS uclaim
-                            WHERE uclaim.UserId = '6187929c-d82a-43b0-a850-f26557a43f8e'
+                            WHERE uclaim.UserId = @UserId
                             UNION
                             SELECT roleClaim.Type, roleClaim.Value
                             FROM AppFxIdentity_UserRole AS userRole
                             INNER JOIN AppFxIdentity_RoleClaim AS roleClaim
                             ON userRole.RoleId = roleClaim.RoleId
-                            WHERE userRole.UserId = '6187929c-d82a-43b0-a850-f26557a43f8e'";
+                            WHERE userRole.UserId = @UserId";
             return UnitOfWork.Connection.Query<ClaimEntity>(command, new {UserId = user.Id}, UnitOfWork.Transaction);
         }
     }

@@ -29,13 +29,13 @@ namespace FluiTec.AppFx.Identity.Dapper.Pgsql.Repositories
         {
             var command = @"SELECT ""uclaim"".""Type"", ""uclaim"".""Value""
                             FROM ""AppFxIdentity"".""UserClaim"" AS uclaim
-                            WHERE ""uclaim"".""UserId"" = '54108773-bf98-4b4e-b3dc-b0256a90ae0b'
+                            WHERE ""uclaim"".""UserId"" = @UserId
                             UNION
                             SELECT roleClaim.""Type"", roleClaim.""Value""
                             FROM ""AppFxIdentity"".""UserRole"" AS userRole
                             INNER JOIN ""AppFxIdentity"".""RoleClaim"" AS roleClaim
                             ON userRole.""RoleId"" = roleClaim.""RoleId""
-                            WHERE userRole.""UserId"" = '54108773-bf98-4b4e-b3dc-b0256a90ae0b'";
+                            WHERE userRole.""UserId"" = @UserId";
             return UnitOfWork.Connection.Query<ClaimEntity>(command, new {UserId = user.Id}, UnitOfWork.Transaction);
         }
     }

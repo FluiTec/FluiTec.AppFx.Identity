@@ -74,7 +74,7 @@ namespace FluiTec.AppFx.Identity.Dapper.Repositories
             var sql = SqlBuilder.Adapter;
 
             var command =
-                $"SELECT {SqlBuilder.Adapter.RenderPropertyList(SqlCache.TypePropertiesChache(typeof(UserEntity)).ToArray())} FROM {sql.RenderTableName(EntityType)} " +
+                $"SELECT {SqlBuilder.Adapter.RenderPropertyList(EntityType, SqlCache.TypePropertiesChache(typeof(UserEntity)).ToArray())} FROM {sql.RenderTableName(EntityType)} " +
                 $"INNER JOIN {sql.RenderTableName(typeof(UserLoginEntity))} ON " +
                 $"{sql.RenderTableName(EntityType)}.{sql.RenderPropertyName(nameof(UserEntity.Id))} = {sql.RenderTableName(typeof(UserLoginEntity))}.{sql.RenderPropertyName(nameof(UserLoginEntity.UserId))} " +
                 $"WHERE {sql.RenderTableName(typeof(UserLoginEntity))}.{sql.RenderPropertyName(nameof(UserLoginEntity.ProviderName))} = @ProviderName " +

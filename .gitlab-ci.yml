@@ -2,25 +2,49 @@ image: mcr.microsoft.com/dotnet/core/sdk:3.1
 
 stages:
     - build
-    - test
+    - unittest
+    - integrationtest
+
+services:
+    - postgres:latest                       #Hostname: postgres
+    - microsoft/mssql-server-linux:latest   #Hostname: microsoft-mssql-server-linux
+    - mysql:latest                          #Hostname: mysql
 
 variables:
     srcDir: "src"
     projectName: "FluiTec.AppFx.Identity"
+    testfilter: "FullyQualifiedName~FluiTec.AppFx.Identity&FullyQualifiedName~.Tests"
+    integrationfilter: "FullyQualifiedName~FluiTec.AppFx.Identity&FullyQualifiedName~.IntegrationTests"
     GIT_SUBMODULE_STRATEGY: recursive
+    # PGSQL-Service
+    POSTGRES_DB: appfxdata
+    POSTGRES_USER: appfx
+    POSTGRES_PASSWORD: ""
+    POSTGRES_HOST_AUTH_METHOD: trust
+    # MSSQL-Service
+    ACCEPT_EULA: Y
+    SA_PASSWORD: "[[e(/?5$UcaWF[(X"
+    # MYSQL-Service
+    MYSQL_DATABASE: appfxdata
+    MYSQL_ROOT_PASSWORD: "[[e(/?5$UcaWF[(X"
     
 before_script:
     - git submodule sync --recursive
     - git submodule update --init --recursive
-    - "cd $srcDir"
-    - "dotnet restore"
+    - cd $srcDir
+    - dotnet restore --verbosity minimal
 
 build:
     stage: build
     script:
         - "dotnet build --no-restore"
         
-test:
-    stage: test
+unittest:
+    stage: unittest
     script:
-        - "dotnet test --no-restore --filter $projectName"
+        - dotnet test --no-restore --verbosity minimal --filter $testfilter
+
+integrationtest:
+    stage: integrationtest
+    script:
+        - dotnet test --no-restore --verbosity minimal --filter $integrationfilter
