@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace FluiTec.AppFx.Identity.TestLibrary
 {
     /// <summary>   A database test.</summary>
-    public abstract class DbTest
+    public abstract partial class DbTest
     {
         #region Fields
 
@@ -67,7 +67,7 @@ namespace FluiTec.AppFx.Identity.TestLibrary
 
             using var uow = DataService.BeginUnitOfWork();
         }
-
+        
         #endregion
     }
 }
