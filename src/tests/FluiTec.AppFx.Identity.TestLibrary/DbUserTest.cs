@@ -58,8 +58,8 @@ namespace FluiTec.AppFx.Identity.TestLibrary
                 SecurityStamp = "<>",
                 TwoFactorEnabled = false
             });
-            var dbEntity = uow.UserRepository.Get(entity.Id);
 
+            var dbEntity = uow.UserRepository.Get(entity.Id);
             Assert.AreEqual(entity.Name, dbEntity.Name);
         }
 
@@ -122,9 +122,7 @@ namespace FluiTec.AppFx.Identity.TestLibrary
             entity.Name = "Test2";
 
             uow.UserRepository.Delete(entity);
-
             var dbEntity = uow.UserRepository.Get(entity.Id);
-
             Assert.IsNull(dbEntity);
         }
     }

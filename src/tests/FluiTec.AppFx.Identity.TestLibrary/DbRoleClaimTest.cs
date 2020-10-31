@@ -82,9 +82,7 @@ namespace FluiTec.AppFx.Identity.TestLibrary
             });
 
             uow.RoleClaimRepository.Delete(roleClaim);
-
             var dbEntity = uow.RoleClaimRepository.Get(roleClaim.Id);
-
             Assert.IsNull(dbEntity);
         }
     }

@@ -7,13 +7,14 @@ namespace FluiTec.AppFx.Identity.TestLibrary
     /// <summary>   A database test.</summary>
     public abstract partial class DbTest
     {
-        /// <summary>   (Unit Test Method) can create User claim.</summary>
+        /// <summary>   (Unit Test Method) can create user role.</summary>
         [TestMethod]
-        public void CanCreateUserClaim()
+        public void CanCreateUserRole()
         {
             AssertDbAvailable();
 
             using var uow = DataService.BeginUnitOfWork();
+            var role = uow.RoleRepository.Add(new RoleEntity { Id = Guid.NewGuid(), Name = "TestRole" });
             var user = uow.UserRepository.Add(new UserEntity
             {
                 Id = Guid.NewGuid(),
@@ -31,23 +32,19 @@ namespace FluiTec.AppFx.Identity.TestLibrary
                 SecurityStamp = "<>",
                 TwoFactorEnabled = false
             });
-            var userClaim = uow.UserClaimRepository.Add(new UserClaimEntity
-            {
-                UserId = user.Id, 
-                Type = "tUserClaim", 
-                Value = "vUserClaim"
-            });
+            var userRole = uow.UserRoleRepository.Add(new UserRoleEntity {RoleId = role.Id, UserId = user.Id});
 
-            Assert.IsTrue(userClaim.Id > -1);
+            Assert.IsTrue(userRole.Id > -1);
         }
 
-        /// <summary>   (Unit Test Method) can read User claim.</summary>
+        /// <summary>   (Unit Test Method) can read user role.</summary>
         [TestMethod]
-        public void CanReadUserClaim()
+        public void CanReadUserRole()
         {
             AssertDbAvailable();
 
             using var uow = DataService.BeginUnitOfWork();
+            var role = uow.RoleRepository.Add(new RoleEntity { Id = Guid.NewGuid(), Name = "TestRole" });
             var user = uow.UserRepository.Add(new UserEntity
             {
                 Id = Guid.NewGuid(),
@@ -65,24 +62,20 @@ namespace FluiTec.AppFx.Identity.TestLibrary
                 SecurityStamp = "<>",
                 TwoFactorEnabled = false
             });
-            var userClaim = uow.UserClaimRepository.Add(new UserClaimEntity
-            {
-                UserId = user.Id,
-                Type = "tUserClaim",
-                Value = "vUserClaim"
-            });
+            var userRole = uow.UserRoleRepository.Add(new UserRoleEntity { RoleId = role.Id, UserId = user.Id });
 
-            var dbEntity = uow.UserClaimRepository.Get(userClaim.Id);
-            Assert.AreEqual(userClaim.UserId, dbEntity.UserId);
+            var dbEntity = uow.UserRoleRepository.Get(userRole.Id);
+            Assert.AreEqual(userRole.UserId, dbEntity.UserId);
         }
 
-        /// <summary>   (Unit Test Method) can update User claim.</summary>
+        /// <summary>   (Unit Test Method) can delete user role.</summary>
         [TestMethod]
-        public void CanUpdateUserClaim()
+        public void CanDeleteUserRole()
         {
             AssertDbAvailable();
 
             using var uow = DataService.BeginUnitOfWork();
+            var role = uow.RoleRepository.Add(new RoleEntity { Id = Guid.NewGuid(), Name = "TestRole" });
             var user = uow.UserRepository.Add(new UserEntity
             {
                 Id = Guid.NewGuid(),
@@ -100,53 +93,10 @@ namespace FluiTec.AppFx.Identity.TestLibrary
                 SecurityStamp = "<>",
                 TwoFactorEnabled = false
             });
-            var userClaim = uow.UserClaimRepository.Add(new UserClaimEntity
-            {
-                UserId = user.Id,
-                Type = "tUserClaim",
-                Value = "vUserClaim"
-            });
+            var userRole = uow.UserRoleRepository.Add(new UserRoleEntity { RoleId = role.Id, UserId = user.Id });
 
-            userClaim.Value = "vUserClaim2";
-            uow.UserClaimRepository.Update(userClaim);
-
-            var dbEntity = uow.UserClaimRepository.Get(userClaim.Id);
-            Assert.AreEqual(userClaim.Value, dbEntity.Value);
-        }
-
-        /// <summary>   (Unit Test Method) can delete User claim.</summary>
-        [TestMethod]
-        public void CanDeleteUserClaim()
-        {
-            AssertDbAvailable();
-
-            using var uow = DataService.BeginUnitOfWork();
-            var user = uow.UserRepository.Add(new UserEntity
-            {
-                Id = Guid.NewGuid(),
-                Name = "m.mustermann@musterfirma.de",
-                Email = "m.mustermann@musterfirma.de",
-                EmailConfirmed = false,
-                FullName = "Max Mustermann",
-                AccessFailedCount = 0,
-                LockedOutPermanently = false,
-                LockedOutTill = null,
-                LockoutEnabled = false,
-                PasswordHash = "<>",
-                Phone = "<>",
-                PhoneConfirmed = false,
-                SecurityStamp = "<>",
-                TwoFactorEnabled = false
-            });
-            var userClaim = uow.UserClaimRepository.Add(new UserClaimEntity
-            {
-                UserId = user.Id,
-                Type = "tUserClaim",
-                Value = "vUserClaim"
-            });
-
-            uow.UserClaimRepository.Delete(userClaim);
-            var dbEntity = uow.UserClaimRepository.Get(userClaim.Id);
+            uow.UserRoleRepository.Delete(userRole);
+            var dbEntity = uow.UserRoleRepository.Get(userRole.Id);
             Assert.IsNull(dbEntity);
         }
     }

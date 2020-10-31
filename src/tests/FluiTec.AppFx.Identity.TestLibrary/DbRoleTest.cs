@@ -58,9 +58,7 @@ namespace FluiTec.AppFx.Identity.TestLibrary
             entity.Name = "Test2";
 
             uow.RoleRepository.Delete(entity);
-
             var dbEntity = uow.RoleRepository.Get(entity.Id);
-
             Assert.IsNull(dbEntity);
         }
     }
