@@ -27,21 +27,94 @@ namespace FluiTec.AppFx.Identity.TestLibrary
         [TestMethod]
         public void CanReadUser()
         {
+            AssertDbAvailable();
 
+            using var uow = DataService.BeginUnitOfWork();
+            var entity = uow.UserRepository.Add(new UserEntity
+            {
+                Id = Guid.NewGuid(),
+                Name = "m.mustermann@musterfirma.de",
+                Email = "m.mustermann@musterfirma.de",
+                EmailConfirmed = false,
+                FullName = "Max Mustermann",
+                AccessFailedCount = 0,
+                LockedOutPermanently = false,
+                LockedOutTill = null,
+                LockoutEnabled = false,
+                PasswordHash = "<>",
+                Phone = "<>",
+                PhoneConfirmed = false,
+                SecurityStamp = "<>",
+                TwoFactorEnabled = false
+            });
+            var dbEntity = uow.UserRepository.Get(entity.Id);
+
+            Assert.AreEqual(entity.Name, dbEntity.Name);
         }
 
         /// <summary>   (Unit Test Method) can update user.</summary>
         [TestMethod]
         public void CanUpdateUser()
         {
+            AssertDbAvailable();
 
+            using var uow = DataService.BeginUnitOfWork();
+            var entity = uow.UserRepository.Add(new UserEntity
+            {
+                Id = Guid.NewGuid(),
+                Name = "m.mustermann@musterfirma.de",
+                Email = "m.mustermann@musterfirma.de",
+                EmailConfirmed = false,
+                FullName = "Max Mustermann",
+                AccessFailedCount = 0,
+                LockedOutPermanently = false,
+                LockedOutTill = null,
+                LockoutEnabled = false,
+                PasswordHash = "<>",
+                Phone = "<>",
+                PhoneConfirmed = false,
+                SecurityStamp = "<>",
+                TwoFactorEnabled = false
+            });
+            entity.Name = "m.mustermann@musterfirma.de2";
+
+            uow.UserRepository.Update(entity);
+
+            var dbEntity = uow.UserRepository.Get(entity.Id);
+            Assert.AreEqual(entity.Name, dbEntity.Name);
         }
 
         /// <summary>   (Unit Test Method) can delete user.</summary>
         [TestMethod]
         public void CanDeleteUser()
         {
+            AssertDbAvailable();
 
+            using var uow = DataService.BeginUnitOfWork();
+            var entity = uow.UserRepository.Add(new UserEntity
+            {
+                Id = Guid.NewGuid(),
+                Name = "m.mustermann@musterfirma.de",
+                Email = "m.mustermann@musterfirma.de",
+                EmailConfirmed = false,
+                FullName = "Max Mustermann",
+                AccessFailedCount = 0,
+                LockedOutPermanently = false,
+                LockedOutTill = null,
+                LockoutEnabled = false,
+                PasswordHash = "<>",
+                Phone = "<>",
+                PhoneConfirmed = false,
+                SecurityStamp = "<>",
+                TwoFactorEnabled = false
+            });
+            entity.Name = "Test2";
+
+            uow.UserRepository.Delete(entity);
+
+            var dbEntity = uow.UserRepository.Get(entity.Id);
+
+            Assert.IsNull(dbEntity);
         }
     }
 }
