@@ -76,6 +76,27 @@ namespace FluiTec.AppFx.Identity.TestLibrary
             Assert.AreEqual(userClaim.UserId, dbEntity.UserId);
         }
 
+        /// <summary>   (Unit Test Method) can get by user.</summary>
+        [TestMethod]
+        public void CanGetByUser()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>   Can get user identifiers for claim type.</summary>
+        [TestMethod]
+        public void CanGetUserIdsForClaimType()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>   (Unit Test Method) can get by user and type.</summary>
+        [TestMethod]
+        public void CanGetByUserAndType()
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>   (Unit Test Method) can update User claim.</summary>
         [TestMethod]
         public void CanUpdateUserClaim()

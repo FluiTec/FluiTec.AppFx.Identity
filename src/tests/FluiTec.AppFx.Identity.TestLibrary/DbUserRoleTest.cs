@@ -68,6 +68,41 @@ namespace FluiTec.AppFx.Identity.TestLibrary
             Assert.AreEqual(userRole.UserId, dbEntity.UserId);
         }
 
+        /// <summary>   (Unit Test Method) can find by user identifier and role identifier.</summary>
+        [TestMethod]
+        public void CanFindByUserIdAndRoleId()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>   (Unit Test Method) can find by user.</summary>
+        [TestMethod]
+        public void CanFindByUser()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>   (Unit Test Method) can find by role.</summary>
+        [TestMethod]
+        public void CanFindByRole()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>   (Unit Test Method) can remove by user.</summary>
+        [TestMethod]
+        public void CanRemoveByUser()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>   (Unit Test Method) can remove by role.</summary>
+        [TestMethod]
+        public void CanRemoveByRole()
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>   (Unit Test Method) can delete user role.</summary>
         [TestMethod]
         public void CanDeleteUserRole()

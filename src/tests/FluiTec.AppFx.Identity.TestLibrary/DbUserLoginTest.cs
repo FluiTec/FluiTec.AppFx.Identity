@@ -66,6 +66,27 @@ namespace FluiTec.AppFx.Identity.TestLibrary
             Assert.AreEqual(userLogin.UserId, dbEntity.UserId);
         }
 
+        /// <summary>   (Unit Test Method) can remove by name and key.</summary>
+        [TestMethod]
+        public void CanRemoveByNameAndKey()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>   (Unit Test Method) can find by user identifier.</summary>
+        [TestMethod]
+        public void CanFindByUserId()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>   (Unit Test Method) can find by name and key.</summary>
+        [TestMethod]
+        public void CanFindByNameAndKey()
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>   (Unit Test Method) can update user login.</summary>
         [TestMethod]
         public void CanUpdateUserLogin()

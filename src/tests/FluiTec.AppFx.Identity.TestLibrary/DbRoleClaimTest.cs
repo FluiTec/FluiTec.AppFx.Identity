@@ -44,6 +44,34 @@ namespace FluiTec.AppFx.Identity.TestLibrary
             Assert.AreEqual(roleClaim.RoleId, dbEntity.RoleId);
         }
 
+        /// <summary>   (Unit Test Method) can get by role.</summary>
+        [TestMethod]
+        public void CanGetByRole()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>   (Unit Test Method) can get role identifiers for claim type.</summary>
+        [TestMethod]
+        public void CanGetRoleIdsForClaimType()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>   (Unit Test Method) can get by role and type.</summary>
+        [TestMethod]
+        public void CanGetByRoleAndType()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>   (Unit Test Method) can get users for claim type.</summary>
+        [TestMethod]
+        public void CanGetUsersForClaimType()
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>   (Unit Test Method) can update role claim.</summary>
         [TestMethod]
         public void CanUpdateRoleClaim()

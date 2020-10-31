@@ -79,6 +79,9 @@ namespace FluiTec.AppFx.Identity.Dapper.Repositories
                 $"{sql.RenderTableName(EntityType)}.{sql.RenderPropertyName(nameof(UserEntity.Id))} = {sql.RenderTableName(typeof(UserLoginEntity))}.{sql.RenderPropertyName(nameof(UserLoginEntity.UserId))} " +
                 $"WHERE {sql.RenderTableName(typeof(UserLoginEntity))}.{sql.RenderPropertyName(nameof(UserLoginEntity.ProviderName))} = @ProviderName " +
                 $"AND {sql.RenderTableName(typeof(UserLoginEntity))}.{sql.RenderPropertyName(nameof(UserLoginEntity.ProviderKey))} = @ProviderKey";
+            Console.WriteLine(":::AUDIT:::");
+            Console.WriteLine(command);
+            Console.WriteLine(":::AUDIT:::");
             return UnitOfWork.Connection.QuerySingleOrDefault<UserEntity>(command,
                 new { ProviderName = providerName, ProviderKey = providerKey },
                 UnitOfWork.Transaction);
