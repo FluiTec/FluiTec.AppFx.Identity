@@ -39,8 +39,8 @@ namespace FluiTec.AppFx.Identity.TestLibrary
 
             using var uow = DataService.BeginUnitOfWork();
             var entity = uow.RoleRepository.Add(new RoleEntity { Id = Guid.NewGuid(), Name = "TestRole" });
-            entity.Name = "TestRole2";
 
+            entity.Name = "TestRole2";
             uow.RoleRepository.Update(entity);
 
             var dbEntity = uow.RoleRepository.Get(entity.Id);

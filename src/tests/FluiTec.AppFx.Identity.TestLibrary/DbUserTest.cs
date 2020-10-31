@@ -11,13 +11,24 @@ namespace FluiTec.AppFx.Identity.TestLibrary
         [TestMethod]
         public void CanCreateUser()
         {
+            AssertDbAvailable();
+            
             using var uow = DataService.BeginUnitOfWork();
             var entity = uow.UserRepository.Add(new UserEntity
             {
                 Id = Guid.NewGuid(),
-                Name = "m.mustermann@musterfirma.de", Email = "m.mustermann@musterfirma.de", EmailConfirmed = false,
-                FullName = "Max Mustermann", AccessFailedCount = 0, LockedOutPermanently = false, LockedOutTill = null,
-                LockoutEnabled = false, PasswordHash = "<>", Phone = "<>", PhoneConfirmed = false, SecurityStamp = "<>",
+                Name = "m.mustermann@musterfirma.de",
+                Email = "m.mustermann@musterfirma.de",
+                EmailConfirmed = false,
+                FullName = "Max Mustermann",
+                AccessFailedCount = 0,
+                LockedOutPermanently = false,
+                LockedOutTill = null,
+                LockoutEnabled = false,
+                PasswordHash = "<>",
+                Phone = "<>",
+                PhoneConfirmed = false,
+                SecurityStamp = "<>",
                 TwoFactorEnabled = false
             });
             Assert.IsTrue(entity.Id != Guid.Empty);
@@ -76,8 +87,8 @@ namespace FluiTec.AppFx.Identity.TestLibrary
                 SecurityStamp = "<>",
                 TwoFactorEnabled = false
             });
-            entity.Name = "m.mustermann@musterfirma.de2";
 
+            entity.Name = "m.mustermann@musterfirma.de2";
             uow.UserRepository.Update(entity);
 
             var dbEntity = uow.UserRepository.Get(entity.Id);
