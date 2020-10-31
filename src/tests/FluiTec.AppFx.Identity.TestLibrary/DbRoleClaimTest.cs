@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using FluiTec.AppFx.Identity.Data.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -48,28 +49,94 @@ namespace FluiTec.AppFx.Identity.TestLibrary
         [TestMethod]
         public void CanGetByRole()
         {
-            throw new NotImplementedException();
+            AssertDbAvailable();
+
+            using var uow = DataService.BeginUnitOfWork();
+            var role = uow.RoleRepository.Add(new RoleEntity { Id = Guid.NewGuid(), Name = "TestRole" });
+            var roleClaim = uow.RoleClaimRepository.Add(new RoleClaimEntity
+            {
+                RoleId = role.Id,
+                Type = "tRoleClaim",
+                Value = "vRoleClaim"
+            });
+
+            var roleClaims = uow.RoleClaimRepository.GetByRole(role);
+            Assert.IsTrue(roleClaims.Any(rc => rc.RoleId == role.Id));
         }
 
         /// <summary>   (Unit Test Method) can get role identifiers for claim type.</summary>
         [TestMethod]
         public void CanGetRoleIdsForClaimType()
         {
-            throw new NotImplementedException();
+            AssertDbAvailable();
+
+            using var uow = DataService.BeginUnitOfWork();
+            var role = uow.RoleRepository.Add(new RoleEntity { Id = Guid.NewGuid(), Name = "TestRole" });
+            var roleClaim = uow.RoleClaimRepository.Add(new RoleClaimEntity
+            {
+                RoleId = role.Id,
+                Type = "tRoleClaim",
+                Value = "vRoleClaim"
+            });
+
+            var roleIds = uow.RoleClaimRepository.GetRoleIdsForClaimType(roleClaim.Type);
+            Assert.IsTrue(roleIds.Any(rId => rId == role.Id));
         }
 
         /// <summary>   (Unit Test Method) can get by role and type.</summary>
         [TestMethod]
         public void CanGetByRoleAndType()
         {
-            throw new NotImplementedException();
+            AssertDbAvailable();
+
+            using var uow = DataService.BeginUnitOfWork();
+            var role = uow.RoleRepository.Add(new RoleEntity { Id = Guid.NewGuid(), Name = "TestRole" });
+            var roleClaim = uow.RoleClaimRepository.Add(new RoleClaimEntity
+            {
+                RoleId = role.Id,
+                Type = "tRoleClaim",
+                Value = "vRoleClaim"
+            });
+
+            var dbEntity = uow.RoleClaimRepository.GetByRoleAndType(role, roleClaim.Type);
+            Assert.AreEqual(roleClaim.Value, dbEntity.Value);
         }
 
         /// <summary>   (Unit Test Method) can get users for claim type.</summary>
         [TestMethod]
         public void CanGetUsersForClaimType()
         {
-            throw new NotImplementedException();
+            AssertDbAvailable();
+
+            using var uow = DataService.BeginUnitOfWork();
+            var role = uow.RoleRepository.Add(new RoleEntity { Id = Guid.NewGuid(), Name = "TestRole" });
+            var roleClaim = uow.RoleClaimRepository.Add(new RoleClaimEntity
+            {
+                RoleId = role.Id,
+                Type = "tRoleClaim",
+                Value = "vRoleClaim"
+            });
+            var user = uow.UserRepository.Add(new UserEntity
+            {
+                Id = Guid.NewGuid(),
+                Name = "m.mustermann@musterfirma.de",
+                Email = "m.mustermann@musterfirma.de",
+                EmailConfirmed = false,
+                FullName = "Max Mustermann",
+                AccessFailedCount = 0,
+                LockedOutPermanently = false,
+                LockedOutTill = null,
+                LockoutEnabled = false,
+                PasswordHash = "<>",
+                Phone = "<>",
+                PhoneConfirmed = false,
+                SecurityStamp = "<>",
+                TwoFactorEnabled = false
+            });
+            var userRole = uow.UserRoleRepository.Add(new UserRoleEntity {RoleId = role.Id, UserId = user.Id});
+
+            var users = uow.RoleClaimRepository.GetUsersForClaimType(roleClaim.Type);
+            Assert.IsTrue(users.Any(u => u.Id == user.Id));
         }
 
         /// <summary>   (Unit Test Method) can update role claim.</summary>

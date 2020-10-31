@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using FluiTec.AppFx.Identity.Data.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -70,21 +71,90 @@ namespace FluiTec.AppFx.Identity.TestLibrary
         [TestMethod]
         public void CanRemoveByNameAndKey()
         {
-            throw new NotImplementedException();
+            AssertDbAvailable();
+
+            using var uow = DataService.BeginUnitOfWork();
+            var user = uow.UserRepository.Add(new UserEntity
+            {
+                Id = Guid.NewGuid(),
+                Name = "m.mustermann@musterfirma.de",
+                Email = "m.mustermann@musterfirma.de",
+                EmailConfirmed = false,
+                FullName = "Max Mustermann",
+                AccessFailedCount = 0,
+                LockedOutPermanently = false,
+                LockedOutTill = null,
+                LockoutEnabled = false,
+                PasswordHash = "<>",
+                Phone = "<>",
+                PhoneConfirmed = false,
+                SecurityStamp = "<>",
+                TwoFactorEnabled = false
+            });
+            var userLogin = uow.LoginRepository.Add(new UserLoginEntity { UserId = user.Id, ProviderKey = "Auth", ProviderDisplayName = "Auth", ProviderName = "Auth" });
+
+            uow.LoginRepository.RemoveByNameAndKey("Auth", "Auth");
+            Assert.IsNull(uow.LoginRepository.FindByNameAndKey("Auth", "Auth"));
         }
 
         /// <summary>   (Unit Test Method) can find by user identifier.</summary>
         [TestMethod]
         public void CanFindByUserId()
         {
-            throw new NotImplementedException();
+            AssertDbAvailable();
+
+            using var uow = DataService.BeginUnitOfWork();
+            var user = uow.UserRepository.Add(new UserEntity
+            {
+                Id = Guid.NewGuid(),
+                Name = "m.mustermann@musterfirma.de",
+                Email = "m.mustermann@musterfirma.de",
+                EmailConfirmed = false,
+                FullName = "Max Mustermann",
+                AccessFailedCount = 0,
+                LockedOutPermanently = false,
+                LockedOutTill = null,
+                LockoutEnabled = false,
+                PasswordHash = "<>",
+                Phone = "<>",
+                PhoneConfirmed = false,
+                SecurityStamp = "<>",
+                TwoFactorEnabled = false
+            });
+            var userLogin = uow.LoginRepository.Add(new UserLoginEntity { UserId = user.Id, ProviderKey = "Auth", ProviderDisplayName = "Auth", ProviderName = "Auth" });
+
+            var dbEntity = uow.LoginRepository.FindByUserId(user.Id).Single();
+            Assert.AreEqual(userLogin.Id, dbEntity.Id);
         }
 
         /// <summary>   (Unit Test Method) can find by name and key.</summary>
         [TestMethod]
         public void CanFindByNameAndKey()
         {
-            throw new NotImplementedException();
+            AssertDbAvailable();
+
+            using var uow = DataService.BeginUnitOfWork();
+            var user = uow.UserRepository.Add(new UserEntity
+            {
+                Id = Guid.NewGuid(),
+                Name = "m.mustermann@musterfirma.de",
+                Email = "m.mustermann@musterfirma.de",
+                EmailConfirmed = false,
+                FullName = "Max Mustermann",
+                AccessFailedCount = 0,
+                LockedOutPermanently = false,
+                LockedOutTill = null,
+                LockoutEnabled = false,
+                PasswordHash = "<>",
+                Phone = "<>",
+                PhoneConfirmed = false,
+                SecurityStamp = "<>",
+                TwoFactorEnabled = false
+            });
+            var userLogin = uow.LoginRepository.Add(new UserLoginEntity { UserId = user.Id, ProviderKey = "Auth", ProviderDisplayName = "Auth", ProviderName = "Auth" });
+
+            var dbEntity = uow.LoginRepository.FindByNameAndKey("Auth", "Auth");
+            Assert.AreEqual(userLogin.Id, dbEntity.Id);
         }
 
         /// <summary>   (Unit Test Method) can update user login.</summary>

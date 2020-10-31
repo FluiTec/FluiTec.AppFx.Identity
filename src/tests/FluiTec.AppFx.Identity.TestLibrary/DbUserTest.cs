@@ -238,6 +238,7 @@ namespace FluiTec.AppFx.Identity.TestLibrary
                 SecurityStamp = "<>",
                 TwoFactorEnabled = false
             });
+            var userRole = uow.UserRoleRepository.Add(new UserRoleEntity {RoleId = role.Id, UserId = user.Id});
             var userClaim = uow.UserClaimRepository.Add(new UserClaimEntity
             {
                 UserId = user.Id,

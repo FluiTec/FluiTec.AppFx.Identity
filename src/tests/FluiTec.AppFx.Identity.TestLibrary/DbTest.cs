@@ -53,12 +53,6 @@ namespace FluiTec.AppFx.Identity.TestLibrary
 
         #region TestMethods
 
-        /// <summary>   Can check apply migrations.</summary>
-        /// <remarks>   You need to add [TestMethod] and [TestInitialize] when inheriting!</remarks>
-        [TestMethod]
-        [TestInitialize]
-        public abstract void CanCheckApplyMigrations();
-
         /// <summary>   (Unit Test Method) can create unit of work.</summary>
         [TestMethod]
         public void CanCreateUnitOfWork()

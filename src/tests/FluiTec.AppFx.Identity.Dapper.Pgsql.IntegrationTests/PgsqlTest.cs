@@ -1,9 +1,14 @@
 ﻿using System;
+using System.IO;
 using FluentMigrator.Runner;
 using FluiTec.AppFx.Data.Dapper.DataServices;
 using FluiTec.AppFx.Data.Dapper.Migration;
+using FluiTec.AppFx.Data.Dapper.Mysql;
 using FluiTec.AppFx.Data.Dapper.Pgsql;
+using FluiTec.AppFx.Identity.Dapper.Mysql;
 using FluiTec.AppFx.Identity.TestLibrary;
+using FluiTec.AppFx.Options.Helpers;
+using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace FluiTec.AppFx.Identity.Dapper.Pgsql.IntegrationTests
@@ -19,25 +24,41 @@ namespace FluiTec.AppFx.Identity.Dapper.Pgsql.IntegrationTests
             var db = Environment.GetEnvironmentVariable("POSTGRES_DB");
             var usr = Environment.GetEnvironmentVariable("POSTGRES_USER");
 
-            if (string.IsNullOrWhiteSpace(db) || string.IsNullOrWhiteSpace(usr)) return;
-
-            ServiceOptions = new PgsqlDapperServiceOptions
+            if (!string.IsNullOrWhiteSpace(db) && !string.IsNullOrWhiteSpace(usr))
             {
-                ConnectionString = $"User ID={usr};Host=postgres;Database={db};Pooling=true;"
-            };
+                ServiceOptions = new PgsqlDapperServiceOptions
+                {
+                    ConnectionString = $"User ID={usr};Host=postgres;Database={db};Pooling=true;"
+                };
 
-            DataService = new PgsqlIdentityDataService(ServiceOptions, null);
-        }
+                DataService = new PgsqlIdentityDataService(ServiceOptions, null);
+            }
+            else
+            {
+                try
+                {
+                    var path = DirectoryHelper.GetApplicationRoot();
+                    var parent = Directory.GetParent(path).Parent?.Parent?.FullName;
+                    var config = new ConfigurationBuilder()
+                        .SetBasePath(parent)
+                        .AddJsonFile("appsettings.integration.json", false, true)
+                        .AddJsonFile("appsettings.integration.secret.json", true, true)
+                        .Build();
 
-        /// <summary>   (Unit Test Method) can check apply migrations.</summary>
-        [TestInitialize]
-        public override void CanCheckApplyMigrations()
-        {
-            AssertDbAvailable();
+                    var manager = new Options.Managers.ConfigurationManager(config);
+                    var pgsqlOptions = manager.ExtractSettings<PgsqlDapperServiceOptions>();
 
-            var migrator = new DapperDataMigrator(ServiceOptions.ConnectionString, new[] { typeof(DapperIdentityDataService).Assembly }, ((IDapperDataService)DataService).MetaData,
-                builder => builder.AddPostgres());
-            migrator.Migrate();
+                    ServiceOptions = new PgsqlDapperServiceOptions
+                    {
+                        ConnectionString = pgsqlOptions.ConnectionString
+                    };
+                    DataService = new PgsqlIdentityDataService(ServiceOptions, null);
+                }
+                catch (Exception)
+                {
+                    // ignore
+                }
+            }
         }
     }
 }

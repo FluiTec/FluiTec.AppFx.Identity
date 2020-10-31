@@ -1,9 +1,9 @@
 ﻿using System;
-using FluentMigrator.Runner;
-using FluiTec.AppFx.Data.Dapper.DataServices;
-using FluiTec.AppFx.Data.Dapper.Migration;
+using System.IO;
 using FluiTec.AppFx.Data.Dapper.Mssql;
 using FluiTec.AppFx.Identity.TestLibrary;
+using FluiTec.AppFx.Options.Helpers;
+using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace FluiTec.AppFx.Identity.Dapper.Mssql.IntegrationTests
@@ -18,25 +18,42 @@ namespace FluiTec.AppFx.Identity.Dapper.Mssql.IntegrationTests
         {
             var pw = Environment.GetEnvironmentVariable("SA_PASSWORD");
 
-            if (string.IsNullOrWhiteSpace(pw)) return;
-
-            ServiceOptions = new MssqlDapperServiceOptions
+            if (!string.IsNullOrWhiteSpace(pw))
             {
-                ConnectionString = $"Data Source=microsoft-mssql-server-linux;Initial Catalog=master;Integrated Security=False;User ID=sa;Password={pw};Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"
-            };
+                ServiceOptions = new MssqlDapperServiceOptions
+                {
+                    ConnectionString =
+                        $"Data Source=microsoft-mssql-server-linux;Initial Catalog=master;Integrated Security=False;User ID=sa;Password={pw};Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"
+                };
 
-            DataService = new MssqlIdentityDataService(ServiceOptions, null);
-        }
+                DataService = new MssqlIdentityDataService(ServiceOptions, null);
+            }
+            else
+            {
+                try
+                {
+                    var path = DirectoryHelper.GetApplicationRoot();
+                    var parent = Directory.GetParent(path).Parent?.Parent?.FullName;
+                    var config = new ConfigurationBuilder()
+                        .SetBasePath(parent)
+                        .AddJsonFile("appsettings.integration.json", false, true)
+                        .AddJsonFile("appsettings.integration.secret.json", true, true)
+                        .Build();
 
-        /// <summary>   (Unit Test Method) can check apply migrations.</summary>
-        [TestInitialize]
-        public override void CanCheckApplyMigrations()
-        {
-            AssertDbAvailable();
+                    var manager = new Options.Managers.ConfigurationManager(config);
+                    var mssqlOptions = manager.ExtractSettings<MssqlDapperServiceOptions>();
 
-            var migrator = new DapperDataMigrator(ServiceOptions.ConnectionString, new[] { typeof(DapperIdentityDataService).Assembly }, ((IDapperDataService)DataService).MetaData,
-                builder => builder.AddSqlServer());
-            migrator.Migrate();
+                    ServiceOptions = new MssqlDapperServiceOptions
+                    {
+                        ConnectionString = mssqlOptions.ConnectionString
+                    };
+                    DataService = new MssqlIdentityDataService(ServiceOptions, null);
+                }
+                catch (Exception)
+                {
+                    // ignore
+                }
+            }
         }
     }
 }

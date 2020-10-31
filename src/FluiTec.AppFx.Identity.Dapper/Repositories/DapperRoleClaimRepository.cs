@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Dapper;
 using FluiTec.AppFx.Data.Dapper.Repositories;
 using FluiTec.AppFx.Data.Dapper.UnitsOfWork;
 using FluiTec.AppFx.Data.Repositories;
+using FluiTec.AppFx.Data.Sql;
 using FluiTec.AppFx.Identity.Data.Entities;
 using FluiTec.AppFx.Identity.Data.Repositories;
 using Microsoft.Extensions.Logging;
@@ -68,7 +70,18 @@ namespace FluiTec.AppFx.Identity.Dapper.Repositories
         /// this collection.</returns>
         public IEnumerable<UserEntity> GetUsersForClaimType(string claimType)
         {
-            throw new NotImplementedException();
+            var sql = SqlBuilder.Adapter;
+
+            var command = $"SELECT {SqlBuilder.Adapter.RenderPropertyList(typeof(UserEntity), SqlCache.TypePropertiesChache(typeof(UserEntity)).ToArray())} " +
+                          $"FROM {sql.RenderTableName(typeof(UserEntity))} " +
+                          $"INNER JOIN {sql.RenderTableName(typeof(UserRoleEntity))} " +
+                          $"ON {sql.RenderTableName(typeof(UserRoleEntity))}.{sql.RenderPropertyName(nameof(UserRoleEntity.UserId))} = {sql.RenderTableName(typeof(UserEntity))}.{sql.RenderPropertyName(nameof(UserEntity.Id))} " +
+                          $"INNER JOIN {sql.RenderTableName(typeof(RoleClaimEntity))} " +
+                          $"ON {sql.RenderTableName(typeof(RoleClaimEntity))}.{sql.RenderPropertyName(nameof(RoleClaimEntity.RoleId))} = {sql.RenderTableName(typeof(UserRoleEntity))}.{sql.RenderPropertyName(nameof(UserRoleEntity.RoleId))} " +
+                          $"WHERE {sql.RenderTableName(typeof(RoleClaimEntity))}.{sql.RenderPropertyName(nameof(RoleClaimEntity.Type))} = @ClaimType";
+            return UnitOfWork.Connection.Query<UserEntity>(command,
+                new { ClaimType = claimType },
+                UnitOfWork.Transaction);
         }
 
         #endregion

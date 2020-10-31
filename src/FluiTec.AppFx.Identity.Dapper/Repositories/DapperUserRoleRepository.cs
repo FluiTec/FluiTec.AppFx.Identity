@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Dapper;
 using FluiTec.AppFx.Data.Dapper.Repositories;
 using FluiTec.AppFx.Data.Dapper.UnitsOfWork;
@@ -45,10 +46,10 @@ namespace FluiTec.AppFx.Identity.Dapper.Repositories
         {
             var cmdUserRoles = SqlBuilder.SelectByFilter(EntityType, 
                 new[] {nameof(UserRoleEntity.UserId)});
-            var roleIds = UnitOfWork.Connection.Query<Guid>(cmdUserRoles, 
+            var userRoles = UnitOfWork.Connection.Query<UserRoleEntity>(cmdUserRoles, 
                 new { UserId = user.Id}, UnitOfWork.Transaction);
 
-            return UnitOfWork.GetRepository<IRoleRepository>().FindByIds(roleIds);
+            return UnitOfWork.GetRepository<IRoleRepository>().FindByIds(userRoles.Select(ur => ur.RoleId).ToList());
         }
 
         /// <summary>   Finds the roles in this collection.</summary>
@@ -58,10 +59,10 @@ namespace FluiTec.AppFx.Identity.Dapper.Repositories
         {
             var cmdUserRoles = SqlBuilder.SelectByFilter(EntityType,
                 new[] { nameof(UserRoleEntity.RoleId) });
-            var roleIds = UnitOfWork.Connection.Query<Guid>(cmdUserRoles,
+            var userRoles = UnitOfWork.Connection.Query<UserRoleEntity>(cmdUserRoles,
                 new { RoleId = role.Id }, UnitOfWork.Transaction);
 
-            return UnitOfWork.GetRepository<IUserRepository>().FindByIds(roleIds);
+            return UnitOfWork.GetRepository<IUserRepository>().FindByIds(userRoles.Select(ur => ur.UserId).ToList());
         }
 
         /// <summary>   Removes the by user described by user.</summary>
