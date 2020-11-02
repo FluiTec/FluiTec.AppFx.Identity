@@ -65,9 +65,9 @@ namespace FluiTec.AppFx.Identity.Dapper.Mssql.IntegrationTests
                     };
                     dataService = new MssqlIdentityDataService(serviceOptions, null);
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-                    // ignore
+                    Console.WriteLine(e);
                 }
             }
 

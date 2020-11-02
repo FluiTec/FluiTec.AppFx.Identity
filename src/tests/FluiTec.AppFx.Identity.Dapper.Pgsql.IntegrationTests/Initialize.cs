@@ -65,9 +65,9 @@ namespace FluiTec.AppFx.Identity.Dapper.Pgsql.IntegrationTests
                     };
                     dataService = new PgsqlIdentityDataService(serviceOptions, null);
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-                    // ignore
+                    Console.WriteLine(e);
                 }
             }
 

@@ -65,9 +65,9 @@ namespace FluiTec.AppFx.Identity.Dapper.Mysql.IntegrationTests
                     };
                     dataService = new MysqlIdentityDataService(serviceOptions, null);
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-                    // ignore
+                    Console.WriteLine(e);
                 }
             }
 
