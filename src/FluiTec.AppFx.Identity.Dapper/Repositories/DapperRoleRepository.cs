@@ -36,7 +36,7 @@ namespace FluiTec.AppFx.Identity.Dapper.Repositories
 
             var command = SqlBuilder.SelectByFilter(EntityType, nameof(RoleEntity.Id));
             return UnitOfWork.Connection.QuerySingleOrDefault<RoleEntity>(command,
-                new { Id = guidResult }, UnitOfWork.Transaction);
+                new {Id = guidResult}, UnitOfWork.Transaction);
         }
 
         /// <summary>   Searches for the first normalized name.</summary>
@@ -46,7 +46,7 @@ namespace FluiTec.AppFx.Identity.Dapper.Repositories
         {
             var command = SqlBuilder.SelectByFilter(EntityType, nameof(RoleEntity.NormalizedName));
             return UnitOfWork.Connection.QuerySingleOrDefault<RoleEntity>(command,
-                new { NormalizedName = normalizedName }, UnitOfWork.Transaction);
+                new {NormalizedName = normalizedName}, UnitOfWork.Transaction);
         }
 
         /// <summary>   Finds the names in this collection.</summary>
@@ -56,14 +56,16 @@ namespace FluiTec.AppFx.Identity.Dapper.Repositories
         {
             var command = SqlBuilder.SelectByInFilter(EntityType, nameof(RoleEntity.Name), "Names");
             return UnitOfWork.Connection.Query<RoleEntity>(command,
-                new { Names = names }, UnitOfWork.Transaction);
+                new {Names = names}, UnitOfWork.Transaction);
         }
 
 
         /// <summary>   Finds the identifiers in this collection.</summary>
         /// <param name="roleIds">  The roleIds. </param>
-        /// <returns>An enumerator that allows foreach to be used to process the identifiers in this
-        /// collection.</returns>
+        /// <returns>
+        ///     An enumerator that allows foreach to be used to process the identifiers in this
+        ///     collection.
+        /// </returns>
         public IEnumerable<RoleEntity> FindByIds(IEnumerable<Guid> roleIds)
         {
             var command = SqlBuilder.SelectByInFilter(EntityType, nameof(RoleEntity.Id), "RoleIds");

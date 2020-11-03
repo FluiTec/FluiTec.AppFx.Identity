@@ -3,7 +3,7 @@ using System.Linq;
 using FluiTec.AppFx.Identity.Data.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace FluiTec.AppFx.Identity.TestLibrary
+namespace FluiTec.AppFx.Identity.TestLibrary.DbTests
 {
     /// <summary>   A database test.</summary>
     public abstract partial class DbTest
@@ -15,11 +15,11 @@ namespace FluiTec.AppFx.Identity.TestLibrary
             AssertDbAvailable();
 
             using var uow = DataService.BeginUnitOfWork();
-            var role = uow.RoleRepository.Add(new RoleEntity { Id = Guid.NewGuid(), Name = "TestRole" });
+            var role = uow.RoleRepository.Add(new RoleEntity {Id = Guid.NewGuid(), Name = "TestRole"});
             var roleClaim = uow.RoleClaimRepository.Add(new RoleClaimEntity
             {
-                RoleId = role.Id, 
-                Type = "tRoleClaim", 
+                RoleId = role.Id,
+                Type = "tRoleClaim",
                 Value = "vRoleClaim"
             });
 
@@ -33,7 +33,7 @@ namespace FluiTec.AppFx.Identity.TestLibrary
             AssertDbAvailable();
 
             using var uow = DataService.BeginUnitOfWork();
-            var role = uow.RoleRepository.Add(new RoleEntity { Id = Guid.NewGuid(), Name = "TestRole" });
+            var role = uow.RoleRepository.Add(new RoleEntity {Id = Guid.NewGuid(), Name = "TestRole"});
             var roleClaim = uow.RoleClaimRepository.Add(new RoleClaimEntity
             {
                 RoleId = role.Id,
@@ -52,7 +52,7 @@ namespace FluiTec.AppFx.Identity.TestLibrary
             AssertDbAvailable();
 
             using var uow = DataService.BeginUnitOfWork();
-            var role = uow.RoleRepository.Add(new RoleEntity { Id = Guid.NewGuid(), Name = "TestRole" });
+            var role = uow.RoleRepository.Add(new RoleEntity {Id = Guid.NewGuid(), Name = "TestRole"});
             var roleClaim = uow.RoleClaimRepository.Add(new RoleClaimEntity
             {
                 RoleId = role.Id,
@@ -71,7 +71,7 @@ namespace FluiTec.AppFx.Identity.TestLibrary
             AssertDbAvailable();
 
             using var uow = DataService.BeginUnitOfWork();
-            var role = uow.RoleRepository.Add(new RoleEntity { Id = Guid.NewGuid(), Name = "TestRole" });
+            var role = uow.RoleRepository.Add(new RoleEntity {Id = Guid.NewGuid(), Name = "TestRole"});
             var roleClaim = uow.RoleClaimRepository.Add(new RoleClaimEntity
             {
                 RoleId = role.Id,
@@ -90,7 +90,7 @@ namespace FluiTec.AppFx.Identity.TestLibrary
             AssertDbAvailable();
 
             using var uow = DataService.BeginUnitOfWork();
-            var role = uow.RoleRepository.Add(new RoleEntity { Id = Guid.NewGuid(), Name = "TestRole" });
+            var role = uow.RoleRepository.Add(new RoleEntity {Id = Guid.NewGuid(), Name = "TestRole"});
             var roleClaim = uow.RoleClaimRepository.Add(new RoleClaimEntity
             {
                 RoleId = role.Id,
@@ -109,7 +109,7 @@ namespace FluiTec.AppFx.Identity.TestLibrary
             AssertDbAvailable();
 
             using var uow = DataService.BeginUnitOfWork();
-            var role = uow.RoleRepository.Add(new RoleEntity { Id = Guid.NewGuid(), Name = "TestRole" });
+            var role = uow.RoleRepository.Add(new RoleEntity {Id = Guid.NewGuid(), Name = "TestRole"});
             var roleClaim = uow.RoleClaimRepository.Add(new RoleClaimEntity
             {
                 RoleId = role.Id,
@@ -146,7 +146,7 @@ namespace FluiTec.AppFx.Identity.TestLibrary
             AssertDbAvailable();
 
             using var uow = DataService.BeginUnitOfWork();
-            var role = uow.RoleRepository.Add(new RoleEntity { Id = Guid.NewGuid(), Name = "TestRole" });
+            var role = uow.RoleRepository.Add(new RoleEntity {Id = Guid.NewGuid(), Name = "TestRole"});
             var roleClaim = uow.RoleClaimRepository.Add(new RoleClaimEntity
             {
                 RoleId = role.Id,
@@ -168,7 +168,7 @@ namespace FluiTec.AppFx.Identity.TestLibrary
             AssertDbAvailable();
 
             using var uow = DataService.BeginUnitOfWork();
-            var role = uow.RoleRepository.Add(new RoleEntity { Id = Guid.NewGuid(), Name = "TestRole" });
+            var role = uow.RoleRepository.Add(new RoleEntity {Id = Guid.NewGuid(), Name = "TestRole"});
             var roleClaim = uow.RoleClaimRepository.Add(new RoleClaimEntity
             {
                 RoleId = role.Id,

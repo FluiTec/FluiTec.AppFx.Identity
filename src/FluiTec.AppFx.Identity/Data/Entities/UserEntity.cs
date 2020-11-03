@@ -100,12 +100,18 @@ namespace FluiTec.AppFx.Identity.Data.Entities
             if (ReferenceEquals(x, null)) return false;
             if (ReferenceEquals(y, null)) return false;
             if (x.GetType() != y.GetType()) return false;
-            return x.Id.Equals(y.Id) && x.Name == y.Name && x.Phone == y.Phone && x.PhoneConfirmed == y.PhoneConfirmed && x.Email == y.Email && x.EmailConfirmed == y.EmailConfirmed && x.FullName == y.FullName && x.PasswordHash == y.PasswordHash && x.SecurityStamp == y.SecurityStamp && x.TwoFactorEnabled == y.TwoFactorEnabled && x.LockoutEnabled == y.LockoutEnabled && x.AccessFailedCount == y.AccessFailedCount && Nullable.Equals(x.LockedOutTill, y.LockedOutTill);
+            return x.Id.Equals(y.Id) && x.Name == y.Name && x.Phone == y.Phone &&
+                   x.PhoneConfirmed == y.PhoneConfirmed && x.Email == y.Email && x.EmailConfirmed == y.EmailConfirmed &&
+                   x.FullName == y.FullName && x.PasswordHash == y.PasswordHash && x.SecurityStamp == y.SecurityStamp &&
+                   x.TwoFactorEnabled == y.TwoFactorEnabled && x.LockoutEnabled == y.LockoutEnabled &&
+                   x.AccessFailedCount == y.AccessFailedCount && Nullable.Equals(x.LockedOutTill, y.LockedOutTill);
         }
 
         /// <summary>   Returns a hash code for the specified object.</summary>
-        /// <param name="obj">  The <see cref="T:System.Object"></see> for which a hash code is to be
-        ///                     returned. </param>
+        /// <param name="obj">
+        ///     The <see cref="T:System.Object"></see> for which a hash code is to be
+        ///     returned.
+        /// </param>
         /// <returns>   A hash code for the specified object.</returns>
         public int GetHashCode(UserEntity obj)
         {

@@ -10,12 +10,12 @@ namespace FluiTec.AppFx.Identity.Data.Entities
     [EntityName(SchemaGlobals.Schema, SchemaGlobals.UserClaimTable)]
     public class UserClaimEntity : ClaimEntity, IKeyEntity<int>
     {
-        /// <summary>	Gets or sets the identifier. </summary>
-        /// <value>	The identifier. </value>
-        public int Id { get; set; }
-
         /// <summary>   Gets or sets the identifier of the user. </summary>
         /// <value> The identifier of the user. </value>
         public Guid UserId { get; set; }
+
+        /// <summary>	Gets or sets the identifier. </summary>
+        /// <value>	The identifier. </value>
+        public int Id { get; set; }
     }
 }

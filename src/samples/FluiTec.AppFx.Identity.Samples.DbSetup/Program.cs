@@ -39,7 +39,7 @@ namespace FluiTec.AppFx.Identity.Samples.DbSetup
 
                 var user = uow.UserRepository.GetAll().First();
                 var claims = uow.UserRepository.FindAllClaims(user);
-                
+
                 uow.Commit();
             }
         }

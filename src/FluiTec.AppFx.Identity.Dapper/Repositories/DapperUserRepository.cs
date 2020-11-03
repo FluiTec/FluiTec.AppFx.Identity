@@ -21,7 +21,8 @@ namespace FluiTec.AppFx.Identity.Dapper.Repositories
         /// <summary>   Constructor. </summary>
         /// <param name="unitOfWork">   The unit of work. </param>
         /// <param name="logger">       The logger. </param>
-        protected DapperUserRepository(DapperUnitOfWork unitOfWork, ILogger<IRepository> logger) : base(unitOfWork, logger)
+        protected DapperUserRepository(DapperUnitOfWork unitOfWork, ILogger<IRepository> logger) : base(unitOfWork,
+            logger)
         {
             ExpectIdentityKey = false;
         }
@@ -80,19 +81,21 @@ namespace FluiTec.AppFx.Identity.Dapper.Repositories
                 $"WHERE {sql.RenderTableName(typeof(UserLoginEntity))}.{sql.RenderPropertyName(nameof(UserLoginEntity.ProviderName))} = @ProviderName " +
                 $"AND {sql.RenderTableName(typeof(UserLoginEntity))}.{sql.RenderPropertyName(nameof(UserLoginEntity.ProviderKey))} = @ProviderKey";
             return UnitOfWork.Connection.QuerySingleOrDefault<UserEntity>(command,
-                new { ProviderName = providerName, ProviderKey = providerKey },
+                new {ProviderName = providerName, ProviderKey = providerKey},
                 UnitOfWork.Transaction);
         }
 
         /// <summary>   Finds the identifiers in this collection.</summary>
         /// <param name="userIds">  List of identifiers for the users. </param>
-        /// <returns>An enumerator that allows foreach to be used to process the identifiers in this
-        /// collection.</returns>
+        /// <returns>
+        ///     An enumerator that allows foreach to be used to process the identifiers in this
+        ///     collection.
+        /// </returns>
         public IEnumerable<UserEntity> FindByIds(IEnumerable<Guid> userIds)
         {
             var command = SqlBuilder.SelectByInFilter(EntityType, nameof(UserEntity.Id), "UserIds");
             return UnitOfWork.Connection.Query<UserEntity>(command,
-                new { UserIds = userIds }, UnitOfWork.Transaction);
+                new {UserIds = userIds}, UnitOfWork.Transaction);
         }
 
         /// <summary>   Finds all claims including duplicates in this collection. </summary>
@@ -109,7 +112,7 @@ namespace FluiTec.AppFx.Identity.Dapper.Repositories
         public IEnumerable<ClaimEntity> FindAllClaims(UserEntity user)
         {
             var claims = FindAllClaimsIncludingDuplicates(user);
-            
+
             var distinctUserClaims = new List<ClaimEntity>();
             foreach (var claim in claims)
                 if (distinctUserClaims.All(c => c.Type != claim.Type))

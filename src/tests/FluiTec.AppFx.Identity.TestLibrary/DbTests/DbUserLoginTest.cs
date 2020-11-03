@@ -3,14 +3,14 @@ using System.Linq;
 using FluiTec.AppFx.Identity.Data.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace FluiTec.AppFx.Identity.TestLibrary
+namespace FluiTec.AppFx.Identity.TestLibrary.DbTests
 {
     /// <summary>   A database test.</summary>
     public abstract partial class DbTest
     {
-        /// <summary>   (Unit Test Method) can create User claim.</summary>
+        /// <summary>   (Unit Test Method) can create user login.</summary>
         [TestMethod]
-        public void CanCreateUserClaim()
+        public void CanCreateUserLogin()
         {
             AssertDbAvailable();
 
@@ -32,19 +32,15 @@ namespace FluiTec.AppFx.Identity.TestLibrary
                 SecurityStamp = "<>",
                 TwoFactorEnabled = false
             });
-            var userClaim = uow.UserClaimRepository.Add(new UserClaimEntity
-            {
-                UserId = user.Id, 
-                Type = "tUserClaim", 
-                Value = "vUserClaim"
-            });
+            var userLogin = uow.LoginRepository.Add(new UserLoginEntity
+                {UserId = user.Id, ProviderKey = "Auth", ProviderDisplayName = "Auth", ProviderName = "Auth"});
 
-            Assert.IsTrue(userClaim.Id > -1);
+            Assert.IsTrue(userLogin.Id > -1);
         }
 
-        /// <summary>   (Unit Test Method) can read User claim.</summary>
+        /// <summary>   (Unit Test Method) can read user login.</summary>
         [TestMethod]
-        public void CanReadUserClaim()
+        public void CanReadUserLogin()
         {
             AssertDbAvailable();
 
@@ -66,20 +62,16 @@ namespace FluiTec.AppFx.Identity.TestLibrary
                 SecurityStamp = "<>",
                 TwoFactorEnabled = false
             });
-            var userClaim = uow.UserClaimRepository.Add(new UserClaimEntity
-            {
-                UserId = user.Id,
-                Type = "tUserClaim",
-                Value = "vUserClaim"
-            });
+            var userLogin = uow.LoginRepository.Add(new UserLoginEntity
+                {UserId = user.Id, ProviderKey = "Auth", ProviderDisplayName = "Auth", ProviderName = "Auth"});
 
-            var dbEntity = uow.UserClaimRepository.Get(userClaim.Id);
-            Assert.AreEqual(userClaim.UserId, dbEntity.UserId);
+            var dbEntity = uow.LoginRepository.Get(userLogin.Id);
+            Assert.AreEqual(userLogin.UserId, dbEntity.UserId);
         }
 
-        /// <summary>   (Unit Test Method) can get by user.</summary>
+        /// <summary>   (Unit Test Method) can remove by name and key.</summary>
         [TestMethod]
-        public void CanGetByUser()
+        public void CanRemoveByNameAndKey()
         {
             AssertDbAvailable();
 
@@ -101,20 +93,16 @@ namespace FluiTec.AppFx.Identity.TestLibrary
                 SecurityStamp = "<>",
                 TwoFactorEnabled = false
             });
-            var userClaim = uow.UserClaimRepository.Add(new UserClaimEntity
-            {
-                UserId = user.Id,
-                Type = "tUserClaim",
-                Value = "vUserClaim"
-            });
+            var userLogin = uow.LoginRepository.Add(new UserLoginEntity
+                {UserId = user.Id, ProviderKey = "Auth", ProviderDisplayName = "Auth", ProviderName = "Auth"});
 
-            var userClaims = uow.UserClaimRepository.GetByUser(user);
-            Assert.IsTrue(userClaims.Any(uc => uc.UserId == user.Id));
+            uow.LoginRepository.RemoveByNameAndKey("Auth", "Auth");
+            Assert.IsNull(uow.LoginRepository.FindByNameAndKey("Auth", "Auth"));
         }
 
-        /// <summary>   Can get user identifiers for claim type.</summary>
+        /// <summary>   (Unit Test Method) can find by user identifier.</summary>
         [TestMethod]
-        public void CanGetUserIdsForClaimType()
+        public void CanFindByUserId()
         {
             AssertDbAvailable();
 
@@ -136,20 +124,16 @@ namespace FluiTec.AppFx.Identity.TestLibrary
                 SecurityStamp = "<>",
                 TwoFactorEnabled = false
             });
-            var userClaim = uow.UserClaimRepository.Add(new UserClaimEntity
-            {
-                UserId = user.Id,
-                Type = "tUserClaim",
-                Value = "vUserClaim"
-            });
+            var userLogin = uow.LoginRepository.Add(new UserLoginEntity
+                {UserId = user.Id, ProviderKey = "Auth", ProviderDisplayName = "Auth", ProviderName = "Auth"});
 
-            var uIds = uow.UserClaimRepository.GetUserIdsForClaimType(userClaim.Type);
-            Assert.IsTrue(uIds.Any(uId => uId == user.Id));
+            var dbEntity = uow.LoginRepository.FindByUserId(user.Id).Single();
+            Assert.AreEqual(userLogin.Id, dbEntity.Id);
         }
 
-        /// <summary>   (Unit Test Method) can get by user and type.</summary>
+        /// <summary>   (Unit Test Method) can find by name and key.</summary>
         [TestMethod]
-        public void CanGetByUserAndType()
+        public void CanFindByNameAndKey()
         {
             AssertDbAvailable();
 
@@ -171,20 +155,16 @@ namespace FluiTec.AppFx.Identity.TestLibrary
                 SecurityStamp = "<>",
                 TwoFactorEnabled = false
             });
-            var userClaim = uow.UserClaimRepository.Add(new UserClaimEntity
-            {
-                UserId = user.Id,
-                Type = "tUserClaim",
-                Value = "vUserClaim"
-            });
+            var userLogin = uow.LoginRepository.Add(new UserLoginEntity
+                {UserId = user.Id, ProviderKey = "Auth", ProviderDisplayName = "Auth", ProviderName = "Auth"});
 
-            var dbEntity = uow.UserClaimRepository.GetByUserAndType(user, userClaim.Type);
-            Assert.AreEqual(userClaim.Value, dbEntity.Value);
+            var dbEntity = uow.LoginRepository.FindByNameAndKey("Auth", "Auth");
+            Assert.AreEqual(userLogin.Id, dbEntity.Id);
         }
 
-        /// <summary>   (Unit Test Method) can update User claim.</summary>
+        /// <summary>   (Unit Test Method) can update user login.</summary>
         [TestMethod]
-        public void CanUpdateUserClaim()
+        public void CanUpdateUserLogin()
         {
             AssertDbAvailable();
 
@@ -206,23 +186,19 @@ namespace FluiTec.AppFx.Identity.TestLibrary
                 SecurityStamp = "<>",
                 TwoFactorEnabled = false
             });
-            var userClaim = uow.UserClaimRepository.Add(new UserClaimEntity
-            {
-                UserId = user.Id,
-                Type = "tUserClaim",
-                Value = "vUserClaim"
-            });
+            var userLogin = uow.LoginRepository.Add(new UserLoginEntity
+                {UserId = user.Id, ProviderKey = "Auth", ProviderDisplayName = "Auth", ProviderName = "Auth"});
 
-            userClaim.Value = "vUserClaim2";
-            uow.UserClaimRepository.Update(userClaim);
+            userLogin.ProviderName = "Auth2";
+            uow.LoginRepository.Update(userLogin);
 
-            var dbEntity = uow.UserClaimRepository.Get(userClaim.Id);
-            Assert.AreEqual(userClaim.Value, dbEntity.Value);
+            var dbEntity = uow.LoginRepository.Get(userLogin.Id);
+            Assert.AreEqual(userLogin.ProviderName, dbEntity.ProviderName);
         }
 
-        /// <summary>   (Unit Test Method) can delete User claim.</summary>
+        /// <summary>   (Unit Test Method) can delete user login.</summary>
         [TestMethod]
-        public void CanDeleteUserClaim()
+        public void CanDeleteUserLogin()
         {
             AssertDbAvailable();
 
@@ -244,15 +220,11 @@ namespace FluiTec.AppFx.Identity.TestLibrary
                 SecurityStamp = "<>",
                 TwoFactorEnabled = false
             });
-            var userClaim = uow.UserClaimRepository.Add(new UserClaimEntity
-            {
-                UserId = user.Id,
-                Type = "tUserClaim",
-                Value = "vUserClaim"
-            });
+            var userLogin = uow.LoginRepository.Add(new UserLoginEntity
+                {UserId = user.Id, ProviderKey = "Auth", ProviderDisplayName = "Auth", ProviderName = "Auth"});
 
-            uow.UserClaimRepository.Delete(userClaim);
-            var dbEntity = uow.UserClaimRepository.Get(userClaim.Id);
+            uow.LoginRepository.Delete(userLogin);
+            var dbEntity = uow.LoginRepository.Get(userLogin.Id);
             Assert.IsNull(dbEntity);
         }
     }

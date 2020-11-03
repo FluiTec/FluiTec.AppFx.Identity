@@ -15,8 +15,10 @@ namespace FluiTec.AppFx.Identity.Data.Repositories
 
         /// <summary>   Gets the role identifiers for claim types in this collection.</summary>
         /// <param name="claimType">    Type of the claim. </param>
-        /// <returns>An enumerator that allows foreach to be used to process the role identifiers for
-        /// claim types in this collection.</returns>
+        /// <returns>
+        ///     An enumerator that allows foreach to be used to process the role identifiers for
+        ///     claim types in this collection.
+        /// </returns>
         IEnumerable<Guid> GetRoleIdsForClaimType(string claimType);
 
         /// <summary>   Gets by role and type.</summary>
@@ -27,8 +29,10 @@ namespace FluiTec.AppFx.Identity.Data.Repositories
 
         /// <summary>   Gets the users for claim types in this collection.</summary>
         /// <param name="claimType">    Type of the claim. </param>
-        /// <returns>An enumerator that allows foreach to be used to process the users for claim types in
-        /// this collection.</returns>
+        /// <returns>
+        ///     An enumerator that allows foreach to be used to process the users for claim types in
+        ///     this collection.
+        /// </returns>
         IEnumerable<UserEntity> GetUsersForClaimType(string claimType);
     }
 }

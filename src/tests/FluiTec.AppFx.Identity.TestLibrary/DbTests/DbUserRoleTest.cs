@@ -3,7 +3,7 @@ using System.Linq;
 using FluiTec.AppFx.Identity.Data.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace FluiTec.AppFx.Identity.TestLibrary
+namespace FluiTec.AppFx.Identity.TestLibrary.DbTests
 {
     /// <summary>   A database test.</summary>
     public abstract partial class DbTest
@@ -15,7 +15,7 @@ namespace FluiTec.AppFx.Identity.TestLibrary
             AssertDbAvailable();
 
             using var uow = DataService.BeginUnitOfWork();
-            var role = uow.RoleRepository.Add(new RoleEntity { Id = Guid.NewGuid(), Name = "TestRole" });
+            var role = uow.RoleRepository.Add(new RoleEntity {Id = Guid.NewGuid(), Name = "TestRole"});
             var user = uow.UserRepository.Add(new UserEntity
             {
                 Id = Guid.NewGuid(),
@@ -45,7 +45,7 @@ namespace FluiTec.AppFx.Identity.TestLibrary
             AssertDbAvailable();
 
             using var uow = DataService.BeginUnitOfWork();
-            var role = uow.RoleRepository.Add(new RoleEntity { Id = Guid.NewGuid(), Name = "TestRole" });
+            var role = uow.RoleRepository.Add(new RoleEntity {Id = Guid.NewGuid(), Name = "TestRole"});
             var user = uow.UserRepository.Add(new UserEntity
             {
                 Id = Guid.NewGuid(),
@@ -63,7 +63,7 @@ namespace FluiTec.AppFx.Identity.TestLibrary
                 SecurityStamp = "<>",
                 TwoFactorEnabled = false
             });
-            var userRole = uow.UserRoleRepository.Add(new UserRoleEntity { RoleId = role.Id, UserId = user.Id });
+            var userRole = uow.UserRoleRepository.Add(new UserRoleEntity {RoleId = role.Id, UserId = user.Id});
 
             var dbEntity = uow.UserRoleRepository.Get(userRole.Id);
             Assert.AreEqual(userRole.UserId, dbEntity.UserId);
@@ -76,7 +76,7 @@ namespace FluiTec.AppFx.Identity.TestLibrary
             AssertDbAvailable();
 
             using var uow = DataService.BeginUnitOfWork();
-            var role = uow.RoleRepository.Add(new RoleEntity { Id = Guid.NewGuid(), Name = "TestRole" });
+            var role = uow.RoleRepository.Add(new RoleEntity {Id = Guid.NewGuid(), Name = "TestRole"});
             var user = uow.UserRepository.Add(new UserEntity
             {
                 Id = Guid.NewGuid(),
@@ -94,7 +94,7 @@ namespace FluiTec.AppFx.Identity.TestLibrary
                 SecurityStamp = "<>",
                 TwoFactorEnabled = false
             });
-            var userRole = uow.UserRoleRepository.Add(new UserRoleEntity { RoleId = role.Id, UserId = user.Id });
+            var userRole = uow.UserRoleRepository.Add(new UserRoleEntity {RoleId = role.Id, UserId = user.Id});
 
             var dbEntity = uow.UserRoleRepository.FindByUserIdAndRoleId(user.Id, role.Id);
             Assert.AreEqual(userRole.Id, dbEntity.Id);
@@ -107,7 +107,7 @@ namespace FluiTec.AppFx.Identity.TestLibrary
             AssertDbAvailable();
 
             using var uow = DataService.BeginUnitOfWork();
-            var role = uow.RoleRepository.Add(new RoleEntity { Id = Guid.NewGuid(), Name = "TestRole" });
+            var role = uow.RoleRepository.Add(new RoleEntity {Id = Guid.NewGuid(), Name = "TestRole"});
             var user = uow.UserRepository.Add(new UserEntity
             {
                 Id = Guid.NewGuid(),
@@ -125,7 +125,7 @@ namespace FluiTec.AppFx.Identity.TestLibrary
                 SecurityStamp = "<>",
                 TwoFactorEnabled = false
             });
-            var userRole = uow.UserRoleRepository.Add(new UserRoleEntity { RoleId = role.Id, UserId = user.Id });
+            var userRole = uow.UserRoleRepository.Add(new UserRoleEntity {RoleId = role.Id, UserId = user.Id});
 
             var roles = uow.UserRoleRepository.FindByUser(user);
             Assert.IsTrue(roles.Any(r => r.Id == role.Id));
@@ -138,7 +138,7 @@ namespace FluiTec.AppFx.Identity.TestLibrary
             AssertDbAvailable();
 
             using var uow = DataService.BeginUnitOfWork();
-            var role = uow.RoleRepository.Add(new RoleEntity { Id = Guid.NewGuid(), Name = "TestRole" });
+            var role = uow.RoleRepository.Add(new RoleEntity {Id = Guid.NewGuid(), Name = "TestRole"});
             var user = uow.UserRepository.Add(new UserEntity
             {
                 Id = Guid.NewGuid(),
@@ -156,7 +156,7 @@ namespace FluiTec.AppFx.Identity.TestLibrary
                 SecurityStamp = "<>",
                 TwoFactorEnabled = false
             });
-            var userRole = uow.UserRoleRepository.Add(new UserRoleEntity { RoleId = role.Id, UserId = user.Id });
+            var userRole = uow.UserRoleRepository.Add(new UserRoleEntity {RoleId = role.Id, UserId = user.Id});
 
             var users = uow.UserRoleRepository.FindByRole(role);
             Assert.IsTrue(users.Any(u => u.Id == user.Id));
@@ -169,7 +169,7 @@ namespace FluiTec.AppFx.Identity.TestLibrary
             AssertDbAvailable();
 
             using var uow = DataService.BeginUnitOfWork();
-            var role = uow.RoleRepository.Add(new RoleEntity { Id = Guid.NewGuid(), Name = "TestRole" });
+            var role = uow.RoleRepository.Add(new RoleEntity {Id = Guid.NewGuid(), Name = "TestRole"});
             var user = uow.UserRepository.Add(new UserEntity
             {
                 Id = Guid.NewGuid(),
@@ -187,7 +187,7 @@ namespace FluiTec.AppFx.Identity.TestLibrary
                 SecurityStamp = "<>",
                 TwoFactorEnabled = false
             });
-            var userRole = uow.UserRoleRepository.Add(new UserRoleEntity { RoleId = role.Id, UserId = user.Id });
+            var userRole = uow.UserRoleRepository.Add(new UserRoleEntity {RoleId = role.Id, UserId = user.Id});
 
             uow.UserRoleRepository.RemoveByUser(user);
             var dbEntity = uow.UserRoleRepository.Get(userRole.Id);
@@ -201,7 +201,7 @@ namespace FluiTec.AppFx.Identity.TestLibrary
             AssertDbAvailable();
 
             using var uow = DataService.BeginUnitOfWork();
-            var role = uow.RoleRepository.Add(new RoleEntity { Id = Guid.NewGuid(), Name = "TestRole" });
+            var role = uow.RoleRepository.Add(new RoleEntity {Id = Guid.NewGuid(), Name = "TestRole"});
             var user = uow.UserRepository.Add(new UserEntity
             {
                 Id = Guid.NewGuid(),
@@ -219,7 +219,7 @@ namespace FluiTec.AppFx.Identity.TestLibrary
                 SecurityStamp = "<>",
                 TwoFactorEnabled = false
             });
-            var userRole = uow.UserRoleRepository.Add(new UserRoleEntity { RoleId = role.Id, UserId = user.Id });
+            var userRole = uow.UserRoleRepository.Add(new UserRoleEntity {RoleId = role.Id, UserId = user.Id});
 
             uow.UserRoleRepository.RemoveByRole(role);
             var dbEntity = uow.UserRoleRepository.Get(userRole.Id);
@@ -233,7 +233,7 @@ namespace FluiTec.AppFx.Identity.TestLibrary
             AssertDbAvailable();
 
             using var uow = DataService.BeginUnitOfWork();
-            var role = uow.RoleRepository.Add(new RoleEntity { Id = Guid.NewGuid(), Name = "TestRole" });
+            var role = uow.RoleRepository.Add(new RoleEntity {Id = Guid.NewGuid(), Name = "TestRole"});
             var user = uow.UserRepository.Add(new UserEntity
             {
                 Id = Guid.NewGuid(),
@@ -251,7 +251,7 @@ namespace FluiTec.AppFx.Identity.TestLibrary
                 SecurityStamp = "<>",
                 TwoFactorEnabled = false
             });
-            var userRole = uow.UserRoleRepository.Add(new UserRoleEntity { RoleId = role.Id, UserId = user.Id });
+            var userRole = uow.UserRoleRepository.Add(new UserRoleEntity {RoleId = role.Id, UserId = user.Id});
 
             uow.UserRoleRepository.Delete(userRole);
             var dbEntity = uow.UserRoleRepository.Get(userRole.Id);

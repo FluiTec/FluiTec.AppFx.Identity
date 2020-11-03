@@ -14,7 +14,8 @@ namespace FluiTec.AppFx.Identity.Dapper
         /// <summary>   Specialized constructor for use only by derived class.</summary>
         /// <param name="dapperServiceOptions"> Options for controlling the dapper service. </param>
         /// <param name="loggerFactory">        The logger factory. </param>
-        protected DapperIdentityDataService(IDapperServiceOptions dapperServiceOptions, ILoggerFactory loggerFactory) : base(dapperServiceOptions, loggerFactory)
+        protected DapperIdentityDataService(IDapperServiceOptions dapperServiceOptions, ILoggerFactory loggerFactory) :
+            base(dapperServiceOptions, loggerFactory)
         {
         }
 

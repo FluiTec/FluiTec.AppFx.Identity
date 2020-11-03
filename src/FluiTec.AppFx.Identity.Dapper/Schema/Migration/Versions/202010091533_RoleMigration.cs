@@ -23,7 +23,8 @@ namespace FluiTec.AppFx.Identity.Dapper.Schema.Migration.Versions
                 .InSchema(SchemaGlobals.Schema)
                 .WithColumn(nameof(RoleEntity.Id)).AsGuid().NotNullable().PrimaryKey()
                 .WithColumn(nameof(RoleEntity.Name)).AsString(256).NotNullable().Unique(UniqueNameIndexName)
-                .WithColumn(nameof(RoleEntity.NormalizedName)).AsString(256).NotNullable().Unique(UniqueNormalizedNameIndexName);
+                .WithColumn(nameof(RoleEntity.NormalizedName)).AsString(256).NotNullable()
+                .Unique(UniqueNormalizedNameIndexName);
 
             IfDatabase("mysql")
                 .Create

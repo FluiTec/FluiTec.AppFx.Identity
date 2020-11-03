@@ -1,13 +1,9 @@
 ﻿using System;
 using System.IO;
-using FluentMigrator.Runner;
-using FluiTec.AppFx.Data.Dapper.DataServices;
-using FluiTec.AppFx.Data.Dapper.Migration;
-using FluiTec.AppFx.Data.Dapper.Mssql;
 using FluiTec.AppFx.Data.Dapper.Mysql;
-using FluiTec.AppFx.Identity.Dapper.Mssql;
-using FluiTec.AppFx.Identity.TestLibrary;
+using FluiTec.AppFx.Identity.TestLibrary.DbTests;
 using FluiTec.AppFx.Options.Helpers;
+using FluiTec.AppFx.Options.Managers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -45,7 +41,7 @@ namespace FluiTec.AppFx.Identity.Dapper.Mysql.IntegrationTests
                         .AddJsonFile("appsettings.integration.secret.json", true, true)
                         .Build();
 
-                    var manager = new Options.Managers.ConfigurationManager(config);
+                    var manager = new ConfigurationManager(config);
                     var mysqlOptions = manager.ExtractSettings<MysqlDapperServiceOptions>();
 
                     ServiceOptions = new MysqlDapperServiceOptions

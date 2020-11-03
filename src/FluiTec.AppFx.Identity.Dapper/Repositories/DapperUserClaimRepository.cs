@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 namespace FluiTec.AppFx.Identity.Dapper.Repositories
 {
     /// <summary>   A dapper user claim repository.</summary>
-    public class DapperUserClaimRepository : DapperWritableKeyTableDataRepository<UserClaimEntity, int>, 
+    public class DapperUserClaimRepository : DapperWritableKeyTableDataRepository<UserClaimEntity, int>,
         IUserClaimRepository
     {
         #region Constructors
@@ -19,7 +19,8 @@ namespace FluiTec.AppFx.Identity.Dapper.Repositories
         /// <summary>   Constructor.</summary>
         /// <param name="unitOfWork">   The unit of work. </param>
         /// <param name="logger">       The logger. </param>
-        public DapperUserClaimRepository(DapperUnitOfWork unitOfWork, ILogger<IRepository> logger) : base(unitOfWork, logger)
+        public DapperUserClaimRepository(DapperUnitOfWork unitOfWork, ILogger<IRepository> logger) : base(unitOfWork,
+            logger)
         {
         }
 
@@ -33,19 +34,21 @@ namespace FluiTec.AppFx.Identity.Dapper.Repositories
         public IEnumerable<UserClaimEntity> GetByUser(UserEntity user)
         {
             var command = SqlBuilder.SelectByFilter(EntityType, nameof(UserClaimEntity.UserId));
-            return UnitOfWork.Connection.Query<UserClaimEntity>(command, new { UserId = user.Id },
+            return UnitOfWork.Connection.Query<UserClaimEntity>(command, new {UserId = user.Id},
                 UnitOfWork.Transaction);
         }
 
         /// <summary>   Gets the user identifiers for claim types in this collection.</summary>
         /// <param name="claimType">    Type of the claim. </param>
-        /// <returns>An enumerator that allows foreach to be used to process the user identifiers for
-        /// claim types in this collection.</returns>
+        /// <returns>
+        ///     An enumerator that allows foreach to be used to process the user identifiers for
+        ///     claim types in this collection.
+        /// </returns>
         public IEnumerable<Guid> GetUserIdsForClaimType(string claimType)
         {
             var command = SqlBuilder.SelectByFilter(EntityType, nameof(UserClaimEntity.Type),
-                new[] { nameof(UserClaimEntity.UserId) });
-            return UnitOfWork.Connection.Query<Guid>(command, new { Type = claimType },
+                new[] {nameof(UserClaimEntity.UserId)});
+            return UnitOfWork.Connection.Query<Guid>(command, new {Type = claimType},
                 UnitOfWork.Transaction);
         }
 
@@ -56,9 +59,9 @@ namespace FluiTec.AppFx.Identity.Dapper.Repositories
         public UserClaimEntity GetByUserAndType(UserEntity user, string claimType)
         {
             var command = SqlBuilder.SelectByFilter(EntityType,
-                new[] { nameof(UserClaimEntity.Type), nameof(UserClaimEntity.UserId) });
+                new[] {nameof(UserClaimEntity.Type), nameof(UserClaimEntity.UserId)});
             return UnitOfWork.Connection.QuerySingleOrDefault<UserClaimEntity>(command,
-                new { Type = claimType, UserId = user.Id },
+                new {Type = claimType, UserId = user.Id},
                 UnitOfWork.Transaction);
         }
 
