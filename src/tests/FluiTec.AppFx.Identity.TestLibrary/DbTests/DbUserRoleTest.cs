@@ -12,8 +12,6 @@ namespace FluiTec.AppFx.Identity.TestLibrary.DbTests
         [TestMethod]
         public void CanCreateUserRole()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
             var role = uow.RoleRepository.Add(new RoleEntity {Id = Guid.NewGuid(), Name = "TestRole"});
             var user = uow.UserRepository.Add(new UserEntity
@@ -42,8 +40,6 @@ namespace FluiTec.AppFx.Identity.TestLibrary.DbTests
         [TestMethod]
         public void CanReadUserRole()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
             var role = uow.RoleRepository.Add(new RoleEntity {Id = Guid.NewGuid(), Name = "TestRole"});
             var user = uow.UserRepository.Add(new UserEntity
@@ -73,8 +69,6 @@ namespace FluiTec.AppFx.Identity.TestLibrary.DbTests
         [TestMethod]
         public void CanFindByUserIdAndRoleId()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
             var role = uow.RoleRepository.Add(new RoleEntity {Id = Guid.NewGuid(), Name = "TestRole"});
             var user = uow.UserRepository.Add(new UserEntity
@@ -104,8 +98,6 @@ namespace FluiTec.AppFx.Identity.TestLibrary.DbTests
         [TestMethod]
         public void CanFindByUser()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
             var role = uow.RoleRepository.Add(new RoleEntity {Id = Guid.NewGuid(), Name = "TestRole"});
             var user = uow.UserRepository.Add(new UserEntity
@@ -135,8 +127,6 @@ namespace FluiTec.AppFx.Identity.TestLibrary.DbTests
         [TestMethod]
         public void CanFindByRole()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
             var role = uow.RoleRepository.Add(new RoleEntity {Id = Guid.NewGuid(), Name = "TestRole"});
             var user = uow.UserRepository.Add(new UserEntity
@@ -166,8 +156,6 @@ namespace FluiTec.AppFx.Identity.TestLibrary.DbTests
         [TestMethod]
         public void CanRemoveByUser()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
             var role = uow.RoleRepository.Add(new RoleEntity {Id = Guid.NewGuid(), Name = "TestRole"});
             var user = uow.UserRepository.Add(new UserEntity
@@ -198,8 +186,6 @@ namespace FluiTec.AppFx.Identity.TestLibrary.DbTests
         [TestMethod]
         public void CanRemoveByRole()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
             var role = uow.RoleRepository.Add(new RoleEntity {Id = Guid.NewGuid(), Name = "TestRole"});
             var user = uow.UserRepository.Add(new UserEntity
@@ -230,8 +216,6 @@ namespace FluiTec.AppFx.Identity.TestLibrary.DbTests
         [TestMethod]
         public void CanDeleteUserRole()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
             var role = uow.RoleRepository.Add(new RoleEntity {Id = Guid.NewGuid(), Name = "TestRole"});
             var user = uow.UserRepository.Add(new UserEntity

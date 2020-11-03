@@ -12,8 +12,6 @@ namespace FluiTec.AppFx.Identity.TestLibrary.DbTests
         [TestMethod]
         public void CanCreateRoleClaim()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
             var role = uow.RoleRepository.Add(new RoleEntity {Id = Guid.NewGuid(), Name = "TestRole"});
             var roleClaim = uow.RoleClaimRepository.Add(new RoleClaimEntity
@@ -30,8 +28,6 @@ namespace FluiTec.AppFx.Identity.TestLibrary.DbTests
         [TestMethod]
         public void CanReadRoleClaim()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
             var role = uow.RoleRepository.Add(new RoleEntity {Id = Guid.NewGuid(), Name = "TestRole"});
             var roleClaim = uow.RoleClaimRepository.Add(new RoleClaimEntity
@@ -49,8 +45,6 @@ namespace FluiTec.AppFx.Identity.TestLibrary.DbTests
         [TestMethod]
         public void CanGetByRole()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
             var role = uow.RoleRepository.Add(new RoleEntity {Id = Guid.NewGuid(), Name = "TestRole"});
             var roleClaim = uow.RoleClaimRepository.Add(new RoleClaimEntity
@@ -68,8 +62,6 @@ namespace FluiTec.AppFx.Identity.TestLibrary.DbTests
         [TestMethod]
         public void CanGetRoleIdsForClaimType()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
             var role = uow.RoleRepository.Add(new RoleEntity {Id = Guid.NewGuid(), Name = "TestRole"});
             var roleClaim = uow.RoleClaimRepository.Add(new RoleClaimEntity
@@ -87,8 +79,6 @@ namespace FluiTec.AppFx.Identity.TestLibrary.DbTests
         [TestMethod]
         public void CanGetByRoleAndType()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
             var role = uow.RoleRepository.Add(new RoleEntity {Id = Guid.NewGuid(), Name = "TestRole"});
             var roleClaim = uow.RoleClaimRepository.Add(new RoleClaimEntity
@@ -106,8 +96,6 @@ namespace FluiTec.AppFx.Identity.TestLibrary.DbTests
         [TestMethod]
         public void CanGetUsersForClaimType()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
             var role = uow.RoleRepository.Add(new RoleEntity {Id = Guid.NewGuid(), Name = "TestRole"});
             var roleClaim = uow.RoleClaimRepository.Add(new RoleClaimEntity
@@ -143,8 +131,6 @@ namespace FluiTec.AppFx.Identity.TestLibrary.DbTests
         [TestMethod]
         public void CanUpdateRoleClaim()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
             var role = uow.RoleRepository.Add(new RoleEntity {Id = Guid.NewGuid(), Name = "TestRole"});
             var roleClaim = uow.RoleClaimRepository.Add(new RoleClaimEntity
@@ -165,8 +151,6 @@ namespace FluiTec.AppFx.Identity.TestLibrary.DbTests
         [TestMethod]
         public void CanDeleteRoleClaim()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
             var role = uow.RoleRepository.Add(new RoleEntity {Id = Guid.NewGuid(), Name = "TestRole"});
             var roleClaim = uow.RoleClaimRepository.Add(new RoleClaimEntity

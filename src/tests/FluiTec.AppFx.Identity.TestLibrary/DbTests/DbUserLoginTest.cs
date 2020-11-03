@@ -12,8 +12,6 @@ namespace FluiTec.AppFx.Identity.TestLibrary.DbTests
         [TestMethod]
         public void CanCreateUserLogin()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
             var user = uow.UserRepository.Add(new UserEntity
             {
@@ -42,8 +40,6 @@ namespace FluiTec.AppFx.Identity.TestLibrary.DbTests
         [TestMethod]
         public void CanReadUserLogin()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
             var user = uow.UserRepository.Add(new UserEntity
             {
@@ -73,8 +69,6 @@ namespace FluiTec.AppFx.Identity.TestLibrary.DbTests
         [TestMethod]
         public void CanRemoveByNameAndKey()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
             var user = uow.UserRepository.Add(new UserEntity
             {
@@ -104,8 +98,6 @@ namespace FluiTec.AppFx.Identity.TestLibrary.DbTests
         [TestMethod]
         public void CanFindByUserId()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
             var user = uow.UserRepository.Add(new UserEntity
             {
@@ -135,8 +127,6 @@ namespace FluiTec.AppFx.Identity.TestLibrary.DbTests
         [TestMethod]
         public void CanFindByNameAndKey()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
             var user = uow.UserRepository.Add(new UserEntity
             {
@@ -166,8 +156,6 @@ namespace FluiTec.AppFx.Identity.TestLibrary.DbTests
         [TestMethod]
         public void CanUpdateUserLogin()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
             var user = uow.UserRepository.Add(new UserEntity
             {
@@ -200,8 +188,6 @@ namespace FluiTec.AppFx.Identity.TestLibrary.DbTests
         [TestMethod]
         public void CanDeleteUserLogin()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
             var user = uow.UserRepository.Add(new UserEntity
             {

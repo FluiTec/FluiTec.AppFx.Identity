@@ -1,4 +1,5 @@
-﻿using FluiTec.AppFx.Data.Dapper;
+﻿using System;
+using FluiTec.AppFx.Data.Dapper;
 using FluiTec.AppFx.Identity.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -30,6 +31,7 @@ namespace FluiTec.AppFx.Identity.TestLibrary.DbTests
 
         /// <summary>   (Unit Test Method) can create unit of work.</summary>
         [TestMethod]
+        [TestInitialize]
         public void CanCreateUnitOfWork()
         {
             AssertDbAvailable();

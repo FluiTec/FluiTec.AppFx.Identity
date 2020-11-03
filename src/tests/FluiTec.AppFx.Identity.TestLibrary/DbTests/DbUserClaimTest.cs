@@ -12,8 +12,6 @@ namespace FluiTec.AppFx.Identity.TestLibrary.DbTests
         [TestMethod]
         public void CanCreateUserClaim()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
             var user = uow.UserRepository.Add(new UserEntity
             {
@@ -46,8 +44,6 @@ namespace FluiTec.AppFx.Identity.TestLibrary.DbTests
         [TestMethod]
         public void CanReadUserClaim()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
             var user = uow.UserRepository.Add(new UserEntity
             {
@@ -81,8 +77,6 @@ namespace FluiTec.AppFx.Identity.TestLibrary.DbTests
         [TestMethod]
         public void CanGetByUser()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
             var user = uow.UserRepository.Add(new UserEntity
             {
@@ -116,8 +110,6 @@ namespace FluiTec.AppFx.Identity.TestLibrary.DbTests
         [TestMethod]
         public void CanGetUserIdsForClaimType()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
             var user = uow.UserRepository.Add(new UserEntity
             {
@@ -151,8 +143,6 @@ namespace FluiTec.AppFx.Identity.TestLibrary.DbTests
         [TestMethod]
         public void CanGetByUserAndType()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
             var user = uow.UserRepository.Add(new UserEntity
             {
@@ -186,8 +176,6 @@ namespace FluiTec.AppFx.Identity.TestLibrary.DbTests
         [TestMethod]
         public void CanUpdateUserClaim()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
             var user = uow.UserRepository.Add(new UserEntity
             {
@@ -224,8 +212,6 @@ namespace FluiTec.AppFx.Identity.TestLibrary.DbTests
         [TestMethod]
         public void CanDeleteUserClaim()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
             var user = uow.UserRepository.Add(new UserEntity
             {
