@@ -1,33 +1,33 @@
 ﻿using System;
 using System.IO;
-using FluiTec.AppFx.Data.Dapper.Mysql;
+using FluiTec.AppFx.Data.Dapper.Mssql;
 using FluiTec.AppFx.Identity.TestLibrary.DbTests;
 using FluiTec.AppFx.Options.Helpers;
 using FluiTec.AppFx.Options.Managers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace FluiTec.AppFx.Identity.Dapper.Mysql.IntegrationTests
+namespace FluiTec.AppFx.Identity.Dapper.Mssql.IntegrationTests
 {
-    /// <summary>   (Unit Test Class) a mysql test.</summary>
+    /// <summary>   (Unit Test Class) a mssql test.</summary>
     [TestClass]
     [TestCategory("Integration")]
-    public class MysqlTest : DbTest
+    public class MssqlDbTest : DbTest
     {
         /// <summary>   Initializes the options and data service.</summary>
         protected override void InitOptionsAndDataService()
         {
-            var db = Environment.GetEnvironmentVariable("MYSQL_DATABASE");
-            var pw = Environment.GetEnvironmentVariable("MYSQL_ROOT_PASSWORD");
+            var pw = Environment.GetEnvironmentVariable("SA_PASSWORD");
 
-            if (!string.IsNullOrWhiteSpace(db) && !string.IsNullOrWhiteSpace(pw))
+            if (!string.IsNullOrWhiteSpace(pw))
             {
-                ServiceOptions = new MysqlDapperServiceOptions
+                ServiceOptions = new MssqlDapperServiceOptions
                 {
-                    ConnectionString = $"Server=mysql;Database={db};Uid=root;Pwd={pw}"
+                    ConnectionString =
+                        $"Data Source=microsoft-mssql-server-linux;Initial Catalog=master;Integrated Security=False;User ID=sa;Password={pw};Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"
                 };
 
-                DataService = new MysqlIdentityDataService(ServiceOptions, null);
+                DataService = new MssqlIdentityDataService(ServiceOptions, null);
             }
             else
             {
@@ -42,13 +42,13 @@ namespace FluiTec.AppFx.Identity.Dapper.Mysql.IntegrationTests
                         .Build();
 
                     var manager = new ConfigurationManager(config);
-                    var mysqlOptions = manager.ExtractSettings<MysqlDapperServiceOptions>();
+                    var mssqlOptions = manager.ExtractSettings<MssqlDapperServiceOptions>();
 
-                    ServiceOptions = new MysqlDapperServiceOptions
+                    ServiceOptions = new MssqlDapperServiceOptions
                     {
-                        ConnectionString = mysqlOptions.ConnectionString
+                        ConnectionString = mssqlOptions.ConnectionString
                     };
-                    DataService = new MysqlIdentityDataService(ServiceOptions, null);
+                    DataService = new MssqlIdentityDataService(ServiceOptions, null);
                 }
                 catch (Exception)
                 {

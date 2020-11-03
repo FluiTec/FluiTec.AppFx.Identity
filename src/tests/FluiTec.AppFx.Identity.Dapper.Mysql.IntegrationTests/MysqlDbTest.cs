@@ -1,33 +1,33 @@
 ﻿using System;
 using System.IO;
-using FluiTec.AppFx.Data.Dapper.Pgsql;
+using FluiTec.AppFx.Data.Dapper.Mysql;
 using FluiTec.AppFx.Identity.TestLibrary.DbTests;
 using FluiTec.AppFx.Options.Helpers;
 using FluiTec.AppFx.Options.Managers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace FluiTec.AppFx.Identity.Dapper.Pgsql.IntegrationTests
+namespace FluiTec.AppFx.Identity.Dapper.Mysql.IntegrationTests
 {
-    /// <summary>   (Unit Test Class) a pgsql test.</summary>
+    /// <summary>   (Unit Test Class) a mysql test.</summary>
     [TestClass]
     [TestCategory("Integration")]
-    public class PgsqlTest : DbTest
+    public class MysqlDbTest : DbTest
     {
         /// <summary>   Initializes the options and data service.</summary>
         protected override void InitOptionsAndDataService()
         {
-            var db = Environment.GetEnvironmentVariable("POSTGRES_DB");
-            var usr = Environment.GetEnvironmentVariable("POSTGRES_USER");
+            var db = Environment.GetEnvironmentVariable("MYSQL_DATABASE");
+            var pw = Environment.GetEnvironmentVariable("MYSQL_ROOT_PASSWORD");
 
-            if (!string.IsNullOrWhiteSpace(db) && !string.IsNullOrWhiteSpace(usr))
+            if (!string.IsNullOrWhiteSpace(db) && !string.IsNullOrWhiteSpace(pw))
             {
-                ServiceOptions = new PgsqlDapperServiceOptions
+                ServiceOptions = new MysqlDapperServiceOptions
                 {
-                    ConnectionString = $"User ID={usr};Host=postgres;Database={db};Pooling=true;"
+                    ConnectionString = $"Server=mysql;Database={db};Uid=root;Pwd={pw}"
                 };
 
-                DataService = new PgsqlIdentityDataService(ServiceOptions, null);
+                DataService = new MysqlIdentityDataService(ServiceOptions, null);
             }
             else
             {
@@ -42,13 +42,13 @@ namespace FluiTec.AppFx.Identity.Dapper.Pgsql.IntegrationTests
                         .Build();
 
                     var manager = new ConfigurationManager(config);
-                    var pgsqlOptions = manager.ExtractSettings<PgsqlDapperServiceOptions>();
+                    var mysqlOptions = manager.ExtractSettings<MysqlDapperServiceOptions>();
 
-                    ServiceOptions = new PgsqlDapperServiceOptions
+                    ServiceOptions = new MysqlDapperServiceOptions
                     {
-                        ConnectionString = pgsqlOptions.ConnectionString
+                        ConnectionString = mysqlOptions.ConnectionString
                     };
-                    DataService = new PgsqlIdentityDataService(ServiceOptions, null);
+                    DataService = new MysqlIdentityDataService(ServiceOptions, null);
                 }
                 catch (Exception)
                 {

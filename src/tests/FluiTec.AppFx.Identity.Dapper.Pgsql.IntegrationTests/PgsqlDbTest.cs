@@ -1,33 +1,33 @@
 ﻿using System;
 using System.IO;
-using FluiTec.AppFx.Data.Dapper.Mssql;
+using FluiTec.AppFx.Data.Dapper.Pgsql;
 using FluiTec.AppFx.Identity.TestLibrary.DbTests;
 using FluiTec.AppFx.Options.Helpers;
 using FluiTec.AppFx.Options.Managers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace FluiTec.AppFx.Identity.Dapper.Mssql.IntegrationTests
+namespace FluiTec.AppFx.Identity.Dapper.Pgsql.IntegrationTests
 {
-    /// <summary>   (Unit Test Class) a mssql test.</summary>
+    /// <summary>   (Unit Test Class) a pgsql test.</summary>
     [TestClass]
     [TestCategory("Integration")]
-    public class MssqlTest : DbTest
+    public class PgsqlDbTest : DbTest
     {
         /// <summary>   Initializes the options and data service.</summary>
         protected override void InitOptionsAndDataService()
         {
-            var pw = Environment.GetEnvironmentVariable("SA_PASSWORD");
+            var db = Environment.GetEnvironmentVariable("POSTGRES_DB");
+            var usr = Environment.GetEnvironmentVariable("POSTGRES_USER");
 
-            if (!string.IsNullOrWhiteSpace(pw))
+            if (!string.IsNullOrWhiteSpace(db) && !string.IsNullOrWhiteSpace(usr))
             {
-                ServiceOptions = new MssqlDapperServiceOptions
+                ServiceOptions = new PgsqlDapperServiceOptions
                 {
-                    ConnectionString =
-                        $"Data Source=microsoft-mssql-server-linux;Initial Catalog=master;Integrated Security=False;User ID=sa;Password={pw};Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"
+                    ConnectionString = $"User ID={usr};Host=postgres;Database={db};Pooling=true;"
                 };
 
-                DataService = new MssqlIdentityDataService(ServiceOptions, null);
+                DataService = new PgsqlIdentityDataService(ServiceOptions, null);
             }
             else
             {
@@ -42,13 +42,13 @@ namespace FluiTec.AppFx.Identity.Dapper.Mssql.IntegrationTests
                         .Build();
 
                     var manager = new ConfigurationManager(config);
-                    var mssqlOptions = manager.ExtractSettings<MssqlDapperServiceOptions>();
+                    var pgsqlOptions = manager.ExtractSettings<PgsqlDapperServiceOptions>();
 
-                    ServiceOptions = new MssqlDapperServiceOptions
+                    ServiceOptions = new PgsqlDapperServiceOptions
                     {
-                        ConnectionString = mssqlOptions.ConnectionString
+                        ConnectionString = pgsqlOptions.ConnectionString
                     };
-                    DataService = new MssqlIdentityDataService(ServiceOptions, null);
+                    DataService = new PgsqlIdentityDataService(ServiceOptions, null);
                 }
                 catch (Exception)
                 {
