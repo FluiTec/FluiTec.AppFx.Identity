@@ -36,19 +36,6 @@ namespace FluiTec.AppFx.Identity.Dapper.Schema.Migration.Versions
         /// <summary>   Collects the DOWN migration expressions.</summary>
         public override void Down()
         {
-            // remove constraints
-            IfDatabase("sqlserver", "postgres")
-                .Delete
-                .UniqueConstraint(UniqueNameIndexName)
-                .FromTable(SchemaGlobals.RoleTable)
-                .InSchema(SchemaGlobals.Schema);
-
-            IfDatabase("sqlserver", "postgres")
-                .Delete
-                .UniqueConstraint(UniqueNormalizedNameIndexName)
-                .FromTable(SchemaGlobals.RoleTable)
-                .InSchema(SchemaGlobals.Schema);
-
             // remove tables
             IfDatabase("sqlserver", "postgres")
                 .Delete

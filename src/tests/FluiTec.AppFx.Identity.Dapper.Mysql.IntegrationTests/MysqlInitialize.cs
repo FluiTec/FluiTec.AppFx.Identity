@@ -1,8 +1,5 @@
 ﻿using System;
 using System.IO;
-using FluentMigrator.Runner;
-using FluiTec.AppFx.Data.Dapper.DataServices;
-using FluiTec.AppFx.Data.Dapper.Migration;
 using FluiTec.AppFx.Data.Dapper.Mysql;
 using FluiTec.AppFx.Identity.TestLibrary.Configuration;
 using FluiTec.AppFx.Options.Helpers;
@@ -13,8 +10,12 @@ namespace FluiTec.AppFx.Identity.Dapper.Mysql.IntegrationTests
 {
     /// <summary>   An initialize.</summary>
     [TestClass]
-    public static class Initialize
+    public static class MysqlInitialize
     {
+        internal static MysqlDapperServiceOptions ServiceOptions;
+
+        internal static MysqlIdentityDataService DataService;
+
         /// <summary>   Initializes this Initialize.</summary>
         [AssemblyInitialize]
         public static void Init(TestContext context)
@@ -22,17 +23,14 @@ namespace FluiTec.AppFx.Identity.Dapper.Mysql.IntegrationTests
             var db = Environment.GetEnvironmentVariable("MYSQL_DATABASE");
             var pw = Environment.GetEnvironmentVariable("MYSQL_ROOT_PASSWORD");
 
-            MysqlDapperServiceOptions serviceOptions = null;
-            MysqlIdentityDataService dataService = null;
-
             if (!string.IsNullOrWhiteSpace(db) && !string.IsNullOrWhiteSpace(pw))
             {
-                serviceOptions = new MysqlDapperServiceOptions
+                ServiceOptions = new MysqlDapperServiceOptions
                 {
                     ConnectionString = $"Server=mysql;Database={db};Uid=root;Pwd={pw}"
                 };
 
-                dataService = new MysqlIdentityDataService(serviceOptions, null);
+                DataService = new MysqlIdentityDataService(ServiceOptions, null);
             }
             else
             {
@@ -59,24 +57,17 @@ namespace FluiTec.AppFx.Identity.Dapper.Mysql.IntegrationTests
                     MysqlAdminHelper.CreateDababase(options.AdminConnectionString, options.IntegrationDb);
                     MysqlAdminHelper.CreateUserAndLogin(options.AdminConnectionString, options.IntegrationDb, options.IntegrationUser, options.IntegrationPassword);
 
-                    serviceOptions = new MysqlDapperServiceOptions
+                    ServiceOptions = new MysqlDapperServiceOptions
                     {
                         ConnectionString = mysqlOptions.ConnectionString
                     };
-                    dataService = new MysqlIdentityDataService(serviceOptions, null);
+                    DataService = new MysqlIdentityDataService(ServiceOptions, null);
                 }
                 catch (Exception)
                 {
                     // ignore
                 }
             }
-
-            if (serviceOptions == null || dataService == null) return;
-
-            var migrator = new DapperDataMigrator(serviceOptions.ConnectionString,
-                new[] { (typeof(DapperIdentityDataService)).Assembly }, ((IDapperDataService)dataService).MetaData,
-                builder => builder.AddMySql5());
-            migrator.Migrate();
         }
     }
 }

@@ -40,7 +40,7 @@ namespace FluiTec.AppFx.Identity.Dapper.Schema.Migration.Versions
             IfDatabase("sqlserver", "postgres")
                 .Delete
                 .ForeignKey(ForeignKeyUserUserClaim)
-                .OnTable(SchemaGlobals.UserTable)
+                .OnTable(SchemaGlobals.UserClaimTable)
                 .InSchema(SchemaGlobals.Schema);
 
             // remove tables

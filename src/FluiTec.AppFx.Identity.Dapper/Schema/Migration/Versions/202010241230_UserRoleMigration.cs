@@ -42,13 +42,13 @@ namespace FluiTec.AppFx.Identity.Dapper.Schema.Migration.Versions
             IfDatabase("sqlserver", "postgres")
                 .Delete
                 .ForeignKey(ForeignKeyUserUserRole)
-                .OnTable(SchemaGlobals.UserLoginTable)
+                .OnTable(SchemaGlobals.UserRoleTable)
                 .InSchema(SchemaGlobals.Schema);
 
             IfDatabase("sqlserver", "postgres")
                 .Delete
                 .ForeignKey(ForeignKeyRoleUserRole)
-                .OnTable(SchemaGlobals.UserLoginTable)
+                .OnTable(SchemaGlobals.UserRoleTable)
                 .InSchema(SchemaGlobals.Schema);
 
             // remove tables

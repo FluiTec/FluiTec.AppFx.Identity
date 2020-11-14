@@ -1,9 +1,5 @@
-﻿using System;
-using System.IO;
-using FluiTec.AppFx.Data.Dapper.Mssql;
+﻿using FluiTec.AppFx.Data.Dapper.DataServices;
 using FluiTec.AppFx.Identity.TestLibrary;
-using FluiTec.AppFx.Options.Helpers;
-using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace FluiTec.AppFx.Identity.Dapper.Mssql.IntegrationTests
@@ -16,44 +12,20 @@ namespace FluiTec.AppFx.Identity.Dapper.Mssql.IntegrationTests
         /// <summary>   Initializes the options and data service.</summary>
         protected override void InitOptionsAndDataService()
         {
-            var pw = Environment.GetEnvironmentVariable("SA_PASSWORD");
+            DataService = MssqlInitialize.DataService;
+            ServiceOptions = MssqlInitialize.ServiceOptions;
+        }
 
-            if (!string.IsNullOrWhiteSpace(pw))
-            {
-                ServiceOptions = new MssqlDapperServiceOptions
-                {
-                    ConnectionString =
-                        $"Data Source=microsoft-mssql-server-linux;Initial Catalog=master;Integrated Security=False;User ID=sa;Password={pw};Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"
-                };
+        [TestInitialize]
+        public void TestStart()
+        {
+            BaseInitialize.MigrateUp(ServiceOptions, (IDapperDataService)DataService);
+        }
 
-                DataService = new MssqlIdentityDataService(ServiceOptions, null);
-            }
-            else
-            {
-                try
-                {
-                    var path = DirectoryHelper.GetApplicationRoot();
-                    var parent = Directory.GetParent(path).Parent?.Parent?.FullName;
-                    var config = new ConfigurationBuilder()
-                        .SetBasePath(parent)
-                        .AddJsonFile("appsettings.integration.json", false, true)
-                        .AddJsonFile("appsettings.integration.secret.json", true, true)
-                        .Build();
-
-                    var manager = new Options.Managers.ConfigurationManager(config);
-                    var mssqlOptions = manager.ExtractSettings<MssqlDapperServiceOptions>();
-
-                    ServiceOptions = new MssqlDapperServiceOptions
-                    {
-                        ConnectionString = mssqlOptions.ConnectionString
-                    };
-                    DataService = new MssqlIdentityDataService(ServiceOptions, null);
-                }
-                catch (Exception)
-                {
-                    // ignore
-                }
-            }
+        [TestCleanup]
+        public void TestStop()
+        {
+            BaseInitialize.MigrateDown(ServiceOptions, (IDapperDataService)DataService);
         }
     }
 }
