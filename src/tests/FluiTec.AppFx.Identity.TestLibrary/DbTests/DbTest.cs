@@ -1,5 +1,4 @@
-﻿using System;
-using FluiTec.AppFx.Data.Dapper;
+﻿using FluiTec.AppFx.Data.Dapper;
 using FluiTec.AppFx.Identity.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

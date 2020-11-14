@@ -1,8 +1,5 @@
 ﻿using System;
 using System.IO;
-using FluentMigrator.Runner;
-using FluiTec.AppFx.Data.Dapper.DataServices;
-using FluiTec.AppFx.Data.Dapper.Migration;
 using FluiTec.AppFx.Data.Dapper.Pgsql;
 using FluiTec.AppFx.Identity.TestLibrary.Configuration;
 using FluiTec.AppFx.Options.Helpers;
@@ -14,8 +11,12 @@ namespace FluiTec.AppFx.Identity.Dapper.Pgsql.IntegrationTests
 {
     /// <summary>   An initialize.</summary>
     [TestClass]
-    public static class Initialize
+    public static class PgsqlInitialize
     {
+        internal static PgsqlDapperServiceOptions ServiceOptions;
+
+        internal static PgsqlIdentityDataService DataService;
+
         /// <summary>   Initializes this Initialize.</summary>
         [AssemblyInitialize]
         public static void Init(TestContext context)
@@ -23,17 +24,14 @@ namespace FluiTec.AppFx.Identity.Dapper.Pgsql.IntegrationTests
             var db = Environment.GetEnvironmentVariable("POSTGRES_DB");
             var usr = Environment.GetEnvironmentVariable("POSTGRES_USER");
 
-            PgsqlDapperServiceOptions serviceOptions = null;
-            PgsqlIdentityDataService dataService = null;
-
             if (!string.IsNullOrWhiteSpace(db) && !string.IsNullOrWhiteSpace(usr))
             {
-                serviceOptions = new PgsqlDapperServiceOptions
+                ServiceOptions = new PgsqlDapperServiceOptions
                 {
                     ConnectionString = $"User ID={usr};Host=postgres;Database={db};Pooling=true;"
                 };
 
-                dataService = new PgsqlIdentityDataService(serviceOptions, null);
+                DataService = new PgsqlIdentityDataService(ServiceOptions, null);
             }
             else
             {
@@ -61,24 +59,17 @@ namespace FluiTec.AppFx.Identity.Dapper.Pgsql.IntegrationTests
                     PgsqlAdminHelper.CreateUserAndLogin(options.AdminConnectionString, options.IntegrationDb,
                         options.IntegrationUser, options.IntegrationPassword);
 
-                    serviceOptions = new PgsqlDapperServiceOptions
+                    ServiceOptions = new PgsqlDapperServiceOptions
                     {
                         ConnectionString = pgsqlOptions.ConnectionString
                     };
-                    dataService = new PgsqlIdentityDataService(serviceOptions, null);
+                    DataService = new PgsqlIdentityDataService(ServiceOptions, null);
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine(e);
                 }
             }
-
-            if (serviceOptions == null || dataService == null) return;
-
-            var migrator = new DapperDataMigrator(serviceOptions.ConnectionString,
-                new[] {typeof(DapperIdentityDataService).Assembly}, ((IDapperDataService) dataService).MetaData,
-                builder => builder.AddPostgres());
-            migrator.Migrate();
         }
     }
 }

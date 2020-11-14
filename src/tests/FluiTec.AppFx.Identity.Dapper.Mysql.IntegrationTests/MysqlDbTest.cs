@@ -28,7 +28,7 @@ namespace FluiTec.AppFx.Identity.Dapper.Mysql.IntegrationTests
         [TestCleanup]
         public void TestStop()
         {
-            //BaseInitialize.MigrateDown(ServiceOptions, (IDapperDataService)DataService);
+            BaseInitialize.MigrateDown(ServiceOptions, (IDapperDataService)DataService);
         }
     }
 }

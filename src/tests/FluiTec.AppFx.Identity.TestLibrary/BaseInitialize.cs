@@ -41,6 +41,18 @@ namespace FluiTec.AppFx.Identity.TestLibrary
             migrator.Migrate();
         }
 
+        /// <summary>   Migrate down.</summary>
+        /// <param name="serviceOptions">   Options for controlling the service. </param>
+        /// <param name="dataService">      The data service. </param>
+        public static void MigrateDown(IDapperServiceOptions serviceOptions, IDapperDataService dataService)
+        {
+            if (serviceOptions == null || dataService == null) return;
+
+            var migrator = new DapperDataMigrator(serviceOptions.ConnectionString,
+                new[] { typeof(DapperIdentityDataService).Assembly }, dataService.MetaData, builder => ConfigureSqlProvider(dataService, builder));
+            migrator.Migrate(default);
+        }
+
         /// <summary>   Configure SQL provider.</summary>
         /// <param name="dataService">  The data service. </param>
         /// <param name="builder">      The builder. </param>
@@ -62,19 +74,6 @@ namespace FluiTec.AppFx.Identity.TestLibrary
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-        }
-
-        /// <summary>   Migrate down.</summary>
-        /// <param name="serviceOptions">   Options for controlling the service. </param>
-        /// <param name="dataService">      The data service. </param>
-        public static void MigrateDown(IDapperServiceOptions serviceOptions, IDapperDataService dataService)
-        {
-            if (serviceOptions == null || dataService == null) return;
-
-            var migrator = new DapperDataMigrator(serviceOptions.ConnectionString,
-                new[] { typeof(DapperIdentityDataService).Assembly }, dataService.MetaData,
-                builder => builder.AddSqlServer());
-            migrator.Migrate(default);
         }
     }
 }
