@@ -1,17 +1,43 @@
-﻿using FluiTec.AppFx.Data.Dapper;
+﻿using System;
+using FluiTec.AppFx.Data.Dapper;
 using FluiTec.AppFx.Identity.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace FluiTec.AppFx.Identity.TestLibrary
+namespace FluiTec.AppFx.Identity.TestLibrary.DbTests
 {
     /// <summary>   A database test.</summary>
     public abstract partial class DbTest
     {
+        #region Constructors
+
+        /// <summary>   Specialized default constructor for use only by derived class.</summary>
+        protected DbTest()
+        {
+            // ReSharper disable once VirtualMemberCallInConstructor
+            InitOptionsAndDataService();
+        }
+
+        #endregion
+
         #region Fields
 
         /// <summary>   Gets a value indicating whether the database is available.</summary>
         /// <value> True if the database is available, false if not.</value>
         protected bool IsDbAvailable => ServiceOptions != null;
+
+        #endregion
+
+        #region TestMethods
+
+        /// <summary>   (Unit Test Method) can create unit of work.</summary>
+        [TestMethod]
+        [TestInitialize]
+        public void CanCreateUnitOfWork()
+        {
+            AssertDbAvailable();
+
+            using var uow = DataService.BeginUnitOfWork();
+        }
 
         #endregion
 
@@ -27,17 +53,6 @@ namespace FluiTec.AppFx.Identity.TestLibrary
 
         #endregion
 
-        #region Constructors
-
-        /// <summary>   Specialized default constructor for use only by derived class.</summary>
-        protected DbTest()
-        {
-            // ReSharper disable once VirtualMemberCallInConstructor
-            InitOptionsAndDataService();
-        }
-
-        #endregion
-
         #region Methods
 
         /// <summary>   Initializes the options and data service.</summary>
@@ -49,19 +64,6 @@ namespace FluiTec.AppFx.Identity.TestLibrary
             Assert.IsTrue(IsDbAvailable, "DB NOT AVAILABLE!");
         }
 
-        #endregion
-
-        #region TestMethods
-
-        /// <summary>   (Unit Test Method) can create unit of work.</summary>
-        [TestMethod]
-        public void CanCreateUnitOfWork()
-        {
-            AssertDbAvailable();
-
-            using var uow = DataService.BeginUnitOfWork();
-        }
-        
         #endregion
     }
 }

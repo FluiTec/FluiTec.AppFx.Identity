@@ -27,8 +27,10 @@ namespace FluiTec.AppFx.Identity.Data.Repositories
 
         /// <summary>   Finds the identifiers in this collection.</summary>
         /// <param name="roleIds">    The roleIds. </param>
-        /// <returns>An enumerator that allows foreach to be used to process the identifiers in this
-        /// collection.</returns>
+        /// <returns>
+        ///     An enumerator that allows foreach to be used to process the identifiers in this
+        ///     collection.
+        /// </returns>
         IEnumerable<RoleEntity> FindByIds(IEnumerable<Guid> roleIds);
     }
 }

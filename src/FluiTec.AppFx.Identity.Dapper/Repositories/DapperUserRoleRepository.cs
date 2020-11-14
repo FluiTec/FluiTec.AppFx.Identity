@@ -12,14 +12,16 @@ using Microsoft.Extensions.Logging;
 namespace FluiTec.AppFx.Identity.Dapper.Repositories
 {
     /// <summary>   A dapper user role repository.</summary>
-    public class DapperUserRoleRepository : DapperWritableKeyTableDataRepository<UserRoleEntity, int>, IUserRoleRepository
+    public class DapperUserRoleRepository : DapperWritableKeyTableDataRepository<UserRoleEntity, int>,
+        IUserRoleRepository
     {
         #region Constructors
 
         /// <summary>   Constructor.</summary>
         /// <param name="unitOfWork">   The unit of work. </param>
         /// <param name="logger">       The logger. </param>
-        public DapperUserRoleRepository(DapperUnitOfWork unitOfWork, ILogger<IRepository> logger) : base(unitOfWork, logger)
+        public DapperUserRoleRepository(DapperUnitOfWork unitOfWork, ILogger<IRepository> logger) : base(unitOfWork,
+            logger)
         {
         }
 
@@ -33,10 +35,10 @@ namespace FluiTec.AppFx.Identity.Dapper.Repositories
         /// <returns>   The found user identifier and role identifier.</returns>
         public UserRoleEntity FindByUserIdAndRoleId(Guid userId, Guid roleId)
         {
-            var command = SqlBuilder.SelectByFilter(EntityType, 
-                new[] { nameof(UserRoleEntity.UserId), nameof(UserRoleEntity.RoleId) });
+            var command = SqlBuilder.SelectByFilter(EntityType,
+                new[] {nameof(UserRoleEntity.UserId), nameof(UserRoleEntity.RoleId)});
             return UnitOfWork.Connection.QuerySingleOrDefault<UserRoleEntity>(command,
-                new { UserId = userId, RoleId = roleId }, UnitOfWork.Transaction);
+                new {UserId = userId, RoleId = roleId}, UnitOfWork.Transaction);
         }
 
         /// <summary>   Finds the users in this collection.</summary>
@@ -44,10 +46,10 @@ namespace FluiTec.AppFx.Identity.Dapper.Repositories
         /// <returns>An enumerator that allows foreach to be used to process the users in this collection.</returns>
         public IEnumerable<RoleEntity> FindByUser(UserEntity user)
         {
-            var cmdUserRoles = SqlBuilder.SelectByFilter(EntityType, 
+            var cmdUserRoles = SqlBuilder.SelectByFilter(EntityType,
                 new[] {nameof(UserRoleEntity.UserId)});
-            var userRoles = UnitOfWork.Connection.Query<UserRoleEntity>(cmdUserRoles, 
-                new { UserId = user.Id}, UnitOfWork.Transaction);
+            var userRoles = UnitOfWork.Connection.Query<UserRoleEntity>(cmdUserRoles,
+                new {UserId = user.Id}, UnitOfWork.Transaction);
 
             return UnitOfWork.GetRepository<IRoleRepository>().FindByIds(userRoles.Select(ur => ur.RoleId).ToList());
         }
@@ -58,9 +60,9 @@ namespace FluiTec.AppFx.Identity.Dapper.Repositories
         public IEnumerable<UserEntity> FindByRole(RoleEntity role)
         {
             var cmdUserRoles = SqlBuilder.SelectByFilter(EntityType,
-                new[] { nameof(UserRoleEntity.RoleId) });
+                new[] {nameof(UserRoleEntity.RoleId)});
             var userRoles = UnitOfWork.Connection.Query<UserRoleEntity>(cmdUserRoles,
-                new { RoleId = role.Id }, UnitOfWork.Transaction);
+                new {RoleId = role.Id}, UnitOfWork.Transaction);
 
             return UnitOfWork.GetRepository<IUserRepository>().FindByIds(userRoles.Select(ur => ur.UserId).ToList());
         }
@@ -78,7 +80,7 @@ namespace FluiTec.AppFx.Identity.Dapper.Repositories
         public void RemoveByRole(RoleEntity role)
         {
             var command = SqlBuilder.DeleteBy(EntityType, nameof(UserRoleEntity.RoleId));
-            UnitOfWork.Connection.Execute(command, new { RoleId = role.Id }, UnitOfWork.Transaction);
+            UnitOfWork.Connection.Execute(command, new {RoleId = role.Id}, UnitOfWork.Transaction);
         }
 
         #endregion

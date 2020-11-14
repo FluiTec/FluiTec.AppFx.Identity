@@ -6,6 +6,5 @@ namespace FluiTec.AppFx.Identity.TestLibrary.Configuration
     [ConfigurationKey("Pgsql")]
     public class PgsqlAdminOptions : DbAdminOptions
     {
-
     }
 }

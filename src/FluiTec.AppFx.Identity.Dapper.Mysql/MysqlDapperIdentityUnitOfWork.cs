@@ -14,7 +14,8 @@ namespace FluiTec.AppFx.Identity.Dapper.Mysql
         /// <summary>   Constructor. </summary>
         /// <param name="dataService">  The data service. </param>
         /// <param name="logger">       The logger. </param>
-        public MysqlDapperIdentityUnitOfWork(IDapperDataService dataService, ILogger<IUnitOfWork> logger) : base(dataService, logger)
+        public MysqlDapperIdentityUnitOfWork(IDapperDataService dataService, ILogger<IUnitOfWork> logger) : base(
+            dataService, logger)
         {
         }
 
@@ -22,7 +23,8 @@ namespace FluiTec.AppFx.Identity.Dapper.Mysql
         /// <param name="parentUnitOfWork"> The parent unit of work. </param>
         /// <param name="dataService">      The data service. </param>
         /// <param name="logger">           The logger. </param>
-        public MysqlDapperIdentityUnitOfWork(DapperUnitOfWork parentUnitOfWork, IDataService dataService, ILogger<IUnitOfWork> logger) : base(parentUnitOfWork, dataService, logger)
+        public MysqlDapperIdentityUnitOfWork(DapperUnitOfWork parentUnitOfWork, IDataService dataService,
+            ILogger<IUnitOfWork> logger) : base(parentUnitOfWork, dataService, logger)
         {
         }
 
@@ -31,7 +33,7 @@ namespace FluiTec.AppFx.Identity.Dapper.Mysql
         {
             base.RegisterRepositories();
             RepositoryProviders.Add(typeof(IUserRepository),
-                (uow, log) => new MysqlDapperUserRepository((DapperIdentityUnitOfWork)uow, log));
+                (uow, log) => new MysqlDapperUserRepository((DapperIdentityUnitOfWork) uow, log));
         }
     }
 }

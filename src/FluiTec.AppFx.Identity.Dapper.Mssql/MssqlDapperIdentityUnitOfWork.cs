@@ -14,7 +14,8 @@ namespace FluiTec.AppFx.Identity.Dapper.Mssql
         /// <summary>   Constructor. </summary>
         /// <param name="dataService">  The data service. </param>
         /// <param name="logger">       The logger. </param>
-        public MssqlDapperIdentityUnitOfWork(IDapperDataService dataService, ILogger<IUnitOfWork> logger) : base(dataService, logger)
+        public MssqlDapperIdentityUnitOfWork(IDapperDataService dataService, ILogger<IUnitOfWork> logger) : base(
+            dataService, logger)
         {
         }
 
@@ -22,7 +23,8 @@ namespace FluiTec.AppFx.Identity.Dapper.Mssql
         /// <param name="parentUnitOfWork"> The parent unit of work. </param>
         /// <param name="dataService">      The data service. </param>
         /// <param name="logger">           The logger. </param>
-        public MssqlDapperIdentityUnitOfWork(DapperUnitOfWork parentUnitOfWork, IDataService dataService, ILogger<IUnitOfWork> logger) : base(parentUnitOfWork, dataService, logger)
+        public MssqlDapperIdentityUnitOfWork(DapperUnitOfWork parentUnitOfWork, IDataService dataService,
+            ILogger<IUnitOfWork> logger) : base(parentUnitOfWork, dataService, logger)
         {
         }
 
@@ -31,7 +33,7 @@ namespace FluiTec.AppFx.Identity.Dapper.Mssql
         {
             base.RegisterRepositories();
             RepositoryProviders.Add(typeof(IUserRepository),
-                (uow, log) => new MssqlDapperUserRepository((DapperIdentityUnitOfWork)uow, log));
+                (uow, log) => new MssqlDapperUserRepository((DapperIdentityUnitOfWork) uow, log));
         }
     }
 }

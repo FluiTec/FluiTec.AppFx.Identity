@@ -9,10 +9,6 @@ namespace FluiTec.AppFx.Identity.Data.Entities
     [EntityName(SchemaGlobals.Schema, SchemaGlobals.RoleTable)]
     public class RoleEntity : IKeyEntity<Guid>
     {
-        /// <summary>   Gets or sets the identifier. </summary>
-        /// <value> The identifier. </value>
-        public Guid Id { get; set; }
-
         /// <summary>   Gets or sets the name. </summary>
         /// <value> The name. </value>
         public string Name { get; set; }
@@ -20,5 +16,9 @@ namespace FluiTec.AppFx.Identity.Data.Entities
         /// <summary>   Gets the name of the normalized. </summary>
         /// <value> The name of the normalized. </value>
         public string NormalizedName => Name?.ToUpper();
+
+        /// <summary>   Gets or sets the identifier. </summary>
+        /// <value> The identifier. </value>
+        public Guid Id { get; set; }
     }
 }

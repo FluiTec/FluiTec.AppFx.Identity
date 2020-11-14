@@ -3,7 +3,7 @@ using System.Linq;
 using FluiTec.AppFx.Identity.Data.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace FluiTec.AppFx.Identity.TestLibrary
+namespace FluiTec.AppFx.Identity.TestLibrary.DbTests
 {
     /// <summary>   A database test.</summary>
     public abstract partial class DbTest
@@ -12,8 +12,6 @@ namespace FluiTec.AppFx.Identity.TestLibrary
         [TestMethod]
         public void CanCreateUserClaim()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
             var user = uow.UserRepository.Add(new UserEntity
             {
@@ -34,8 +32,8 @@ namespace FluiTec.AppFx.Identity.TestLibrary
             });
             var userClaim = uow.UserClaimRepository.Add(new UserClaimEntity
             {
-                UserId = user.Id, 
-                Type = "tUserClaim", 
+                UserId = user.Id,
+                Type = "tUserClaim",
                 Value = "vUserClaim"
             });
 
@@ -46,8 +44,6 @@ namespace FluiTec.AppFx.Identity.TestLibrary
         [TestMethod]
         public void CanReadUserClaim()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
             var user = uow.UserRepository.Add(new UserEntity
             {
@@ -81,8 +77,6 @@ namespace FluiTec.AppFx.Identity.TestLibrary
         [TestMethod]
         public void CanGetByUser()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
             var user = uow.UserRepository.Add(new UserEntity
             {
@@ -116,8 +110,6 @@ namespace FluiTec.AppFx.Identity.TestLibrary
         [TestMethod]
         public void CanGetUserIdsForClaimType()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
             var user = uow.UserRepository.Add(new UserEntity
             {
@@ -151,8 +143,6 @@ namespace FluiTec.AppFx.Identity.TestLibrary
         [TestMethod]
         public void CanGetByUserAndType()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
             var user = uow.UserRepository.Add(new UserEntity
             {
@@ -186,8 +176,6 @@ namespace FluiTec.AppFx.Identity.TestLibrary
         [TestMethod]
         public void CanUpdateUserClaim()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
             var user = uow.UserRepository.Add(new UserEntity
             {
@@ -224,8 +212,6 @@ namespace FluiTec.AppFx.Identity.TestLibrary
         [TestMethod]
         public void CanDeleteUserClaim()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
             var user = uow.UserRepository.Add(new UserEntity
             {

@@ -3,7 +3,7 @@ using System.Linq;
 using FluiTec.AppFx.Identity.Data.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace FluiTec.AppFx.Identity.TestLibrary
+namespace FluiTec.AppFx.Identity.TestLibrary.DbTests
 {
     /// <summary>   A database test.</summary>
     public abstract partial class DbTest
@@ -12,8 +12,6 @@ namespace FluiTec.AppFx.Identity.TestLibrary
         [TestMethod]
         public void CanCreateUser()
         {
-            AssertDbAvailable();
-            
             using var uow = DataService.BeginUnitOfWork();
             var entity = uow.UserRepository.Add(new UserEntity
             {
@@ -39,8 +37,6 @@ namespace FluiTec.AppFx.Identity.TestLibrary
         [TestMethod]
         public void CanReadUser()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
             var entity = uow.UserRepository.Add(new UserEntity
             {
@@ -68,8 +64,6 @@ namespace FluiTec.AppFx.Identity.TestLibrary
         [TestMethod]
         public void CanReadUserByIdentifier()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
             var entity = uow.UserRepository.Add(new UserEntity
             {
@@ -97,8 +91,6 @@ namespace FluiTec.AppFx.Identity.TestLibrary
         [TestMethod]
         public void CanFindUserByNormalizedName()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
             var entity = uow.UserRepository.Add(new UserEntity
             {
@@ -126,8 +118,6 @@ namespace FluiTec.AppFx.Identity.TestLibrary
         [TestMethod]
         public void CanFindUserByNormalizedEmail()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
             var entity = uow.UserRepository.Add(new UserEntity
             {
@@ -155,8 +145,6 @@ namespace FluiTec.AppFx.Identity.TestLibrary
         [TestMethod]
         public void CanFindUserByIds()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
             var entity = uow.UserRepository.Add(new UserEntity
             {
@@ -176,8 +164,8 @@ namespace FluiTec.AppFx.Identity.TestLibrary
                 TwoFactorEnabled = false
             });
 
-            var searchResult1 = uow.UserRepository.FindByIds(new[] { entity.Id });
-            var searchResult2 = uow.UserRepository.FindByIds(new[] { entity.Id, Guid.NewGuid() });
+            var searchResult1 = uow.UserRepository.FindByIds(new[] {entity.Id});
+            var searchResult2 = uow.UserRepository.FindByIds(new[] {entity.Id, Guid.NewGuid()});
 
             Assert.IsTrue(searchResult1.Any(sr => sr.Id == entity.Id));
             Assert.IsTrue(searchResult2.Any(sr => sr.Id == entity.Id));
@@ -187,8 +175,6 @@ namespace FluiTec.AppFx.Identity.TestLibrary
         [TestMethod]
         public void CanFindByLogin()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
             var user = uow.UserRepository.Add(new UserEntity
             {
@@ -207,7 +193,8 @@ namespace FluiTec.AppFx.Identity.TestLibrary
                 SecurityStamp = "<>",
                 TwoFactorEnabled = false
             });
-            var userLogin = uow.LoginRepository.Add(new UserLoginEntity { UserId = user.Id, ProviderKey = "Auth", ProviderDisplayName = "Auth", ProviderName = "Auth" });
+            var userLogin = uow.LoginRepository.Add(new UserLoginEntity
+                {UserId = user.Id, ProviderKey = "Auth", ProviderDisplayName = "Auth", ProviderName = "Auth"});
 
             var dbEntity = uow.UserRepository.FindByLogin(userLogin.ProviderName, userLogin.ProviderKey);
             Assert.AreEqual(user.Id, dbEntity.Id);
@@ -217,10 +204,8 @@ namespace FluiTec.AppFx.Identity.TestLibrary
         [TestMethod]
         public void CanFindAllClaims()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
-            var role = uow.RoleRepository.Add(new RoleEntity { Id = Guid.NewGuid(), Name = "TestRole" });
+            var role = uow.RoleRepository.Add(new RoleEntity {Id = Guid.NewGuid(), Name = "TestRole"});
             var user = uow.UserRepository.Add(new UserEntity
             {
                 Id = Guid.NewGuid(),
@@ -262,8 +247,6 @@ namespace FluiTec.AppFx.Identity.TestLibrary
         [TestMethod]
         public void CanUpdateUser()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
             var entity = uow.UserRepository.Add(new UserEntity
             {
@@ -294,8 +277,6 @@ namespace FluiTec.AppFx.Identity.TestLibrary
         [TestMethod]
         public void CanDeleteUser()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
             var entity = uow.UserRepository.Add(new UserEntity
             {

@@ -5,7 +5,7 @@ using FluiTec.AppFx.Identity.Data.Schema;
 namespace FluiTec.AppFx.Identity.Dapper.Schema.Migration.Versions
 {
     /// <summary>   A 202010241204 user login migration.</summary>
-    [DapperMigration(2020,10,24,12,04, "Achim Schnell")]
+    [DapperMigration(2020, 10, 24, 12, 04, "Achim Schnell")]
     public class _202010241204_UserLoginMigration : FluentMigrator.Migration
     {
         /// <summary>   Name of the foreign key for user/userlogin. </summary>
@@ -26,7 +26,8 @@ namespace FluiTec.AppFx.Identity.Dapper.Schema.Migration.Versions
                 .WithColumn(nameof(UserLoginEntity.ProviderKey)).AsString(45).NotNullable()
                 .WithColumn(nameof(UserLoginEntity.ProviderDisplayName)).AsString(255).Nullable()
                 .WithColumn(nameof(UserLoginEntity.UserId)).AsGuid().NotNullable()
-                    .ForeignKey(ForeignKeyUserUserLogin, SchemaGlobals.Schema, SchemaGlobals.UserTable, nameof(UserEntity.Id));
+                .ForeignKey(ForeignKeyUserUserLogin, SchemaGlobals.Schema, SchemaGlobals.UserTable,
+                    nameof(UserEntity.Id));
 
             IfDatabase("sqlserver", "postgres")
                 .Create

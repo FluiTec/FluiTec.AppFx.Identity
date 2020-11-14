@@ -16,8 +16,10 @@ namespace Microsoft.Extensions.DependencyInjection
     /// <summary>   A dynamic identity data configuration extension.</summary>
     public static class DynamicIdentityDataConfigurationExtension
     {
-        /// <summary>An IServiceCollection extension method that configure dynamic identity data
-        /// provider.</summary>
+        /// <summary>
+        ///     An IServiceCollection extension method that configure dynamic identity data
+        ///     provider.
+        /// </summary>
         /// <param name="services">             The services to act on. </param>
         /// <param name="configurationManager"> Manager for configuration. </param>
         /// <returns>   An IServiceCollection.</returns>

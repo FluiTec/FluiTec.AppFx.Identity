@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using FluiTec.AppFx.Data.Dapper.Mysql;
-using FluiTec.AppFx.Identity.TestLibrary.Configuration;
+using FluiTec.AppFx.Identity.TestLibrary.StoreTests;
 using FluiTec.AppFx.Options.Helpers;
 using FluiTec.AppFx.Options.Managers;
 using Microsoft.Extensions.Configuration;
@@ -9,17 +9,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace FluiTec.AppFx.Identity.Dapper.Mysql.IntegrationTests
 {
-    /// <summary>   An initialize.</summary>
+    /// <summary>   (Unit Test Class) a mysql store test. </summary>
     [TestClass]
-    public static class MysqlInitialize
+    [TestCategory("Integration")]
+    public class MysqlStoreTest : StoreTest
     {
-        internal static MysqlDapperServiceOptions ServiceOptions;
-
-        internal static MysqlIdentityDataService DataService;
-
-        /// <summary>   Initializes this Initialize.</summary>
-        [AssemblyInitialize]
-        public static void Init(TestContext context)
+        /// <summary>   Initializes the options and data service.</summary>
+        protected override void InitOptionsAndDataService()
         {
             var db = Environment.GetEnvironmentVariable("MYSQL_DATABASE");
             var pw = Environment.GetEnvironmentVariable("MYSQL_ROOT_PASSWORD");
@@ -46,18 +42,7 @@ namespace FluiTec.AppFx.Identity.Dapper.Mysql.IntegrationTests
                         .Build();
 
                     var manager = new ConfigurationManager(config);
-                    var options = manager.ExtractSettings<MysqlAdminOption>();
                     var mysqlOptions = manager.ExtractSettings<MysqlDapperServiceOptions>();
-
-                    if (string.IsNullOrWhiteSpace(options.AdminConnectionString) ||
-                        string.IsNullOrWhiteSpace(options.IntegrationDb) ||
-                        string.IsNullOrWhiteSpace(options.IntegrationUser) ||
-                        string.IsNullOrWhiteSpace(options.IntegrationPassword)) return;
-                    if (string.IsNullOrWhiteSpace(mysqlOptions.ConnectionString)) return;
-
-                    MysqlAdminHelper.CreateDababase(options.AdminConnectionString, options.IntegrationDb);
-                    MysqlAdminHelper.CreateUserAndLogin(options.AdminConnectionString, options.IntegrationDb,
-                        options.IntegrationUser, options.IntegrationPassword);
 
                     ServiceOptions = new MysqlDapperServiceOptions
                     {
@@ -65,9 +50,9 @@ namespace FluiTec.AppFx.Identity.Dapper.Mysql.IntegrationTests
                     };
                     DataService = new MysqlIdentityDataService(ServiceOptions, null);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
-                    Console.WriteLine(e);
+                    // ignore
                 }
             }
         }

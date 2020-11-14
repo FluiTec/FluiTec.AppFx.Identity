@@ -3,18 +3,17 @@ using System.Linq;
 using FluiTec.AppFx.Identity.Data.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace FluiTec.AppFx.Identity.TestLibrary
+namespace FluiTec.AppFx.Identity.TestLibrary.DbTests
 {
     /// <summary>   A database test.</summary>
     public abstract partial class DbTest
     {
-        /// <summary>   (Unit Test Method) can create user login.</summary>
+        /// <summary>   (Unit Test Method) can create user role.</summary>
         [TestMethod]
-        public void CanCreateUserLogin()
+        public void CanCreateUserRole()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
+            var role = uow.RoleRepository.Add(new RoleEntity {Id = Guid.NewGuid(), Name = "TestRole"});
             var user = uow.UserRepository.Add(new UserEntity
             {
                 Id = Guid.NewGuid(),
@@ -32,18 +31,17 @@ namespace FluiTec.AppFx.Identity.TestLibrary
                 SecurityStamp = "<>",
                 TwoFactorEnabled = false
             });
-            var userLogin = uow.LoginRepository.Add(new UserLoginEntity {UserId = user.Id, ProviderKey = "Auth", ProviderDisplayName = "Auth", ProviderName = "Auth"});
+            var userRole = uow.UserRoleRepository.Add(new UserRoleEntity {RoleId = role.Id, UserId = user.Id});
 
-            Assert.IsTrue(userLogin.Id > -1);
+            Assert.IsTrue(userRole.Id > -1);
         }
 
-        /// <summary>   (Unit Test Method) can read user login.</summary>
+        /// <summary>   (Unit Test Method) can read user role.</summary>
         [TestMethod]
-        public void CanReadUserLogin()
+        public void CanReadUserRole()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
+            var role = uow.RoleRepository.Add(new RoleEntity {Id = Guid.NewGuid(), Name = "TestRole"});
             var user = uow.UserRepository.Add(new UserEntity
             {
                 Id = Guid.NewGuid(),
@@ -61,19 +59,18 @@ namespace FluiTec.AppFx.Identity.TestLibrary
                 SecurityStamp = "<>",
                 TwoFactorEnabled = false
             });
-            var userLogin = uow.LoginRepository.Add(new UserLoginEntity { UserId = user.Id, ProviderKey = "Auth", ProviderDisplayName = "Auth", ProviderName = "Auth" });
+            var userRole = uow.UserRoleRepository.Add(new UserRoleEntity {RoleId = role.Id, UserId = user.Id});
 
-            var dbEntity = uow.LoginRepository.Get(userLogin.Id);
-            Assert.AreEqual(userLogin.UserId, dbEntity.UserId);
+            var dbEntity = uow.UserRoleRepository.Get(userRole.Id);
+            Assert.AreEqual(userRole.UserId, dbEntity.UserId);
         }
 
-        /// <summary>   (Unit Test Method) can remove by name and key.</summary>
+        /// <summary>   (Unit Test Method) can find by user identifier and role identifier.</summary>
         [TestMethod]
-        public void CanRemoveByNameAndKey()
+        public void CanFindByUserIdAndRoleId()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
+            var role = uow.RoleRepository.Add(new RoleEntity {Id = Guid.NewGuid(), Name = "TestRole"});
             var user = uow.UserRepository.Add(new UserEntity
             {
                 Id = Guid.NewGuid(),
@@ -91,19 +88,18 @@ namespace FluiTec.AppFx.Identity.TestLibrary
                 SecurityStamp = "<>",
                 TwoFactorEnabled = false
             });
-            var userLogin = uow.LoginRepository.Add(new UserLoginEntity { UserId = user.Id, ProviderKey = "Auth", ProviderDisplayName = "Auth", ProviderName = "Auth" });
+            var userRole = uow.UserRoleRepository.Add(new UserRoleEntity {RoleId = role.Id, UserId = user.Id});
 
-            uow.LoginRepository.RemoveByNameAndKey("Auth", "Auth");
-            Assert.IsNull(uow.LoginRepository.FindByNameAndKey("Auth", "Auth"));
+            var dbEntity = uow.UserRoleRepository.FindByUserIdAndRoleId(user.Id, role.Id);
+            Assert.AreEqual(userRole.Id, dbEntity.Id);
         }
 
-        /// <summary>   (Unit Test Method) can find by user identifier.</summary>
+        /// <summary>   (Unit Test Method) can find by user.</summary>
         [TestMethod]
-        public void CanFindByUserId()
+        public void CanFindByUser()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
+            var role = uow.RoleRepository.Add(new RoleEntity {Id = Guid.NewGuid(), Name = "TestRole"});
             var user = uow.UserRepository.Add(new UserEntity
             {
                 Id = Guid.NewGuid(),
@@ -121,19 +117,18 @@ namespace FluiTec.AppFx.Identity.TestLibrary
                 SecurityStamp = "<>",
                 TwoFactorEnabled = false
             });
-            var userLogin = uow.LoginRepository.Add(new UserLoginEntity { UserId = user.Id, ProviderKey = "Auth", ProviderDisplayName = "Auth", ProviderName = "Auth" });
+            var userRole = uow.UserRoleRepository.Add(new UserRoleEntity {RoleId = role.Id, UserId = user.Id});
 
-            var dbEntity = uow.LoginRepository.FindByUserId(user.Id).Single();
-            Assert.AreEqual(userLogin.Id, dbEntity.Id);
+            var roles = uow.UserRoleRepository.FindByUser(user);
+            Assert.IsTrue(roles.Any(r => r.Id == role.Id));
         }
 
-        /// <summary>   (Unit Test Method) can find by name and key.</summary>
+        /// <summary>   (Unit Test Method) can find by role.</summary>
         [TestMethod]
-        public void CanFindByNameAndKey()
+        public void CanFindByRole()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
+            var role = uow.RoleRepository.Add(new RoleEntity {Id = Guid.NewGuid(), Name = "TestRole"});
             var user = uow.UserRepository.Add(new UserEntity
             {
                 Id = Guid.NewGuid(),
@@ -151,19 +146,18 @@ namespace FluiTec.AppFx.Identity.TestLibrary
                 SecurityStamp = "<>",
                 TwoFactorEnabled = false
             });
-            var userLogin = uow.LoginRepository.Add(new UserLoginEntity { UserId = user.Id, ProviderKey = "Auth", ProviderDisplayName = "Auth", ProviderName = "Auth" });
+            var userRole = uow.UserRoleRepository.Add(new UserRoleEntity {RoleId = role.Id, UserId = user.Id});
 
-            var dbEntity = uow.LoginRepository.FindByNameAndKey("Auth", "Auth");
-            Assert.AreEqual(userLogin.Id, dbEntity.Id);
+            var users = uow.UserRoleRepository.FindByRole(role);
+            Assert.IsTrue(users.Any(u => u.Id == user.Id));
         }
 
-        /// <summary>   (Unit Test Method) can update user login.</summary>
+        /// <summary>   (Unit Test Method) can remove by user.</summary>
         [TestMethod]
-        public void CanUpdateUserLogin()
+        public void CanRemoveByUser()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
+            var role = uow.RoleRepository.Add(new RoleEntity {Id = Guid.NewGuid(), Name = "TestRole"});
             var user = uow.UserRepository.Add(new UserEntity
             {
                 Id = Guid.NewGuid(),
@@ -181,22 +175,19 @@ namespace FluiTec.AppFx.Identity.TestLibrary
                 SecurityStamp = "<>",
                 TwoFactorEnabled = false
             });
-            var userLogin = uow.LoginRepository.Add(new UserLoginEntity { UserId = user.Id, ProviderKey = "Auth", ProviderDisplayName = "Auth", ProviderName = "Auth" });
+            var userRole = uow.UserRoleRepository.Add(new UserRoleEntity {RoleId = role.Id, UserId = user.Id});
 
-            userLogin.ProviderName = "Auth2";
-            uow.LoginRepository.Update(userLogin);
-
-            var dbEntity = uow.LoginRepository.Get(userLogin.Id);
-            Assert.AreEqual(userLogin.ProviderName, dbEntity.ProviderName);
+            uow.UserRoleRepository.RemoveByUser(user);
+            var dbEntity = uow.UserRoleRepository.Get(userRole.Id);
+            Assert.IsNull(dbEntity);
         }
 
-        /// <summary>   (Unit Test Method) can delete user login.</summary>
+        /// <summary>   (Unit Test Method) can remove by role.</summary>
         [TestMethod]
-        public void CanDeleteUserLogin()
+        public void CanRemoveByRole()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
+            var role = uow.RoleRepository.Add(new RoleEntity {Id = Guid.NewGuid(), Name = "TestRole"});
             var user = uow.UserRepository.Add(new UserEntity
             {
                 Id = Guid.NewGuid(),
@@ -214,10 +205,40 @@ namespace FluiTec.AppFx.Identity.TestLibrary
                 SecurityStamp = "<>",
                 TwoFactorEnabled = false
             });
-            var userLogin = uow.LoginRepository.Add(new UserLoginEntity { UserId = user.Id, ProviderKey = "Auth", ProviderDisplayName = "Auth", ProviderName = "Auth" });
+            var userRole = uow.UserRoleRepository.Add(new UserRoleEntity {RoleId = role.Id, UserId = user.Id});
 
-            uow.LoginRepository.Delete(userLogin);
-            var dbEntity = uow.LoginRepository.Get(userLogin.Id);
+            uow.UserRoleRepository.RemoveByRole(role);
+            var dbEntity = uow.UserRoleRepository.Get(userRole.Id);
+            Assert.IsNull(dbEntity);
+        }
+
+        /// <summary>   (Unit Test Method) can delete user role.</summary>
+        [TestMethod]
+        public void CanDeleteUserRole()
+        {
+            using var uow = DataService.BeginUnitOfWork();
+            var role = uow.RoleRepository.Add(new RoleEntity {Id = Guid.NewGuid(), Name = "TestRole"});
+            var user = uow.UserRepository.Add(new UserEntity
+            {
+                Id = Guid.NewGuid(),
+                Name = "m.mustermann@musterfirma.de",
+                Email = "m.mustermann@musterfirma.de",
+                EmailConfirmed = false,
+                FullName = "Max Mustermann",
+                AccessFailedCount = 0,
+                LockedOutPermanently = false,
+                LockedOutTill = null,
+                LockoutEnabled = false,
+                PasswordHash = "<>",
+                Phone = "<>",
+                PhoneConfirmed = false,
+                SecurityStamp = "<>",
+                TwoFactorEnabled = false
+            });
+            var userRole = uow.UserRoleRepository.Add(new UserRoleEntity {RoleId = role.Id, UserId = user.Id});
+
+            uow.UserRoleRepository.Delete(userRole);
+            var dbEntity = uow.UserRoleRepository.Get(userRole.Id);
             Assert.IsNull(dbEntity);
         }
     }

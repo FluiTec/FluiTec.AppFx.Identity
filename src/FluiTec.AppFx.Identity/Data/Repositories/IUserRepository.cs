@@ -32,8 +32,10 @@ namespace FluiTec.AppFx.Identity.Data.Repositories
 
         /// <summary>   Finds the identifiers in this collection.</summary>
         /// <param name="userIds">  List of identifiers for the users. </param>
-        /// <returns>An enumerator that allows foreach to be used to process the identifiers in this
-        /// collection.</returns>
+        /// <returns>
+        ///     An enumerator that allows foreach to be used to process the identifiers in this
+        ///     collection.
+        /// </returns>
         IEnumerable<UserEntity> FindByIds(IEnumerable<Guid> userIds);
 
         /// <summary>   Finds all claims in this collection.</summary>

@@ -8,7 +8,8 @@ using Microsoft.AspNetCore.Identity;
 namespace FluiTec.AppFx.Identity.EntityStores
 {
     /// <summary>   A user security store. </summary>
-    public class UserSecurityStore : UserStore, IUserSecurityStampStore<UserEntity>, IUserTwoFactorStore<UserEntity>, IUserLockoutStore<UserEntity>
+    public class UserSecurityStore : UserStore, IUserSecurityStampStore<UserEntity>, IUserTwoFactorStore<UserEntity>,
+        IUserLockoutStore<UserEntity>
     {
         #region Constructors
 
@@ -28,9 +29,11 @@ namespace FluiTec.AppFx.Identity.EntityStores
         /// </summary>
         /// <param name="user">                 The user whose security stamp should be set. </param>
         /// <param name="stamp">                The security stamp to set. </param>
-        /// <param name="cancellationToken">    The <see cref="T:System.Threading.CancellationToken" />
-        ///                                     used to propagate notifications that the operation should be
-        ///                                     canceled. </param>
+        /// <param name="cancellationToken">
+        ///     The <see cref="T:System.Threading.CancellationToken" />
+        ///     used to propagate notifications that the operation should be
+        ///     canceled.
+        /// </param>
         /// <returns>
         ///     The <see cref="T:System.Threading.Tasks.Task" /> that represents the asynchronous
         ///     operation.
@@ -46,9 +49,11 @@ namespace FluiTec.AppFx.Identity.EntityStores
 
         /// <summary>   Get the security stamp for the specified <paramref name="user" />. </summary>
         /// <param name="user">                 The user whose security stamp should be set. </param>
-        /// <param name="cancellationToken">    The <see cref="T:System.Threading.CancellationToken" />
-        ///                                     used to propagate notifications that the operation should be
-        ///                                     canceled. </param>
+        /// <param name="cancellationToken">
+        ///     The <see cref="T:System.Threading.CancellationToken" />
+        ///     used to propagate notifications that the operation should be
+        ///     canceled.
+        /// </param>
         /// <returns>
         ///     The <see cref="T:System.Threading.Tasks.Task" /> that represents the asynchronous
         ///     operation, containing the security stamp for the specified <paramref name="user" />.
@@ -66,14 +71,20 @@ namespace FluiTec.AppFx.Identity.EntityStores
         ///     Sets a flag indicating whether the specified <paramref name="user" /> has two factor
         ///     authentication enabled or not, as an asynchronous operation.
         /// </summary>
-        /// <param name="user">                 The user whose two factor authentication enabled status
-        ///                                     should be set. </param>
-        /// <param name="enabled">              A flag indicating whether the specified
-        ///                                     <paramref name="user" /> has two factor authentication
-        ///                                     enabled. </param>
-        /// <param name="cancellationToken">    The <see cref="T:System.Threading.CancellationToken" />
-        ///                                     used to propagate notifications that the operation should be
-        ///                                     canceled. </param>
+        /// <param name="user">
+        ///     The user whose two factor authentication enabled status
+        ///     should be set.
+        /// </param>
+        /// <param name="enabled">
+        ///     A flag indicating whether the specified
+        ///     <paramref name="user" /> has two factor authentication
+        ///     enabled.
+        /// </param>
+        /// <param name="cancellationToken">
+        ///     The <see cref="T:System.Threading.CancellationToken" />
+        ///     used to propagate notifications that the operation should be
+        ///     canceled.
+        /// </param>
         /// <returns>
         ///     The <see cref="T:System.Threading.Tasks.Task" /> that represents the asynchronous
         ///     operation.
@@ -91,11 +102,15 @@ namespace FluiTec.AppFx.Identity.EntityStores
         ///     Returns a flag indicating whether the specified <paramref name="user" /> has two factor
         ///     authentication enabled or not, as an asynchronous operation.
         /// </summary>
-        /// <param name="user">                 The user whose two factor authentication enabled status
-        ///                                     should be set. </param>
-        /// <param name="cancellationToken">    The <see cref="T:System.Threading.CancellationToken" />
-        ///                                     used to propagate notifications that the operation should be
-        ///                                     canceled. </param>
+        /// <param name="user">
+        ///     The user whose two factor authentication enabled status
+        ///     should be set.
+        /// </param>
+        /// <param name="cancellationToken">
+        ///     The <see cref="T:System.Threading.CancellationToken" />
+        ///     used to propagate notifications that the operation should be
+        ///     canceled.
+        /// </param>
         /// <returns>
         ///     The <see cref="T:System.Threading.Tasks.Task" /> that represents the asynchronous
         ///     operation, containing a flag indicating whether the specified.
@@ -114,9 +129,11 @@ namespace FluiTec.AppFx.Identity.EntityStores
         ///     any. Any time in the past should be indicates a user is not locked out.
         /// </summary>
         /// <param name="user">                 The user whose lockout date should be retrieved. </param>
-        /// <param name="cancellationToken">    The <see cref="T:System.Threading.CancellationToken" />
-        ///                                     used to propagate notifications that the operation should be
-        ///                                     canceled. </param>
+        /// <param name="cancellationToken">
+        ///     The <see cref="T:System.Threading.CancellationToken" />
+        ///     used to propagate notifications that the operation should be
+        ///     canceled.
+        /// </param>
         /// <returns>
         ///     A <see cref="T:System.Threading.Tasks.Task`1" /> that represents the result of the
         ///     asynchronous query, a <see cref="T:System.DateTimeOffset" /> containing the last time a
@@ -132,16 +149,21 @@ namespace FluiTec.AppFx.Identity.EntityStores
         ///     immediately unlocks a user.
         /// </summary>
         /// <param name="user">                 The user whose lockout date should be set. </param>
-        /// <param name="lockoutEnd">           The <see cref="T:System.DateTimeOffset" /> after which
-        ///                                     the <paramref name="user" />'s lockout should end. </param>
-        /// <param name="cancellationToken">    The <see cref="T:System.Threading.CancellationToken" />
-        ///                                     used to propagate notifications that the operation should be
-        ///                                     canceled. </param>
+        /// <param name="lockoutEnd">
+        ///     The <see cref="T:System.DateTimeOffset" /> after which
+        ///     the <paramref name="user" />'s lockout should end.
+        /// </param>
+        /// <param name="cancellationToken">
+        ///     The <see cref="T:System.Threading.CancellationToken" />
+        ///     used to propagate notifications that the operation should be
+        ///     canceled.
+        /// </param>
         /// <returns>
         ///     The <see cref="T:System.Threading.Tasks.Task" /> that represents the asynchronous
         ///     operation.
         /// </returns>
-        public async Task SetLockoutEndDateAsync(UserEntity user, DateTimeOffset? lockoutEnd, CancellationToken cancellationToken)
+        public async Task SetLockoutEndDateAsync(UserEntity user, DateTimeOffset? lockoutEnd,
+            CancellationToken cancellationToken)
         {
             await Task.Factory.StartNew(() =>
             {
@@ -154,9 +176,11 @@ namespace FluiTec.AppFx.Identity.EntityStores
         ///     Records that a failed access has occurred, incrementing the failed access count.
         /// </summary>
         /// <param name="user">                 The user whose cancellation count should be incremented. </param>
-        /// <param name="cancellationToken">    The <see cref="T:System.Threading.CancellationToken" />
-        ///                                     used to propagate notifications that the operation should be
-        ///                                     canceled. </param>
+        /// <param name="cancellationToken">
+        ///     The <see cref="T:System.Threading.CancellationToken" />
+        ///     used to propagate notifications that the operation should be
+        ///     canceled.
+        /// </param>
         /// <returns>
         ///     The <see cref="T:System.Threading.Tasks.Task" /> that represents the asynchronous
         ///     operation, containing the incremented failed access count.
@@ -175,9 +199,11 @@ namespace FluiTec.AppFx.Identity.EntityStores
         /// <summary>   Resets a user's failed access count. </summary>
         /// <remarks>   This is typically called after the account is successfully accessed. </remarks>
         /// <param name="user">                 The user whose failed access count should be reset. </param>
-        /// <param name="cancellationToken">    The <see cref="T:System.Threading.CancellationToken" />
-        ///                                     used to propagate notifications that the operation should be
-        ///                                     canceled. </param>
+        /// <param name="cancellationToken">
+        ///     The <see cref="T:System.Threading.CancellationToken" />
+        ///     used to propagate notifications that the operation should be
+        ///     canceled.
+        /// </param>
         /// <returns>
         ///     The <see cref="T:System.Threading.Tasks.Task" /> that represents the asynchronous
         ///     operation.
@@ -195,9 +221,11 @@ namespace FluiTec.AppFx.Identity.EntityStores
         ///     Retrieves the current failed access count for the specified <paramref name="user" />.
         /// </summary>
         /// <param name="user">                 The user whose failed access count should be retrieved. </param>
-        /// <param name="cancellationToken">    The <see cref="T:System.Threading.CancellationToken" />
-        ///                                     used to propagate notifications that the operation should be
-        ///                                     canceled. </param>
+        /// <param name="cancellationToken">
+        ///     The <see cref="T:System.Threading.CancellationToken" />
+        ///     used to propagate notifications that the operation should be
+        ///     canceled.
+        /// </param>
         /// <returns>
         ///     The <see cref="T:System.Threading.Tasks.Task" /> that represents the asynchronous
         ///     operation, containing the failed access count.
@@ -210,11 +238,15 @@ namespace FluiTec.AppFx.Identity.EntityStores
         /// <summary>
         ///     Retrieves a flag indicating whether user lockout can enabled for the specified user.
         /// </summary>
-        /// <param name="user">                 The user whose ability to be locked out should be
-        ///                                     returned. </param>
-        /// <param name="cancellationToken">    The <see cref="T:System.Threading.CancellationToken" />
-        ///                                     used to propagate notifications that the operation should be
-        ///                                     canceled. </param>
+        /// <param name="user">
+        ///     The user whose ability to be locked out should be
+        ///     returned.
+        /// </param>
+        /// <param name="cancellationToken">
+        ///     The <see cref="T:System.Threading.CancellationToken" />
+        ///     used to propagate notifications that the operation should be
+        ///     canceled.
+        /// </param>
         /// <returns>
         ///     The <see cref="T:System.Threading.Tasks.Task" /> that represents the asynchronous
         ///     operation, true if a user can be locked out, otherwise false.
@@ -228,11 +260,15 @@ namespace FluiTec.AppFx.Identity.EntityStores
         ///     Set the flag indicating if the specified <paramref name="user" /> can be locked out.
         /// </summary>
         /// <param name="user">                 The user whose ability to be locked out should be set. </param>
-        /// <param name="enabled">              A flag indicating if lock out can be enabled for the
-        ///                                     specified <paramref name="user" />. </param>
-        /// <param name="cancellationToken">    The <see cref="T:System.Threading.CancellationToken" />
-        ///                                     used to propagate notifications that the operation should be
-        ///                                     canceled. </param>
+        /// <param name="enabled">
+        ///     A flag indicating if lock out can be enabled for the
+        ///     specified <paramref name="user" />.
+        /// </param>
+        /// <param name="cancellationToken">
+        ///     The <see cref="T:System.Threading.CancellationToken" />
+        ///     used to propagate notifications that the operation should be
+        ///     canceled.
+        /// </param>
         /// <returns>
         ///     The <see cref="T:System.Threading.Tasks.Task" /> that represents the asynchronous
         ///     operation.

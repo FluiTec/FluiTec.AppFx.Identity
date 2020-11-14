@@ -5,7 +5,7 @@
     {
         /// <summary>   The schema. </summary>
         public const string Schema = "AppFxIdentity";
-        
+
         /// <summary>   The role table. </summary>
         public const string RoleTable = "Role";
 

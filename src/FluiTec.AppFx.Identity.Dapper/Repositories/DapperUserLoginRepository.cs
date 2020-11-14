@@ -11,12 +11,14 @@ using Microsoft.Extensions.Logging;
 namespace FluiTec.AppFx.Identity.Dapper.Repositories
 {
     /// <summary>   A dapper user login repository.</summary>
-    public class DapperUserLoginRepository : DapperWritableKeyTableDataRepository<UserLoginEntity, int>, IUserLoginRepository
+    public class DapperUserLoginRepository : DapperWritableKeyTableDataRepository<UserLoginEntity, int>,
+        IUserLoginRepository
     {
         /// <summary>   Constructor.</summary>
         /// <param name="unitOfWork">   The unit of work. </param>
         /// <param name="logger">       The logger. </param>
-        public DapperUserLoginRepository(DapperUnitOfWork unitOfWork, ILogger<IRepository> logger) : base(unitOfWork, logger)
+        public DapperUserLoginRepository(DapperUnitOfWork unitOfWork, ILogger<IRepository> logger) : base(unitOfWork,
+            logger)
         {
         }
 
@@ -30,18 +32,20 @@ namespace FluiTec.AppFx.Identity.Dapper.Repositories
             var command =
                 $"DELETE FROM {sql.RenderTableName(EntityType)} WHERE {sql.RenderPropertyName(nameof(UserLoginEntity.ProviderName))} = @ProviderName " +
                 $"AND {sql.RenderPropertyName(nameof(UserLoginEntity.ProviderKey))} = @ProviderKey";
-            UnitOfWork.Connection.Execute(command, new { ProviderName = providerName, ProviderKey = providerKey },
+            UnitOfWork.Connection.Execute(command, new {ProviderName = providerName, ProviderKey = providerKey},
                 UnitOfWork.Transaction);
         }
 
         /// <summary>   Finds the user identifiers in this collection.</summary>
         /// <param name="userId">   Identifier for the user. </param>
-        /// <returns>An enumerator that allows foreach to be used to process the user identifiers in this
-        /// collection.</returns>
+        /// <returns>
+        ///     An enumerator that allows foreach to be used to process the user identifiers in this
+        ///     collection.
+        /// </returns>
         public IEnumerable<UserLoginEntity> FindByUserId(Guid userId)
         {
             var command = SqlBuilder.SelectByFilter(EntityType, nameof(UserLoginEntity.UserId));
-            return UnitOfWork.Connection.Query<UserLoginEntity>(command, new { UserId = userId },
+            return UnitOfWork.Connection.Query<UserLoginEntity>(command, new {UserId = userId},
                 UnitOfWork.Transaction);
         }
 
@@ -52,9 +56,9 @@ namespace FluiTec.AppFx.Identity.Dapper.Repositories
         public UserLoginEntity FindByNameAndKey(string providerName, string providerKey)
         {
             var command = SqlBuilder.SelectByFilter(EntityType,
-                new[] { nameof(UserLoginEntity.ProviderName), nameof(UserLoginEntity.ProviderKey) });
+                new[] {nameof(UserLoginEntity.ProviderName), nameof(UserLoginEntity.ProviderKey)});
             return UnitOfWork.Connection.QuerySingleOrDefault<UserLoginEntity>(command,
-                new { ProviderName = providerName, ProviderKey = providerKey }, UnitOfWork.Transaction);
+                new {ProviderName = providerName, ProviderKey = providerKey}, UnitOfWork.Transaction);
         }
     }
 }

@@ -1,23 +1,21 @@
 ﻿using System;
+using System.IO;
 using FluiTec.AppFx.Data.Dapper.Mssql;
-using FluiTec.AppFx.Identity.TestLibrary;
-using FluiTec.AppFx.Identity.TestLibrary.Configuration;
+using FluiTec.AppFx.Identity.TestLibrary.StoreTests;
+using FluiTec.AppFx.Options.Helpers;
 using FluiTec.AppFx.Options.Managers;
+using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace FluiTec.AppFx.Identity.Dapper.Mssql.IntegrationTests
 {
-    /// <summary>   An initialize.</summary>
+    /// <summary>   (Unit Test Class) a mssql store test. </summary>
     [TestClass]
-    public static class MssqlInitialize
+    [TestCategory("Integration")]
+    public class MssqlStoreTest : StoreTest
     {
-        internal static MssqlDapperServiceOptions ServiceOptions;
-
-        internal static MssqlIdentityDataService DataService;
-
-        /// <summary>   Initializes this Initialize.</summary>
-        [AssemblyInitialize]
-        public static void Init(TestContext context)
+        /// <summary>   Initializes the options and data service. </summary>
+        protected override void InitOptionsAndDataService()
         {
             var pw = Environment.GetEnvironmentVariable("SA_PASSWORD");
 
@@ -35,21 +33,16 @@ namespace FluiTec.AppFx.Identity.Dapper.Mssql.IntegrationTests
             {
                 try
                 {
-                    var config = BaseInitialize.GetIntegrationConfiguration();
+                    var path = DirectoryHelper.GetApplicationRoot();
+                    var parent = Directory.GetParent(path).Parent?.Parent?.FullName;
+                    var config = new ConfigurationBuilder()
+                        .SetBasePath(parent)
+                        .AddJsonFile("appsettings.integration.json", false, true)
+                        .AddJsonFile("appsettings.integration.secret.json", true, true)
+                        .Build();
 
                     var manager = new ConfigurationManager(config);
-                    var options = manager.ExtractSettings<MssqlAdminOption>();
                     var mssqlOptions = manager.ExtractSettings<MssqlDapperServiceOptions>();
-
-                    if (string.IsNullOrWhiteSpace(options.AdminConnectionString) ||
-                        string.IsNullOrWhiteSpace(options.IntegrationDb) ||
-                        string.IsNullOrWhiteSpace(options.IntegrationUser) ||
-                        string.IsNullOrWhiteSpace(options.IntegrationPassword)) return;
-                    if (string.IsNullOrWhiteSpace(mssqlOptions.ConnectionString)) return;
-
-                    MssqlAdminHelper.CreateDababase(options.AdminConnectionString, options.IntegrationDb);
-                    MssqlAdminHelper.CreateUserAndLogin(options.AdminConnectionString, options.IntegrationDb,
-                        options.IntegrationUser, options.IntegrationPassword);
 
                     ServiceOptions = new MssqlDapperServiceOptions
                     {
@@ -57,9 +50,9 @@ namespace FluiTec.AppFx.Identity.Dapper.Mssql.IntegrationTests
                     };
                     DataService = new MssqlIdentityDataService(ServiceOptions, null);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
-                    Console.WriteLine(e);
+                    // ignore
                 }
             }
         }

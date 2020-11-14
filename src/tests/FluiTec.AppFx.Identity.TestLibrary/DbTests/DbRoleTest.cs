@@ -3,7 +3,7 @@ using System.Linq;
 using FluiTec.AppFx.Identity.Data.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace FluiTec.AppFx.Identity.TestLibrary
+namespace FluiTec.AppFx.Identity.TestLibrary.DbTests
 {
     /// <summary>   A database test.</summary>
     public abstract partial class DbTest
@@ -12,8 +12,6 @@ namespace FluiTec.AppFx.Identity.TestLibrary
         [TestMethod]
         public void CanCreateRole()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
             var entity = uow.RoleRepository.Add(new RoleEntity {Id = Guid.NewGuid(), Name = "TestRole"});
             Assert.IsTrue(entity.Id != Guid.Empty);
@@ -23,10 +21,8 @@ namespace FluiTec.AppFx.Identity.TestLibrary
         [TestMethod]
         public void CanReadRole()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
-            var entity = uow.RoleRepository.Add(new RoleEntity { Id = Guid.NewGuid(), Name = "TestRole" });
+            var entity = uow.RoleRepository.Add(new RoleEntity {Id = Guid.NewGuid(), Name = "TestRole"});
             var dbEntity = uow.RoleRepository.Get(entity.Id);
 
             Assert.AreEqual(entity.Name, dbEntity.Name);
@@ -36,10 +32,8 @@ namespace FluiTec.AppFx.Identity.TestLibrary
         [TestMethod]
         public void CanReadRoleByIdentifier()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
-            var entity = uow.RoleRepository.Add(new RoleEntity { Id = Guid.NewGuid(), Name = "TestRole" });
+            var entity = uow.RoleRepository.Add(new RoleEntity {Id = Guid.NewGuid(), Name = "TestRole"});
             var dbEntity = uow.RoleRepository.Get(entity.Id.ToString());
 
             Assert.AreEqual(entity.Name, dbEntity.Name);
@@ -49,10 +43,8 @@ namespace FluiTec.AppFx.Identity.TestLibrary
         [TestMethod]
         public void CanFindRoleByNormalizedName()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
-            var entity = uow.RoleRepository.Add(new RoleEntity { Id = Guid.NewGuid(), Name = "TestRole" });
+            var entity = uow.RoleRepository.Add(new RoleEntity {Id = Guid.NewGuid(), Name = "TestRole"});
             var dbEntity = uow.RoleRepository.FindByNormalizedName(entity.Name.ToUpper());
 
             Assert.AreEqual(entity.Name, dbEntity.Name);
@@ -62,12 +54,10 @@ namespace FluiTec.AppFx.Identity.TestLibrary
         [TestMethod]
         public void CanFindRoleByNames()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
-            var entity = uow.RoleRepository.Add(new RoleEntity { Id = Guid.NewGuid(), Name = "TestRole" });
-            var searchResult1 = uow.RoleRepository.FindByNames(new[] { entity.Name });
-            var searchResult2 = uow.RoleRepository.FindByNames(new[] { entity.Name, "test"});
+            var entity = uow.RoleRepository.Add(new RoleEntity {Id = Guid.NewGuid(), Name = "TestRole"});
+            var searchResult1 = uow.RoleRepository.FindByNames(new[] {entity.Name});
+            var searchResult2 = uow.RoleRepository.FindByNames(new[] {entity.Name, "test"});
 
             Assert.IsTrue(searchResult1.Any(sr => sr.Id == entity.Id));
             Assert.IsTrue(searchResult2.Any(sr => sr.Id == entity.Id));
@@ -77,12 +67,10 @@ namespace FluiTec.AppFx.Identity.TestLibrary
         [TestMethod]
         public void CanFindRoleByIds()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
-            var entity = uow.RoleRepository.Add(new RoleEntity { Id = Guid.NewGuid(), Name = "TestRole" });
-            var searchResult1 = uow.RoleRepository.FindByIds(new[] { entity.Id });
-            var searchResult2 = uow.RoleRepository.FindByIds(new[] { entity.Id, Guid.NewGuid() });
+            var entity = uow.RoleRepository.Add(new RoleEntity {Id = Guid.NewGuid(), Name = "TestRole"});
+            var searchResult1 = uow.RoleRepository.FindByIds(new[] {entity.Id});
+            var searchResult2 = uow.RoleRepository.FindByIds(new[] {entity.Id, Guid.NewGuid()});
 
             Assert.IsTrue(searchResult1.Any(sr => sr.Id == entity.Id));
             Assert.IsTrue(searchResult2.Any(sr => sr.Id == entity.Id));
@@ -92,10 +80,8 @@ namespace FluiTec.AppFx.Identity.TestLibrary
         [TestMethod]
         public void CanUpdateRole()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
-            var entity = uow.RoleRepository.Add(new RoleEntity { Id = Guid.NewGuid(), Name = "TestRole" });
+            var entity = uow.RoleRepository.Add(new RoleEntity {Id = Guid.NewGuid(), Name = "TestRole"});
 
             entity.Name = "TestRole2";
             uow.RoleRepository.Update(entity);
@@ -108,10 +94,8 @@ namespace FluiTec.AppFx.Identity.TestLibrary
         [TestMethod]
         public void CanDeleteRole()
         {
-            AssertDbAvailable();
-
             using var uow = DataService.BeginUnitOfWork();
-            var entity = uow.RoleRepository.Add(new RoleEntity { Id = Guid.NewGuid(), Name = "TestRole" });
+            var entity = uow.RoleRepository.Add(new RoleEntity {Id = Guid.NewGuid(), Name = "TestRole"});
             entity.Name = "Test2";
 
             uow.RoleRepository.Delete(entity);

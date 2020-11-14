@@ -26,9 +26,11 @@ namespace FluiTec.AppFx.Identity.EntityStores
 
         /// <summary>   Creates a new role in a store as an asynchronous operation. </summary>
         /// <param name="role">                 The role to create in the store. </param>
-        /// <param name="cancellationToken">    The <see cref="T:System.Threading.CancellationToken" />
-        ///                                     used to propagate notifications that the operation should be
-        ///                                     canceled. </param>
+        /// <param name="cancellationToken">
+        ///     The <see cref="T:System.Threading.CancellationToken" />
+        ///     used to propagate notifications that the operation should be
+        ///     canceled.
+        /// </param>
         /// <returns>
         ///     A <see cref="T:System.Threading.Tasks.Task`1" /> that represents the
         ///     <see cref="T:Microsoft.AspNetCore.Identity.IdentityResult" /> of the asynchronous query.
@@ -51,9 +53,11 @@ namespace FluiTec.AppFx.Identity.EntityStores
 
         /// <summary>   Finds the role who has the specified ID as an asynchronous operation. </summary>
         /// <param name="roleId">               The role ID to look for. </param>
-        /// <param name="cancellationToken">    The <see cref="T:System.Threading.CancellationToken" />
-        ///                                     used to propagate notifications that the operation should be
-        ///                                     canceled. </param>
+        /// <param name="cancellationToken">
+        ///     The <see cref="T:System.Threading.CancellationToken" />
+        ///     used to propagate notifications that the operation should be
+        ///     canceled.
+        /// </param>
         /// <returns>
         ///     A <see cref="T:System.Threading.Tasks.Task`1" /> that result of the look up.
         /// </returns>
@@ -67,13 +71,16 @@ namespace FluiTec.AppFx.Identity.EntityStores
         ///     Finds the role who has the specified normalized name as an asynchronous operation.
         /// </summary>
         /// <param name="normalizedRoleName">   The normalized role name to look for. </param>
-        /// <param name="cancellationToken">    The <see cref="T:System.Threading.CancellationToken" />
-        ///                                     used to propagate notifications that the operation should
-        ///                                     be canceled. </param>
+        /// <param name="cancellationToken">
+        ///     The <see cref="T:System.Threading.CancellationToken" />
+        ///     used to propagate notifications that the operation should
+        ///     be canceled.
+        /// </param>
         /// <returns>
         ///     A <see cref="T:System.Threading.Tasks.Task`1" /> that result of the look up.
         /// </returns>
-        Task<RoleEntity> IRoleStore<RoleEntity>.FindByNameAsync(string normalizedRoleName, CancellationToken cancellationToken)
+        Task<RoleEntity> IRoleStore<RoleEntity>.FindByNameAsync(string normalizedRoleName,
+            CancellationToken cancellationToken)
         {
             return Task<RoleEntity>.Factory.StartNew(
                 () => UnitOfWork.RoleRepository.FindByNormalizedName(normalizedRoleName), cancellationToken);
@@ -81,9 +88,11 @@ namespace FluiTec.AppFx.Identity.EntityStores
 
         /// <summary>   Updates a role in a store as an asynchronous operation. </summary>
         /// <param name="role">                 The role to update in the store. </param>
-        /// <param name="cancellationToken">    The <see cref="T:System.Threading.CancellationToken" />
-        ///                                     used to propagate notifications that the operation should be
-        ///                                     canceled. </param>
+        /// <param name="cancellationToken">
+        ///     The <see cref="T:System.Threading.CancellationToken" />
+        ///     used to propagate notifications that the operation should be
+        ///     canceled.
+        /// </param>
         /// <returns>
         ///     A <see cref="T:System.Threading.Tasks.Task`1" /> that represents the
         ///     <see cref="T:Microsoft.AspNetCore.Identity.IdentityResult" /> of the asynchronous query.
@@ -106,9 +115,11 @@ namespace FluiTec.AppFx.Identity.EntityStores
 
         /// <summary>   Deletes a role from the store as an asynchronous operation. </summary>
         /// <param name="role">                 The role to delete from the store. </param>
-        /// <param name="cancellationToken">    The <see cref="T:System.Threading.CancellationToken" />
-        ///                                     used to propagate notifications that the operation should be
-        ///                                     canceled. </param>
+        /// <param name="cancellationToken">
+        ///     The <see cref="T:System.Threading.CancellationToken" />
+        ///     used to propagate notifications that the operation should be
+        ///     canceled.
+        /// </param>
         /// <returns>
         ///     A <see cref="T:System.Threading.Tasks.Task`1" /> that represents the
         ///     <see cref="T:Microsoft.AspNetCore.Identity.IdentityResult" /> of the asynchronous query.
@@ -132,9 +143,11 @@ namespace FluiTec.AppFx.Identity.EntityStores
 
         /// <summary>   Gets the ID for a role from the store as an asynchronous operation. </summary>
         /// <param name="role">                 The role whose ID should be returned. </param>
-        /// <param name="cancellationToken">    The <see cref="T:System.Threading.CancellationToken" />
-        ///                                     used to propagate notifications that the operation should be
-        ///                                     canceled. </param>
+        /// <param name="cancellationToken">
+        ///     The <see cref="T:System.Threading.CancellationToken" />
+        ///     used to propagate notifications that the operation should be
+        ///     canceled.
+        /// </param>
         /// <returns>
         ///     A <see cref="T:System.Threading.Tasks.Task`1" /> that contains the ID of the role.
         /// </returns>
@@ -145,9 +158,11 @@ namespace FluiTec.AppFx.Identity.EntityStores
 
         /// <summary>   Gets the name of a role from the store as an asynchronous operation. </summary>
         /// <param name="role">                 The role whose name should be returned. </param>
-        /// <param name="cancellationToken">    The <see cref="T:System.Threading.CancellationToken" />
-        ///                                     used to propagate notifications that the operation should be
-        ///                                     canceled. </param>
+        /// <param name="cancellationToken">
+        ///     The <see cref="T:System.Threading.CancellationToken" />
+        ///     used to propagate notifications that the operation should be
+        ///     canceled.
+        /// </param>
         /// <returns>
         ///     A <see cref="T:System.Threading.Tasks.Task`1" /> that contains the name of the role.
         /// </returns>
@@ -159,9 +174,11 @@ namespace FluiTec.AppFx.Identity.EntityStores
         /// <summary>   Sets the name of a role in the store as an asynchronous operation. </summary>
         /// <param name="role">                 The role whose name should be set. </param>
         /// <param name="roleName">             The name of the role. </param>
-        /// <param name="cancellationToken">    The <see cref="T:System.Threading.CancellationToken" />
-        ///                                     used to propagate notifications that the operation should be
-        ///                                     canceled. </param>
+        /// <param name="cancellationToken">
+        ///     The <see cref="T:System.Threading.CancellationToken" />
+        ///     used to propagate notifications that the operation should be
+        ///     canceled.
+        /// </param>
         /// <returns>
         ///     The <see cref="T:System.Threading.Tasks.Task" /> that represents the asynchronous
         ///     operation.
@@ -177,9 +194,11 @@ namespace FluiTec.AppFx.Identity.EntityStores
 
         /// <summary>   Get a role's normalized name as an asynchronous operation. </summary>
         /// <param name="role">                 The role whose normalized name should be retrieved. </param>
-        /// <param name="cancellationToken">    The <see cref="T:System.Threading.CancellationToken" />
-        ///                                     used to propagate notifications that the operation should be
-        ///                                     canceled. </param>
+        /// <param name="cancellationToken">
+        ///     The <see cref="T:System.Threading.CancellationToken" />
+        ///     used to propagate notifications that the operation should be
+        ///     canceled.
+        /// </param>
         /// <returns>
         ///     A <see cref="T:System.Threading.Tasks.Task`1" /> that contains the name of the role.
         /// </returns>
@@ -191,14 +210,17 @@ namespace FluiTec.AppFx.Identity.EntityStores
         /// <summary>   Set a role's normalized name as an asynchronous operation. </summary>
         /// <param name="role">                 The role whose normalized name should be set. </param>
         /// <param name="normalizedName">       The normalized name to set. </param>
-        /// <param name="cancellationToken">    The <see cref="T:System.Threading.CancellationToken" />
-        ///                                     used to propagate notifications that the operation should be
-        ///                                     canceled. </param>
+        /// <param name="cancellationToken">
+        ///     The <see cref="T:System.Threading.CancellationToken" />
+        ///     used to propagate notifications that the operation should be
+        ///     canceled.
+        /// </param>
         /// <returns>
         ///     The <see cref="T:System.Threading.Tasks.Task" /> that represents the asynchronous
         ///     operation.
         /// </returns>
-        public Task SetNormalizedRoleNameAsync(RoleEntity role, string normalizedName, CancellationToken cancellationToken)
+        public Task SetNormalizedRoleNameAsync(RoleEntity role, string normalizedName,
+            CancellationToken cancellationToken)
         {
             return Task.CompletedTask;
         }
@@ -210,9 +232,11 @@ namespace FluiTec.AppFx.Identity.EntityStores
         /// <summary>   Add the specified <paramref name="user" /> to the named role. </summary>
         /// <param name="user">                 The user to add to the named role. </param>
         /// <param name="roleName">             The name of the role to add the user to. </param>
-        /// <param name="cancellationToken">    The <see cref="T:System.Threading.CancellationToken" />
-        ///                                     used to propagate notifications that the operation should be
-        ///                                     canceled. </param>
+        /// <param name="cancellationToken">
+        ///     The <see cref="T:System.Threading.CancellationToken" />
+        ///     used to propagate notifications that the operation should be
+        ///     canceled.
+        /// </param>
         /// <returns>
         ///     The <see cref="T:System.Threading.Tasks.Task" /> that represents the asynchronous
         ///     operation.
@@ -229,9 +253,11 @@ namespace FluiTec.AppFx.Identity.EntityStores
         /// <summary>   Remove the specified <paramref name="user" /> from the named role. </summary>
         /// <param name="user">                 The user to remove the named role from. </param>
         /// <param name="roleName">             The name of the role to remove. </param>
-        /// <param name="cancellationToken">    The <see cref="T:System.Threading.CancellationToken" />
-        ///                                     used to propagate notifications that the operation should be
-        ///                                     canceled. </param>
+        /// <param name="cancellationToken">
+        ///     The <see cref="T:System.Threading.CancellationToken" />
+        ///     used to propagate notifications that the operation should be
+        ///     canceled.
+        /// </param>
         /// <returns>
         ///     The <see cref="T:System.Threading.Tasks.Task" /> that represents the asynchronous
         ///     operation.
@@ -250,19 +276,20 @@ namespace FluiTec.AppFx.Identity.EntityStores
         ///     Gets a list of role names the specified <paramref name="user" /> belongs to.
         /// </summary>
         /// <param name="user">                 The user whose role names to retrieve. </param>
-        /// <param name="cancellationToken">    The <see cref="T:System.Threading.CancellationToken" />
-        ///                                     used to propagate notifications that the operation should be
-        ///                                     canceled. </param>
+        /// <param name="cancellationToken">
+        ///     The <see cref="T:System.Threading.CancellationToken" />
+        ///     used to propagate notifications that the operation should be
+        ///     canceled.
+        /// </param>
         /// <returns>
         ///     The <see cref="T:System.Threading.Tasks.Task" /> that represents the asynchronous
         ///     operation, containing a list of role names.
         /// </returns>
         public Task<IList<string>> GetRolesAsync(UserEntity user, CancellationToken cancellationToken)
         {
-            return Task<IList<string>>.Factory.StartNew(() =>
-            {
-                return UnitOfWork.UserRoleRepository.FindByUser(user).Select(r => r.Name).ToList();
-            }, cancellationToken);
+            return Task<IList<string>>.Factory.StartNew(
+                () => { return UnitOfWork.UserRoleRepository.FindByUser(user).Select(r => r.Name).ToList(); },
+                cancellationToken);
         }
 
         /// <summary>
@@ -271,9 +298,11 @@ namespace FluiTec.AppFx.Identity.EntityStores
         /// </summary>
         /// <param name="user">                 The user whose role membership should be checked. </param>
         /// <param name="roleName">             The name of the role to be checked. </param>
-        /// <param name="cancellationToken">    The <see cref="T:System.Threading.CancellationToken" />
-        ///                                     used to propagate notifications that the operation should be
-        ///                                     canceled. </param>
+        /// <param name="cancellationToken">
+        ///     The <see cref="T:System.Threading.CancellationToken" />
+        ///     used to propagate notifications that the operation should be
+        ///     canceled.
+        /// </param>
         /// <returns>
         ///     The <see cref="T:System.Threading.Tasks.Task" /> that represents the asynchronous
         ///     operation, containing a flag indicating whether the specified <paramref name="user" /> is
@@ -287,9 +316,11 @@ namespace FluiTec.AppFx.Identity.EntityStores
 
         /// <summary>   Returns a list of Users who are members of the named role. </summary>
         /// <param name="roleName">             The name of the role whose membership should be returned. </param>
-        /// <param name="cancellationToken">    The <see cref="T:System.Threading.CancellationToken" />
-        ///                                     used to propagate notifications that the operation should be
-        ///                                     canceled. </param>
+        /// <param name="cancellationToken">
+        ///     The <see cref="T:System.Threading.CancellationToken" />
+        ///     used to propagate notifications that the operation should be
+        ///     canceled.
+        /// </param>
         /// <returns>
         ///     The <see cref="T:System.Threading.Tasks.Task" /> that represents the asynchronous
         ///     operation, containing a list of users who are in the named role.
