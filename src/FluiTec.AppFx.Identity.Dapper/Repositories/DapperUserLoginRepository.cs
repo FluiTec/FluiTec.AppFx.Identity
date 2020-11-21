@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Dapper;
 using FluiTec.AppFx.Data.Dapper.Repositories;
 using FluiTec.AppFx.Data.Dapper.UnitsOfWork;
@@ -22,20 +23,35 @@ namespace FluiTec.AppFx.Identity.Dapper.Repositories
         {
         }
 
-        /// <summary>   Removes the by name and key.</summary>
-        /// <param name="providerName"> Name of the provider. </param>
-        /// <param name="providerKey">  The provider key. </param>
-        public void RemoveByNameAndKey(string providerName, string providerKey)
+        /// <summary>   Gets remove by name and key asynchronous command.</summary>
+        /// <returns>   The remove by name and key asynchronous command.</returns>
+        private string GetRemoveByNameAndKeyAsyncCommand()
         {
-            var command = GetFromCache(() =>
+            return GetFromCache(() =>
             {
                 var sql = SqlBuilder.Adapter;
                 return
                     $"DELETE FROM {sql.RenderTableName(EntityType)} WHERE {sql.RenderPropertyName(nameof(UserLoginEntity.ProviderName))} = @ProviderName " +
                     $"AND {sql.RenderPropertyName(nameof(UserLoginEntity.ProviderKey))} = @ProviderKey";
             });
-            
-            UnitOfWork.Connection.Execute(command, new {ProviderName = providerName, ProviderKey = providerKey},
+        }
+
+        /// <summary>   Removes the by name and key.</summary>
+        /// <param name="providerName"> Name of the provider. </param>
+        /// <param name="providerKey">  The provider key. </param>
+        public void RemoveByNameAndKey(string providerName, string providerKey)
+        {
+            UnitOfWork.Connection.Execute(GetRemoveByNameAndKeyAsyncCommand(), new {ProviderName = providerName, ProviderKey = providerKey},
+                UnitOfWork.Transaction);
+        }
+
+        /// <summary>   Removes the by name and key asynchronous.</summary>
+        /// <param name="providerName"> Name of the provider. </param>
+        /// <param name="providerKey">  The provider key. </param>
+        /// <returns>   An asynchronous result.</returns>
+        public Task RemoveByNameAndKeyAsync(string providerName, string providerKey)
+        {
+            return UnitOfWork.Connection.ExecuteAsync(GetRemoveByNameAndKeyAsyncCommand(), new { ProviderName = providerName, ProviderKey = providerKey },
                 UnitOfWork.Transaction);
         }
 
@@ -49,6 +65,16 @@ namespace FluiTec.AppFx.Identity.Dapper.Repositories
         {
             var command = SqlBuilder.SelectByFilter(EntityType, nameof(UserLoginEntity.UserId));
             return UnitOfWork.Connection.Query<UserLoginEntity>(command, new {UserId = userId},
+                UnitOfWork.Transaction);
+        }
+
+        /// <summary>   Searches for the first user identifier asynchronous.</summary>
+        /// <param name="userId">   Identifier for the user. </param>
+        /// <returns>   The find by user identifier.</returns>
+        public Task<IEnumerable<UserLoginEntity>> FindByUserIdAsync(Guid userId)
+        {
+            var command = SqlBuilder.SelectByFilter(EntityType, nameof(UserLoginEntity.UserId));
+            return UnitOfWork.Connection.QueryAsync<UserLoginEntity>(command, new { UserId = userId },
                 UnitOfWork.Transaction);
         }
 

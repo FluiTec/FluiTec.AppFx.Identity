@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using FluiTec.AppFx.Data.Repositories;
 using FluiTec.AppFx.Identity.Data.Entities;
 
@@ -13,13 +14,22 @@ namespace FluiTec.AppFx.Identity.Data.Repositories
         /// <param name="providerKey">  The provider key. </param>
         void RemoveByNameAndKey(string providerName, string providerKey);
 
-        /// <summary>   Finds the user identifiers in this collection. </summary>
+        /// <summary>   Removes the by name and key asynchronous.</summary>
+        /// <param name="providerName"> Name of the provider. </param>
+        /// <param name="providerKey">  The provider key. </param>
+        /// <returns>   An asynchronous result.</returns>
+        Task RemoveByNameAndKeyAsync(string providerName, string providerKey);
+
+        /// <summary>   Finds the user identifiers in this collection.</summary>
         /// <param name="userId">   Identifier for the user. </param>
-        /// <returns>
-        ///     An enumerator that allows foreach to be used to process the user identifiers in this
-        ///     collection.
-        /// </returns>
+        /// <returns>An enumerator that allows foreach to be used to process the user identifiers in this
+        /// collection.</returns>
         IEnumerable<UserLoginEntity> FindByUserId(Guid userId);
+
+        /// <summary>   Searches for the first user identifier asynchronous.</summary>
+        /// <param name="userId">   Identifier for the user. </param>
+        /// <returns>   The find by user identifier.</returns>
+        Task<IEnumerable<UserLoginEntity>> FindByUserIdAsync(Guid userId);
 
         /// <summary>   Searches for the first name and key. </summary>
         /// <param name="providerName"> Name of the provider. </param>

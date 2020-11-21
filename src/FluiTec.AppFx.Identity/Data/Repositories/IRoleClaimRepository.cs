@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using FluiTec.AppFx.Data.Repositories;
 using FluiTec.AppFx.Identity.Data.Entities;
 
@@ -34,5 +35,10 @@ namespace FluiTec.AppFx.Identity.Data.Repositories
         ///     this collection.
         /// </returns>
         IEnumerable<UserEntity> GetUsersForClaimType(string claimType);
+
+        /// <summary>   Gets users for claim type asynchronous.</summary>
+        /// <param name="claimType">    Type of the claim. </param>
+        /// <returns>   The users for claim type.</returns>
+        Task<IEnumerable<UserEntity>> GetUsersForClaimTypeAsync(string claimType);
     }
 }

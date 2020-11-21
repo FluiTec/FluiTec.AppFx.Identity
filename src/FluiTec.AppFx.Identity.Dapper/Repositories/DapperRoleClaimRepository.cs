@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Dapper;
 using FluiTec.AppFx.Data.Dapper.Repositories;
 using FluiTec.AppFx.Data.Dapper.UnitsOfWork;
@@ -67,15 +68,11 @@ namespace FluiTec.AppFx.Identity.Dapper.Repositories
                 UnitOfWork.Transaction);
         }
 
-        /// <summary>   Gets the users for claim types in this collection.</summary>
-        /// <param name="claimType">    Type of the claim. </param>
-        /// <returns>
-        ///     An enumerator that allows foreach to be used to process the users for claim types in
-        ///     this collection.
-        /// </returns>
-        public IEnumerable<UserEntity> GetUsersForClaimType(string claimType)
+        /// <summary>   Gets users for claim type command.</summary>
+        /// <returns>   The users for claim type command.</returns>
+        private string GetUsersForClaimTypeCommand()
         {
-            var command = GetFromCache(() =>
+            return GetFromCache(() =>
             {
                 var sql = SqlBuilder.Adapter;
                 return
@@ -87,10 +84,28 @@ namespace FluiTec.AppFx.Identity.Dapper.Repositories
                     $"ON {sql.RenderTableName(typeof(RoleClaimEntity))}.{sql.RenderPropertyName(nameof(RoleClaimEntity.RoleId))} = {sql.RenderTableName(typeof(UserRoleEntity))}.{sql.RenderPropertyName(nameof(UserRoleEntity.RoleId))} " +
                     $"WHERE {sql.RenderTableName(typeof(RoleClaimEntity))}.{sql.RenderPropertyName(nameof(RoleClaimEntity.Type))} = @ClaimType";
             });
+        }
 
-            
-            return UnitOfWork.Connection.Query<UserEntity>(command,
+        /// <summary>   Gets the users for claim types in this collection.</summary>
+        /// <param name="claimType">    Type of the claim. </param>
+        /// <returns>
+        ///     An enumerator that allows foreach to be used to process the users for claim types in
+        ///     this collection.
+        /// </returns>
+        public IEnumerable<UserEntity> GetUsersForClaimType(string claimType)
+        {
+            return UnitOfWork.Connection.Query<UserEntity>(GetUsersForClaimTypeCommand(),
                 new {ClaimType = claimType},
+                UnitOfWork.Transaction);
+        }
+
+        /// <summary>   Gets users for claim type asynchronous.</summary>
+        /// <param name="claimType">    Type of the claim. </param>
+        /// <returns>   The users for claim type.</returns>
+        public Task<IEnumerable<UserEntity>> GetUsersForClaimTypeAsync(string claimType)
+        {
+            return UnitOfWork.Connection.QueryAsync<UserEntity>(GetUsersForClaimTypeCommand(),
+                new { ClaimType = claimType },
                 UnitOfWork.Transaction);
         }
 

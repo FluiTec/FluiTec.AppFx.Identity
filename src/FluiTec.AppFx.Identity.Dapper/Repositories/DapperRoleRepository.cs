@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Dapper;
 using FluiTec.AppFx.Data.Dapper.Repositories;
 using FluiTec.AppFx.Data.Dapper.UnitsOfWork;
@@ -71,6 +72,16 @@ namespace FluiTec.AppFx.Identity.Dapper.Repositories
             var command = SqlBuilder.SelectByInFilter(EntityType, nameof(RoleEntity.Id), "RoleIds");
             return UnitOfWork.Connection.Query<RoleEntity>(command,
                 new {RoleIds = roleIds}, UnitOfWork.Transaction);
+        }
+
+        /// <summary>   Searches for the first identifiers asynchronous.</summary>
+        /// <param name="roleIds">  The roleIds. </param>
+        /// <returns>   The find by identifiers.</returns>
+        public Task<IEnumerable<RoleEntity>> FindByIdsAsync(IEnumerable<Guid> roleIds)
+        {
+            var command = SqlBuilder.SelectByInFilter(EntityType, nameof(RoleEntity.Id), "RoleIds");
+            return UnitOfWork.Connection.QueryAsync<RoleEntity>(command,
+                new { RoleIds = roleIds }, UnitOfWork.Transaction);
         }
 
         #endregion

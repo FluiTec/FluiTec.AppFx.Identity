@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Dapper;
 using FluiTec.AppFx.Data.Dapper.Repositories;
 using FluiTec.AppFx.Data.Dapper.UnitsOfWork;
@@ -38,6 +39,16 @@ namespace FluiTec.AppFx.Identity.Dapper.Repositories
                 UnitOfWork.Transaction);
         }
 
+        /// <summary>   Gets by user asynchronous.</summary>
+        /// <param name="user"> The user. </param>
+        /// <returns>   The by user.</returns>
+        public Task<IEnumerable<UserClaimEntity>> GetByUserAsync(UserEntity user)
+        {
+            var command = SqlBuilder.SelectByFilter(EntityType, nameof(UserClaimEntity.UserId));
+            return UnitOfWork.Connection.QueryAsync<UserClaimEntity>(command, new { UserId = user.Id },
+                UnitOfWork.Transaction);
+        }
+
         /// <summary>   Gets the user identifiers for claim types in this collection.</summary>
         /// <param name="claimType">    Type of the claim. </param>
         /// <returns>
@@ -49,6 +60,17 @@ namespace FluiTec.AppFx.Identity.Dapper.Repositories
             var command = SqlBuilder.SelectByFilter(EntityType, nameof(UserClaimEntity.Type),
                 new[] {nameof(UserClaimEntity.UserId)});
             return UnitOfWork.Connection.Query<Guid>(command, new {Type = claimType},
+                UnitOfWork.Transaction);
+        }
+
+        /// <summary>   Gets user identifiers for claim type asynchronous.</summary>
+        /// <param name="claimType">    Type of the claim. </param>
+        /// <returns>   The user identifiers for claim type.</returns>
+        public Task<IEnumerable<Guid>> GetUserIdsForClaimTypeAsync(string claimType)
+        {
+            var command = SqlBuilder.SelectByFilter(EntityType, nameof(UserClaimEntity.Type),
+                new[] { nameof(UserClaimEntity.UserId) });
+            return UnitOfWork.Connection.QueryAsync<Guid>(command, new { Type = claimType },
                 UnitOfWork.Transaction);
         }
 

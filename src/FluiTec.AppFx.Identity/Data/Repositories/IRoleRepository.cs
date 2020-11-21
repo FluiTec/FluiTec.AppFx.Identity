@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using FluiTec.AppFx.Data.Repositories;
 using FluiTec.AppFx.Identity.Data.Entities;
 
@@ -32,5 +33,10 @@ namespace FluiTec.AppFx.Identity.Data.Repositories
         ///     collection.
         /// </returns>
         IEnumerable<RoleEntity> FindByIds(IEnumerable<Guid> roleIds);
+
+        /// <summary>   Searches for the first identifiers asynchronous.</summary>
+        /// <param name="roleIds">  The roleIds. </param>
+        /// <returns>   The find by identifiers.</returns>
+        Task<IEnumerable<RoleEntity>> FindByIdsAsync(IEnumerable<Guid> roleIds);
     }
 }

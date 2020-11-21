@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Dapper;
 using FluiTec.AppFx.Data.Dapper.Repositories;
 using FluiTec.AppFx.Data.Dapper.UnitsOfWork;
@@ -54,6 +55,19 @@ namespace FluiTec.AppFx.Identity.Dapper.Repositories
             return UnitOfWork.GetRepository<IRoleRepository>().FindByIds(userRoles.Select(ur => ur.RoleId).ToList());
         }
 
+        /// <summary>   Searches for the first user asynchronous.</summary>
+        /// <param name="user"> The user. </param>
+        /// <returns>   The find by user.</returns>
+        public async Task<IEnumerable<RoleEntity>> FindByUserAsync(UserEntity user)
+        {
+            var cmdUserRoles = SqlBuilder.SelectByFilter(EntityType,
+                new[] { nameof(UserRoleEntity.UserId) });
+            var userRoles = await UnitOfWork.Connection.QueryAsync<UserRoleEntity>(cmdUserRoles,
+                new { UserId = user.Id }, UnitOfWork.Transaction);
+
+            return await UnitOfWork.GetRepository<IRoleRepository>().FindByIdsAsync(userRoles.Select(ur => ur.RoleId).ToList());
+        }
+
         /// <summary>   Finds the roles in this collection.</summary>
         /// <param name="role"> The role. </param>
         /// <returns>An enumerator that allows foreach to be used to process the roles in this collection.</returns>
@@ -73,6 +87,15 @@ namespace FluiTec.AppFx.Identity.Dapper.Repositories
         {
             var command = SqlBuilder.DeleteBy(EntityType, nameof(UserRoleEntity.UserId));
             UnitOfWork.Connection.Execute(command, new {UserId = user.Id}, UnitOfWork.Transaction);
+        }
+
+        /// <summary>   Removes the by user asynchronous described by user.</summary>
+        /// <param name="user"> The user. </param>
+        /// <returns>   An asynchronous result.</returns>
+        public Task RemoveByUserAsync(UserEntity user)
+        {
+            var command = SqlBuilder.DeleteBy(EntityType, nameof(UserRoleEntity.UserId));
+            return UnitOfWork.Connection.ExecuteAsync(command, new { UserId = user.Id }, UnitOfWork.Transaction);
         }
 
         /// <summary>   Removes the by role described by role.</summary>

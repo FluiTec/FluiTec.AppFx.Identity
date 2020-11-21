@@ -49,20 +49,17 @@ namespace FluiTec.AppFx.Identity.EntityStores
         ///     operation, containing the <see cref="T:Microsoft.AspNetCore.Identity.IdentityResult" />
         ///     of the creation operation.
         /// </returns>
-        public Task<IdentityResult> CreateAsync(UserEntity user, CancellationToken cancellationToken)
+        public async Task<IdentityResult> CreateAsync(UserEntity user, CancellationToken cancellationToken)
         {
-            return Task<IdentityResult>.Factory.StartNew(() =>
+            try
             {
-                try
-                {
-                    UnitOfWork.UserRepository.Add(user);
-                    return IdentityResult.Success;
-                }
-                catch (Exception)
-                {
-                    return IdentityResult.Failed();
-                }
-            }, cancellationToken);
+                await UnitOfWork.UserRepository.AddAsync(user);
+                return IdentityResult.Success;
+            }
+            catch (Exception)
+            {
+                return IdentityResult.Failed();
+            }
         }
 
         /// <summary>
@@ -79,10 +76,9 @@ namespace FluiTec.AppFx.Identity.EntityStores
         ///     operation, containing the user matching the specified <paramref name="userId" /> if it
         ///     exists.
         /// </returns>
-        public Task<UserEntity> FindByIdAsync(string userId, CancellationToken cancellationToken)
+        public async Task<UserEntity> FindByIdAsync(string userId, CancellationToken cancellationToken)
         {
-            return Task<UserEntity>.Factory.StartNew(() => UnitOfWork.UserRepository.Get(userId),
-                cancellationToken);
+            return await UnitOfWork.UserRepository.GetAsync(userId);
         }
 
         /// <summary>
@@ -99,10 +95,9 @@ namespace FluiTec.AppFx.Identity.EntityStores
         ///     operation, containing the user matching the specified
         ///     <paramref name="normalizedUserName" /> if it exists.
         /// </returns>
-        public Task<UserEntity> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
+        public async Task<UserEntity> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
         {
-            return Task<UserEntity>.Factory.StartNew(
-                () => UnitOfWork.UserRepository.FindByNormalizedName(normalizedUserName), cancellationToken);
+            return await UnitOfWork.UserRepository.FindByNormalizedNameAsync(normalizedUserName);
         }
 
         /// <summary>   Updates the specified <paramref name="user" /> in the user store. </summary>
@@ -117,20 +112,17 @@ namespace FluiTec.AppFx.Identity.EntityStores
         ///     operation, containing the <see cref="T:Microsoft.AspNetCore.Identity.IdentityResult" />
         ///     of the update operation.
         /// </returns>
-        public Task<IdentityResult> UpdateAsync(UserEntity user, CancellationToken cancellationToken)
+        public async Task<IdentityResult> UpdateAsync(UserEntity user, CancellationToken cancellationToken)
         {
-            return Task<IdentityResult>.Factory.StartNew(() =>
+            try
             {
-                try
-                {
-                    UnitOfWork.UserRepository.Update(user);
-                    return IdentityResult.Success;
-                }
-                catch (Exception)
-                {
-                    return IdentityResult.Failed();
-                }
-            }, cancellationToken);
+                await UnitOfWork.UserRepository.UpdateAsync(user);
+                return IdentityResult.Success;
+            }
+            catch (Exception)
+            {
+                return IdentityResult.Failed();
+            }
         }
 
         /// <summary>   Deletes the specified <paramref name="user" /> from the user store. </summary>
@@ -145,21 +137,18 @@ namespace FluiTec.AppFx.Identity.EntityStores
         ///     operation, containing the <see cref="T:Microsoft.AspNetCore.Identity.IdentityResult" />
         ///     of the update operation.
         /// </returns>
-        public Task<IdentityResult> DeleteAsync(UserEntity user, CancellationToken cancellationToken)
+        public async Task<IdentityResult> DeleteAsync(UserEntity user, CancellationToken cancellationToken)
         {
-            return Task<IdentityResult>.Factory.StartNew(() =>
+            try
             {
-                try
-                {
-                    UnitOfWork.UserRoleRepository.RemoveByUser(user);
-                    UnitOfWork.UserRepository.Delete(user);
-                    return IdentityResult.Success;
-                }
-                catch (Exception)
-                {
-                    return IdentityResult.Failed();
-                }
-            }, cancellationToken);
+                await UnitOfWork.UserRoleRepository.RemoveByUserAsync(user);
+                await UnitOfWork.UserRepository.DeleteAsync(user);
+                return IdentityResult.Success;
+            }
+            catch (Exception)
+            {
+                return IdentityResult.Failed();
+            }
         }
 
         /// <summary>   Gets the user identifier for the specified <paramref name="user" />. </summary>
@@ -208,13 +197,10 @@ namespace FluiTec.AppFx.Identity.EntityStores
         ///     The <see cref="T:System.Threading.Tasks.Task" /> that represents the asynchronous
         ///     operation.
         /// </returns>
-        public Task SetUserNameAsync(UserEntity user, string userName, CancellationToken cancellationToken)
+        public async Task SetUserNameAsync(UserEntity user, string userName, CancellationToken cancellationToken)
         {
-            return Task.Factory.StartNew(() =>
-            {
-                user.Name = userName;
-                UnitOfWork.UserRepository.Update(user);
-            }, cancellationToken);
+            user.Name = userName;
+            await UnitOfWork.UserRepository.UpdateAsync(user);
         }
 
         /// <summary>   Gets the normalized user name for the specified <paramref name="user" />. </summary>
@@ -267,13 +253,10 @@ namespace FluiTec.AppFx.Identity.EntityStores
         ///     The <see cref="T:System.Threading.Tasks.Task" /> that represents the asynchronous
         ///     operation.
         /// </returns>
-        public Task SetPhoneNumberAsync(UserEntity user, string phoneNumber, CancellationToken cancellationToken)
+        public async Task SetPhoneNumberAsync(UserEntity user, string phoneNumber, CancellationToken cancellationToken)
         {
-            return Task.Factory.StartNew(() =>
-            {
-                user.Phone = phoneNumber;
-                UnitOfWork.UserRepository.Update(user);
-            }, cancellationToken);
+            user.Phone = phoneNumber;
+            await UnitOfWork.UserRepository.UpdateAsync(user);
         }
 
         /// <summary>
@@ -338,13 +321,10 @@ namespace FluiTec.AppFx.Identity.EntityStores
         ///     The <see cref="T:System.Threading.Tasks.Task" /> that represents the asynchronous
         ///     operation.
         /// </returns>
-        public Task SetPhoneNumberConfirmedAsync(UserEntity user, bool confirmed, CancellationToken cancellationToken)
+        public async Task SetPhoneNumberConfirmedAsync(UserEntity user, bool confirmed, CancellationToken cancellationToken)
         {
-            return Task.Factory.StartNew(() =>
-            {
-                user.PhoneConfirmed = confirmed;
-                UnitOfWork.UserRepository.Update(user);
-            }, cancellationToken);
+            user.PhoneConfirmed = confirmed;
+            await UnitOfWork.UserRepository.UpdateAsync(user);
         }
 
         #endregion
@@ -360,13 +340,10 @@ namespace FluiTec.AppFx.Identity.EntityStores
         ///     canceled.
         /// </param>
         /// <returns>   The task object representing the asynchronous operation. </returns>
-        public Task SetEmailAsync(UserEntity user, string email, CancellationToken cancellationToken)
+        public async Task SetEmailAsync(UserEntity user, string email, CancellationToken cancellationToken)
         {
-            return Task.Factory.StartNew(() =>
-            {
-                user.Email = email;
-                UnitOfWork.UserRepository.Update(user);
-            }, cancellationToken);
+            user.Email = email;
+            await UnitOfWork.UserRepository.UpdateAsync(user);
         }
 
         /// <summary>   Gets the email address for the specified <paramref name="user" />. </summary>
@@ -424,13 +401,10 @@ namespace FluiTec.AppFx.Identity.EntityStores
         ///     canceled.
         /// </param>
         /// <returns>   The task object representing the asynchronous operation. </returns>
-        public Task SetEmailConfirmedAsync(UserEntity user, bool confirmed, CancellationToken cancellationToken)
+        public async Task SetEmailConfirmedAsync(UserEntity user, bool confirmed, CancellationToken cancellationToken)
         {
-            return Task.Factory.StartNew(() =>
-            {
-                user.EmailConfirmed = confirmed;
-                UnitOfWork.UserRepository.Update(user);
-            }, cancellationToken);
+            user.EmailConfirmed = confirmed;
+            await UnitOfWork.UserRepository.UpdateAsync(user);
         }
 
         /// <summary>
@@ -448,8 +422,7 @@ namespace FluiTec.AppFx.Identity.EntityStores
         /// </returns>
         public Task<UserEntity> FindByEmailAsync(string normalizedEmail, CancellationToken cancellationToken)
         {
-            return Task<UserEntity>.Factory.StartNew(
-                () => UnitOfWork.UserRepository.FindByNormalizedEmail(normalizedEmail), cancellationToken);
+            return UnitOfWork.UserRepository.FindByNormalizedEmailAsync(normalizedEmail);
         }
 
         /// <summary>   Returns the normalized email for the specified <paramref name="user" />. </summary>
@@ -502,13 +475,10 @@ namespace FluiTec.AppFx.Identity.EntityStores
         ///     The <see cref="T:System.Threading.Tasks.Task" /> that represents the asynchronous
         ///     operation.
         /// </returns>
-        public Task SetPasswordHashAsync(UserEntity user, string passwordHash, CancellationToken cancellationToken)
+        public async Task SetPasswordHashAsync(UserEntity user, string passwordHash, CancellationToken cancellationToken)
         {
-            return Task.Factory.StartNew(() =>
-            {
-                user.PasswordHash = passwordHash;
-                UnitOfWork.UserRepository.Update(user);
-            }, cancellationToken);
+            user.PasswordHash = passwordHash;
+            await UnitOfWork.UserRepository.UpdateAsync(user);
         }
 
         /// <summary>   Gets the password hash for the specified <paramref name="user" />. </summary>
@@ -567,34 +537,29 @@ namespace FluiTec.AppFx.Identity.EntityStores
         ///     A <see cref="T:System.Threading.Tasks.Task`1" /> that represents the result of the
         ///     asynchronous query, a list of <see cref="T:System.Security.Claims.Claim" />s.
         /// </returns>
-        public Task<IList<Claim>> GetClaimsAsync(UserEntity user, CancellationToken cancellationToken)
+        public async Task<IList<Claim>> GetClaimsAsync(UserEntity user, CancellationToken cancellationToken)
         {
-            return Task<IList<Claim>>.Factory.StartNew(
-                () =>
-                {
-                    // add roles as claims
-                    var roles = UnitOfWork.UserRoleRepository.FindByUser(user);
-                    var rClaims = roles.Select(r => new Claim(ClaimTypes.Role, r.Name));
+            // add roles as claims
+            var roles = await UnitOfWork.UserRoleRepository.FindByUserAsync(user);
+            var rClaims = roles.Select(r => new Claim(ClaimTypes.Role, r.Name));
 
-                    // add basic claims
-                    var claims = new List<Claim>
-                    {
-                        new Claim(ClaimTypes.Name, user.Name)
-                    };
-                    if (!string.IsNullOrWhiteSpace(user.Phone))
-                        claims.Add(new Claim(ClaimTypes.HomePhone, user.Phone));
-                    if (!string.IsNullOrWhiteSpace(user.FullName))
-                        claims.Add(new Claim(ClaimTypes.GivenName, user.FullName));
-                    claims.AddRange(rClaims);
+            // add basic claims
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, user.Name)
+            };
+            if (!string.IsNullOrWhiteSpace(user.Phone))
+                claims.Add(new Claim(ClaimTypes.HomePhone, user.Phone));
+            if (!string.IsNullOrWhiteSpace(user.FullName))
+                claims.Add(new Claim(ClaimTypes.GivenName, user.FullName));
+            claims.AddRange(rClaims);
 
-                    // fetch user- und role claims from the db
-                    var dbClaims = UnitOfWork.UserRepository.FindAllClaims(user)
-                        .Select(c => new Claim(c.Type, c.Value));
-                    claims.AddRange(dbClaims);
+            // fetch user- und role claims from the db
+            var claimResult = await UnitOfWork.UserRepository.FindAllClaimsAsync(user);
+            var dbClaims = claimResult.Select(c => new Claim(c.Type, c.Value));
+            claims.AddRange(dbClaims);
 
-                    return claims;
-                },
-                cancellationToken);
+            return claims;
         }
 
         /// <summary>   Add claims to a user as an asynchronous operation. </summary>
@@ -609,15 +574,12 @@ namespace FluiTec.AppFx.Identity.EntityStores
         ///     canceled.
         /// </param>
         /// <returns>   The task object representing the asynchronous operation. </returns>
-        public Task AddClaimsAsync(UserEntity user, IEnumerable<Claim> claims, CancellationToken cancellationToken)
+        public async Task AddClaimsAsync(UserEntity user, IEnumerable<Claim> claims, CancellationToken cancellationToken)
         {
-            return Task.Factory.StartNew(() =>
-            {
-                var identityClaims = claims.Select(c =>
-                    new UserClaimEntity {UserId = user.Id, Type = c.Type, Value = c.Value});
+            var identityClaims = claims.Select(c =>
+                new UserClaimEntity { UserId = user.Id, Type = c.Type, Value = c.Value });
 
-                UnitOfWork.UserClaimRepository.AddRange(identityClaims);
-            }, cancellationToken);
+            await UnitOfWork.UserClaimRepository.AddRangeAsync(identityClaims);
         }
 
         /// <summary>
@@ -636,15 +598,12 @@ namespace FluiTec.AppFx.Identity.EntityStores
         ///     canceled.
         /// </param>
         /// <returns>   The task object representing the asynchronous operation. </returns>
-        public Task ReplaceClaimAsync(UserEntity user, Claim claim, Claim newClaim, CancellationToken cancellationToken)
+        public async Task ReplaceClaimAsync(UserEntity user, Claim claim, Claim newClaim, CancellationToken cancellationToken)
         {
-            return Task.Factory.StartNew(() =>
-            {
-                var entity = UnitOfWork.UserClaimRepository.GetByUserAndType(user, claim.Type);
-                entity.Type = newClaim.Type;
-                entity.Value = newClaim.Value;
-                UnitOfWork.UserClaimRepository.Update(entity);
-            }, cancellationToken);
+            var entity = UnitOfWork.UserClaimRepository.GetByUserAndType(user, claim.Type);
+            entity.Type = newClaim.Type;
+            entity.Value = newClaim.Value;
+            await UnitOfWork.UserClaimRepository.UpdateAsync(entity);
         }
 
         /// <summary>
@@ -664,15 +623,13 @@ namespace FluiTec.AppFx.Identity.EntityStores
         ///     canceled.
         /// </param>
         /// <returns>   The task object representing the asynchronous operation. </returns>
-        public Task RemoveClaimsAsync(UserEntity user, IEnumerable<Claim> claims, CancellationToken cancellationToken)
+        public async Task RemoveClaimsAsync(UserEntity user, IEnumerable<Claim> claims, CancellationToken cancellationToken)
         {
-            return Task.Factory.StartNew(() =>
-            {
-                var claimTypes = claims.Select(c => c.Type).ToList();
-                var entities = UnitOfWork.UserClaimRepository.GetByUser(user).Where(c => claimTypes.Contains(c.Type));
-                foreach (var entity in entities)
-                    UnitOfWork.UserClaimRepository.Delete(entity);
-            }, cancellationToken);
+            var claimTypes = claims.Select(c => c.Type).ToList();
+            var users = await UnitOfWork.UserClaimRepository.GetByUserAsync(user);
+            var entities = users.Where(c => claimTypes.Contains(c.Type));
+            foreach (var entity in entities)
+                await UnitOfWork.UserClaimRepository.DeleteAsync(entity);
         }
 
         /// <summary>
@@ -690,16 +647,13 @@ namespace FluiTec.AppFx.Identity.EntityStores
         ///     asynchronous query, a list of who contain the specified
         ///     claim.
         /// </returns>
-        public Task<IList<UserEntity>> GetUsersForClaimAsync(Claim claim, CancellationToken cancellationToken)
+        public async Task<IList<UserEntity>> GetUsersForClaimAsync(Claim claim, CancellationToken cancellationToken)
         {
-            return Task<IList<UserEntity>>.Factory.StartNew(() =>
-            {
-                var userIds = UnitOfWork.UserClaimRepository.GetUserIdsForClaimType(claim.Type);
-                var users = UnitOfWork.UserRepository.FindByIds(userIds);
+            var userIds = await UnitOfWork.UserClaimRepository.GetUserIdsForClaimTypeAsync(claim.Type);
+            var users = await UnitOfWork.UserRepository.FindByIdsAsync(userIds);
 
-                var rUsers = UnitOfWork.RoleClaimRepository.GetUsersForClaimType(claim.Type);
-                return users.Concat(rUsers).Distinct(new UserComparer()).ToList();
-            }, cancellationToken);
+            var rUsers = await UnitOfWork.RoleClaimRepository.GetUsersForClaimTypeAsync(claim.Type);
+            return users.Concat(rUsers).Distinct(new UserComparer()).ToList();
         }
 
         #endregion
@@ -725,19 +679,15 @@ namespace FluiTec.AppFx.Identity.EntityStores
         ///     The <see cref="T:System.Threading.Tasks.Task" /> that represents the asynchronous
         ///     operation.
         /// </returns>
-        public Task AddLoginAsync(UserEntity user, UserLoginInfo login, CancellationToken cancellationToken)
+        public async Task AddLoginAsync(UserEntity user, UserLoginInfo login, CancellationToken cancellationToken)
         {
-            return Task<UserEntity>.Factory.StartNew(() =>
+            await UnitOfWork.LoginRepository.AddAsync(new UserLoginEntity
             {
-                UnitOfWork.LoginRepository.Add(new UserLoginEntity
-                {
-                    ProviderName = login.LoginProvider,
-                    ProviderKey = login.ProviderKey,
-                    ProviderDisplayName = login.ProviderDisplayName,
-                    UserId = user.Id
-                });
-                return user;
-            }, cancellationToken);
+                ProviderName = login.LoginProvider,
+                ProviderKey = login.ProviderKey,
+                ProviderDisplayName = login.ProviderDisplayName,
+                UserId = user.Id
+            });
         }
 
         /// <summary>
@@ -760,12 +710,10 @@ namespace FluiTec.AppFx.Identity.EntityStores
         ///     The <see cref="T:System.Threading.Tasks.Task" /> that represents the asynchronous
         ///     operation.
         /// </returns>
-        public Task RemoveLoginAsync(UserEntity user, string loginProvider, string providerKey,
+        public async Task RemoveLoginAsync(UserEntity user, string loginProvider, string providerKey,
             CancellationToken cancellationToken)
         {
-            return Task.Factory.StartNew(
-                () => { UnitOfWork.LoginRepository.RemoveByNameAndKey(loginProvider, providerKey); },
-                cancellationToken);
+            await UnitOfWork.LoginRepository.RemoveByNameAndKeyAsync(loginProvider, providerKey);
         }
 
         /// <summary>
@@ -784,14 +732,11 @@ namespace FluiTec.AppFx.Identity.EntityStores
         ///     containing a list of <see cref="T:Microsoft.AspNetCore.Identity.UserLoginInfo" /> for the
         ///     specified <paramref name="user" />, if any.
         /// </returns>
-        public Task<IList<UserLoginInfo>> GetLoginsAsync(UserEntity user, CancellationToken cancellationToken)
+        public async Task<IList<UserLoginInfo>> GetLoginsAsync(UserEntity user, CancellationToken cancellationToken)
         {
-            return Task<IList<UserLoginInfo>>.Factory.StartNew(() =>
-            {
-                var entities = UnitOfWork.LoginRepository.FindByUserId(user.Id);
-                return entities.Select(e => new UserLoginInfo(e.ProviderName, e.ProviderKey, e.ProviderDisplayName))
-                    .ToList();
-            }, cancellationToken);
+            var entities = await UnitOfWork.LoginRepository.FindByUserIdAsync(user.Id);
+            return entities.Select(e => new UserLoginInfo(e.ProviderName, e.ProviderKey, e.ProviderDisplayName))
+                .ToList();
         }
 
         /// <summary>
@@ -814,11 +759,10 @@ namespace FluiTec.AppFx.Identity.EntityStores
         ///     The <see cref="T:System.Threading.Tasks.Task" /> for the asynchronous operation,
         ///     containing the user, if any which matched the specified login provider and key.
         /// </returns>
-        public Task<UserEntity> FindByLoginAsync(string loginProvider, string providerKey,
+        public async Task<UserEntity> FindByLoginAsync(string loginProvider, string providerKey,
             CancellationToken cancellationToken)
         {
-            return Task<UserEntity>.Factory.StartNew(
-                () => UnitOfWork.UserRepository.FindByLogin(loginProvider, providerKey), cancellationToken);
+            return await UnitOfWork.UserRepository.FindByLoginAsync(loginProvider, providerKey);
         }
 
         #endregion
