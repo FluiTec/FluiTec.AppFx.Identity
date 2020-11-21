@@ -38,13 +38,10 @@ namespace FluiTec.AppFx.Identity.EntityStores
         ///     The <see cref="T:System.Threading.Tasks.Task" /> that represents the asynchronous
         ///     operation.
         /// </returns>
-        public Task SetSecurityStampAsync(UserEntity user, string stamp, CancellationToken cancellationToken)
+        public async Task SetSecurityStampAsync(UserEntity user, string stamp, CancellationToken cancellationToken)
         {
-            return Task.Factory.StartNew(() =>
-            {
-                user.SecurityStamp = stamp;
-                UnitOfWork.UserRepository.Update(user);
-            }, cancellationToken);
+            user.SecurityStamp = stamp;
+            await UnitOfWork.UserRepository.UpdateAsync(user);
         }
 
         /// <summary>   Get the security stamp for the specified <paramref name="user" />. </summary>
@@ -89,13 +86,10 @@ namespace FluiTec.AppFx.Identity.EntityStores
         ///     The <see cref="T:System.Threading.Tasks.Task" /> that represents the asynchronous
         ///     operation.
         /// </returns>
-        public Task SetTwoFactorEnabledAsync(UserEntity user, bool enabled, CancellationToken cancellationToken)
+        public async Task SetTwoFactorEnabledAsync(UserEntity user, bool enabled, CancellationToken cancellationToken)
         {
-            return Task.Factory.StartNew(() =>
-            {
-                user.TwoFactorEnabled = enabled;
-                UnitOfWork.UserRepository.Update(user);
-            }, cancellationToken);
+            user.TwoFactorEnabled = enabled;
+            await UnitOfWork.UserRepository.UpdateAsync(user);
         }
 
         /// <summary>
@@ -165,11 +159,8 @@ namespace FluiTec.AppFx.Identity.EntityStores
         public async Task SetLockoutEndDateAsync(UserEntity user, DateTimeOffset? lockoutEnd,
             CancellationToken cancellationToken)
         {
-            await Task.Factory.StartNew(() =>
-            {
-                user.LockedOutTill = lockoutEnd;
-                UnitOfWork.UserRepository.Update(user);
-            }, cancellationToken);
+            user.LockedOutTill = lockoutEnd;
+            await UnitOfWork.UserRepository.UpdateAsync(user);
         }
 
         /// <summary>
@@ -188,11 +179,8 @@ namespace FluiTec.AppFx.Identity.EntityStores
         public async Task<int> IncrementAccessFailedCountAsync(UserEntity user, CancellationToken cancellationToken)
         {
             var newCount = user.AccessFailedCount + 1;
-            await Task.Factory.StartNew(() =>
-            {
-                user.AccessFailedCount = newCount;
-                UnitOfWork.UserRepository.Update(user);
-            }, cancellationToken);
+            user.AccessFailedCount = newCount;
+            await UnitOfWork.UserRepository.UpdateAsync(user);
             return newCount;
         }
 
@@ -208,13 +196,10 @@ namespace FluiTec.AppFx.Identity.EntityStores
         ///     The <see cref="T:System.Threading.Tasks.Task" /> that represents the asynchronous
         ///     operation.
         /// </returns>
-        public Task ResetAccessFailedCountAsync(UserEntity user, CancellationToken cancellationToken)
+        public async Task ResetAccessFailedCountAsync(UserEntity user, CancellationToken cancellationToken)
         {
-            return Task.Factory.StartNew(() =>
-            {
-                user.AccessFailedCount = 0;
-                UnitOfWork.UserRepository.Update(user);
-            }, cancellationToken);
+            user.AccessFailedCount = 0;
+            await UnitOfWork.UserRepository.UpdateAsync(user);
         }
 
         /// <summary>
@@ -273,13 +258,10 @@ namespace FluiTec.AppFx.Identity.EntityStores
         ///     The <see cref="T:System.Threading.Tasks.Task" /> that represents the asynchronous
         ///     operation.
         /// </returns>
-        public Task SetLockoutEnabledAsync(UserEntity user, bool enabled, CancellationToken cancellationToken)
+        public async Task SetLockoutEnabledAsync(UserEntity user, bool enabled, CancellationToken cancellationToken)
         {
-            return Task.Factory.StartNew(() =>
-            {
-                user.LockoutEnabled = enabled;
-                UnitOfWork.UserRepository.Update(user);
-            }, cancellationToken);
+            user.LockoutEnabled = enabled;
+            await UnitOfWork.UserRepository.UpdateAsync(user);
         }
 
         #endregion
