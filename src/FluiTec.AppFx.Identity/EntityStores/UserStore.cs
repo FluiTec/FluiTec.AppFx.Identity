@@ -97,7 +97,7 @@ namespace FluiTec.AppFx.Identity.EntityStores
         /// </returns>
         public async Task<UserEntity> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
         {
-            return await UnitOfWork.UserRepository.FindByNormalizedNameAsync(normalizedUserName);
+            return await UnitOfWork.UserRepository.FindByNormalizedNameAsync(normalizedUserName?.ToUpper());
         }
 
         /// <summary>   Updates the specified <paramref name="user" /> in the user store. </summary>
@@ -422,7 +422,7 @@ namespace FluiTec.AppFx.Identity.EntityStores
         /// </returns>
         public Task<UserEntity> FindByEmailAsync(string normalizedEmail, CancellationToken cancellationToken)
         {
-            return UnitOfWork.UserRepository.FindByNormalizedEmailAsync(normalizedEmail);
+            return UnitOfWork.UserRepository.FindByNormalizedEmailAsync(normalizedEmail?.ToUpper());
         }
 
         /// <summary>   Returns the normalized email for the specified <paramref name="user" />. </summary>

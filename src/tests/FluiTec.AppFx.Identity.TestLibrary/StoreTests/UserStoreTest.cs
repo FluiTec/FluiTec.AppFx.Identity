@@ -254,20 +254,14 @@ namespace FluiTec.AppFx.Identity.TestLibrary.StoreTests
         [TestMethod]
         public void CanGetNormalizedUserNameAsync()
         {
-            using (var store = GetStore)
-            {
-                // nothing to test here - normalized names are ignored
-            }
+            // nothing to test here - normalized names are ignored
         }
 
         /// <summary>   (Unit Test Method) can set normalized user name asynchronous.</summary>
         [TestMethod]
         public void CanSetNormalizedUserNameAsync()
         {
-            using (var store = GetStore)
-            {
-                // nothing to test here - normalized names are ignored
-            }
+            // nothing to test here - normalized names are ignored
         }
     }
 }
