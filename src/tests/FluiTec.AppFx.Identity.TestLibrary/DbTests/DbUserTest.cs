@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace FluiTec.AppFx.Identity.TestLibrary.DbTests
 {
     /// <summary>   A database test.</summary>
-    public abstract partial class DbTest
+    public abstract class UserDbTest : DbTest
     {
         /// <summary>   (Unit Test Method) can create user.</summary>
         [TestMethod]

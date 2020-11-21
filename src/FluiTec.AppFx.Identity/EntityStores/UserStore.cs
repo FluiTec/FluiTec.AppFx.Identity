@@ -56,9 +56,9 @@ namespace FluiTec.AppFx.Identity.EntityStores
                 await UnitOfWork.UserRepository.AddAsync(user);
                 return IdentityResult.Success;
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return IdentityResult.Failed();
+                return IdentityResult.Failed(new IdentityError {Description = e.ToString()});
             }
         }
 

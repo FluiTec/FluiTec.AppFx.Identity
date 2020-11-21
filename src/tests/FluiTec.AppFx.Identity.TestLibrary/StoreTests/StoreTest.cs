@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace FluiTec.AppFx.Identity.TestLibrary.StoreTests
 {
     /// <summary>   A store test. </summary>
-    public abstract partial class StoreTest
+    public abstract class StoreTest
     {
         #region Constructors
 
@@ -35,6 +35,26 @@ namespace FluiTec.AppFx.Identity.TestLibrary.StoreTests
             AssertDbAvailable();
 
             using var uow = DataService.BeginUnitOfWork();
+        }
+
+        /// <summary>   Clean database.</summary>
+        [TestCleanup]
+        public void CleanDatabase()
+        {
+            CleanUsers();
+        }
+
+        /// <summary>   Clean users.</summary>
+        private void CleanUsers()
+        {
+            using (var uow = DataService.BeginUnitOfWork())
+            {
+                foreach (var entity in uow.UserRepository.GetAll())
+                {
+                    uow.UserRepository.Delete(entity);
+                }
+                uow.Commit();
+            }
         }
 
         #endregion
