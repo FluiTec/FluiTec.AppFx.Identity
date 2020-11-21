@@ -36,9 +36,9 @@ namespace FluiTec.AppFx.Identity.TestLibrary.StoreTests
                     AccessFailedCount = 0,
                     LockedOutPermanently = false
                 };
-                var createResult = store.CreateAsync(user, new CancellationToken()).Result;
+                var createResult = store.CreateAsync(user, CancellationToken.None).Result;
 
-                Assert.AreEqual(user.PasswordHash, store.GetPasswordHashAsync(user, new CancellationToken()).Result);
+                Assert.AreEqual(user.PasswordHash, store.GetPasswordHashAsync(user, CancellationToken.None).Result);
             }
         }
 
@@ -64,12 +64,12 @@ namespace FluiTec.AppFx.Identity.TestLibrary.StoreTests
                     AccessFailedCount = 0,
                     LockedOutPermanently = false
                 };
-                var createResult = store.CreateAsync(user, new CancellationToken()).Result;
+                var createResult = store.CreateAsync(user, CancellationToken.None).Result;
 
                 user.PasswordHash = "abc";
-                store.SetPasswordHashAsync(user, "abc", new CancellationToken()).Wait();
+                store.SetPasswordHashAsync(user, "abc", CancellationToken.None).Wait();
 
-                var dbEntity = store.FindByIdAsync(user.Id.ToString(), new CancellationToken()).Result;
+                var dbEntity = store.FindByIdAsync(user.Id.ToString(), CancellationToken.None).Result;
                 Assert.AreEqual(user.PasswordHash, dbEntity.PasswordHash);
             }
         }
@@ -96,9 +96,9 @@ namespace FluiTec.AppFx.Identity.TestLibrary.StoreTests
                     AccessFailedCount = 0,
                     LockedOutPermanently = false
                 };
-                var createResult = store.CreateAsync(user, new CancellationToken()).Result;
+                var createResult = store.CreateAsync(user, CancellationToken.None).Result;
 
-                Assert.AreEqual(false, store.HasPasswordAsync(user, new CancellationToken()).Result);
+                Assert.AreEqual(false, store.HasPasswordAsync(user, CancellationToken.None).Result);
             }
         }
     }

@@ -36,9 +36,9 @@ namespace FluiTec.AppFx.Identity.TestLibrary.StoreTests
                     AccessFailedCount = 0,
                     LockedOutPermanently = false
                 };
-                var createResult = store.CreateAsync(user, new CancellationToken()).Result;
+                var createResult = store.CreateAsync(user, CancellationToken.None).Result;
 
-                Assert.AreEqual(user.Email, store.GetEmailAsync(user, new CancellationToken()).Result);
+                Assert.AreEqual(user.Email, store.GetEmailAsync(user, CancellationToken.None).Result);
             }
         }
 
@@ -64,12 +64,12 @@ namespace FluiTec.AppFx.Identity.TestLibrary.StoreTests
                     AccessFailedCount = 0,
                     LockedOutPermanently = false
                 };
-                var createResult = store.CreateAsync(user, new CancellationToken()).Result;
+                var createResult = store.CreateAsync(user, CancellationToken.None).Result;
 
                 user.Phone = "test2@test.de";
-                store.SetEmailAsync(user, "test2@test.de", new CancellationToken()).Wait();
+                store.SetEmailAsync(user, "test2@test.de", CancellationToken.None).Wait();
 
-                var dbEntity = store.FindByIdAsync(user.Id.ToString(), new CancellationToken()).Result;
+                var dbEntity = store.FindByIdAsync(user.Id.ToString(), CancellationToken.None).Result;
                 Assert.AreEqual(user.Email, dbEntity.Email);
             }
         }
@@ -96,9 +96,9 @@ namespace FluiTec.AppFx.Identity.TestLibrary.StoreTests
                     AccessFailedCount = 0,
                     LockedOutPermanently = false
                 };
-                var createResult = store.CreateAsync(user, new CancellationToken()).Result;
+                var createResult = store.CreateAsync(user, CancellationToken.None).Result;
 
-                Assert.AreEqual(user.EmailConfirmed, store.GetEmailConfirmedAsync(user, new CancellationToken()).Result);
+                Assert.AreEqual(user.EmailConfirmed, store.GetEmailConfirmedAsync(user, CancellationToken.None).Result);
             }
         }
 
@@ -124,12 +124,12 @@ namespace FluiTec.AppFx.Identity.TestLibrary.StoreTests
                     AccessFailedCount = 0,
                     LockedOutPermanently = false
                 };
-                var createResult = store.CreateAsync(user, new CancellationToken()).Result;
+                var createResult = store.CreateAsync(user, CancellationToken.None).Result;
 
                 user.EmailConfirmed = true;
-                store.SetEmailConfirmedAsync(user, true, new CancellationToken()).Wait();
+                store.SetEmailConfirmedAsync(user, true, CancellationToken.None).Wait();
 
-                var dbEntity = store.FindByIdAsync(user.Id.ToString(), new CancellationToken()).Result;
+                var dbEntity = store.FindByIdAsync(user.Id.ToString(), CancellationToken.None).Result;
                 Assert.AreEqual(user.EmailConfirmed, dbEntity.EmailConfirmed);
             }
         }
@@ -156,9 +156,9 @@ namespace FluiTec.AppFx.Identity.TestLibrary.StoreTests
                     AccessFailedCount = 0,
                     LockedOutPermanently = false
                 };
-                var createResult = store.CreateAsync(user, new CancellationToken()).Result;
+                var createResult = store.CreateAsync(user, CancellationToken.None).Result;
 
-                var dbEntity = store.FindByEmailAsync(user.Name, new CancellationToken()).Result;
+                var dbEntity = store.FindByEmailAsync(user.Name, CancellationToken.None).Result;
                 Assert.AreEqual(user.Email, dbEntity.Email);
             }
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using FluiTec.AppFx.Identity.Data.Entities;
 using FluiTec.AppFx.Identity.EntityStores;
@@ -7,16 +8,16 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace FluiTec.AppFx.Identity.TestLibrary.StoreTests
 {
-    /// <summary>   A user phone number store test.</summary>
-    public abstract class UserPhoneNumberStoreTest : StoreTest
+    /// <summary>   A user login store test.</summary>
+    public abstract class UserLoginStoreTest : StoreTest
     {
         /// <summary>   Gets the get store.</summary>
         /// <value> The get store.</value>
-        private IUserPhoneNumberStore<UserEntity> GetStore => new UserStore(DataService);
+        private IUserLoginStore<UserEntity> GetStore => new UserStore(DataService);
 
-        /// <summary>   (Unit Test Method) can get phone number asynchronous.</summary>
+        /// <summary>   (Unit Test Method) can add login asynchronous.</summary>
         [TestMethod]
-        public void CanGetPhoneNumberAsync()
+        public void CanAddLoginAsync()
         {
             using (var store = GetStore)
             {
@@ -37,14 +38,15 @@ namespace FluiTec.AppFx.Identity.TestLibrary.StoreTests
                     LockedOutPermanently = false
                 };
                 var createResult = store.CreateAsync(user, CancellationToken.None).Result;
-                
-                Assert.AreEqual(user.Phone, store.GetPhoneNumberAsync(user, CancellationToken.None).Result);
+
+                store.AddLoginAsync(user, new UserLoginInfo("providerXY", "providerXY", "providerXY"),
+                    CancellationToken.None).Wait();
             }
         }
 
-        /// <summary>   (Unit Test Method) can set phone number asynchronous.</summary>
+        /// <summary>   (Unit Test Method) can remove login asynchronous.</summary>
         [TestMethod]
-        public void CanSetPhoneNumberAsync()
+        public void CanRemoveLoginAsync()
         {
             using (var store = GetStore)
             {
@@ -66,17 +68,19 @@ namespace FluiTec.AppFx.Identity.TestLibrary.StoreTests
                 };
                 var createResult = store.CreateAsync(user, CancellationToken.None).Result;
 
-                user.Phone = "abc";
-                store.SetPhoneNumberAsync(user, "abc", CancellationToken.None).Wait();
+                store.AddLoginAsync(user, new UserLoginInfo("providerXY", "providerXY", "providerXY"),
+                    CancellationToken.None).Wait();
 
-                var dbEntity = store.FindByIdAsync(user.Id.ToString(), CancellationToken.None).Result;
-                Assert.AreEqual(user.Phone, dbEntity.Phone);
+                store.RemoveLoginAsync(user, "providerXY", "providerXY", CancellationToken.None).Wait();
+
+                var logins = store.GetLoginsAsync(user, CancellationToken.None).Result;
+                Assert.IsFalse(logins.Any(l => l.LoginProvider == "providerXY"));
             }
         }
 
-        /// <summary>   (Unit Test Method) can get phone number confirmed asynchronous.</summary>
+        /// <summary>   (Unit Test Method) can get logins asynchronous.</summary>
         [TestMethod]
-        public void CanGetPhoneNumberConfirmedAsync()
+        public void CanGetLoginsAsync()
         {
             using (var store = GetStore)
             {
@@ -98,13 +102,17 @@ namespace FluiTec.AppFx.Identity.TestLibrary.StoreTests
                 };
                 var createResult = store.CreateAsync(user, CancellationToken.None).Result;
 
-                Assert.AreEqual(user.PhoneConfirmed, store.GetPhoneNumberConfirmedAsync(user, CancellationToken.None).Result);
+                store.AddLoginAsync(user, new UserLoginInfo("providerXY", "providerXY", "providerXY"),
+                    CancellationToken.None).Wait();
+
+                var logins = store.GetLoginsAsync(user, CancellationToken.None).Result;
+                Assert.IsTrue(logins.Any(l => l.LoginProvider == "providerXY"));
             }
         }
 
-        /// <summary>   (Unit Test Method) can set phone number confirmed asynchronous.</summary>
+        /// <summary>   (Unit Test Method) can find by login asynchronous.</summary>
         [TestMethod]
-        public void CanSetPhoneNumberConfirmedAsync()
+        public void CanFindByLoginAsync()
         {
             using (var store = GetStore)
             {
@@ -126,11 +134,11 @@ namespace FluiTec.AppFx.Identity.TestLibrary.StoreTests
                 };
                 var createResult = store.CreateAsync(user, CancellationToken.None).Result;
 
-                user.PhoneConfirmed = true;
-                store.SetPhoneNumberConfirmedAsync(user, true, CancellationToken.None).Wait();
+                store.AddLoginAsync(user, new UserLoginInfo("providerXY", "providerXY", "providerXY"),
+                    CancellationToken.None).Wait();
 
-                var dbEntity = store.FindByIdAsync(user.Id.ToString(), CancellationToken.None).Result;
-                Assert.AreEqual(user.PhoneConfirmed, dbEntity.PhoneConfirmed);
+                var dbEntity = store.FindByLoginAsync("providerXY", "providerXY", CancellationToken.None).Result;
+                Assert.IsNotNull(dbEntity);
             }
         }
     }

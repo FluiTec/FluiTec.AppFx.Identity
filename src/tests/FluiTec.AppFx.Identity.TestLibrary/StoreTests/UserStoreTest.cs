@@ -36,7 +36,7 @@ namespace FluiTec.AppFx.Identity.TestLibrary.StoreTests
                     AccessFailedCount = 0,
                     LockedOutPermanently = false
                 };
-                var createResult = store.CreateAsync(user, new CancellationToken()).Result;
+                var createResult = store.CreateAsync(user, CancellationToken.None).Result;
 
                 Assert.AreEqual(IdentityResult.Success, createResult);
             }
@@ -64,9 +64,9 @@ namespace FluiTec.AppFx.Identity.TestLibrary.StoreTests
                     AccessFailedCount = 0,
                     LockedOutPermanently = false
                 };
-                var createResult = store.CreateAsync(user, new CancellationToken()).Result;
+                var createResult = store.CreateAsync(user, CancellationToken.None).Result;
 
-                var dbEntity = store.FindByIdAsync(user.Id.ToString(), new CancellationToken()).Result;
+                var dbEntity = store.FindByIdAsync(user.Id.ToString(), CancellationToken.None).Result;
                 Assert.AreEqual(user.Email, dbEntity.Email);
             }
         }
@@ -93,9 +93,9 @@ namespace FluiTec.AppFx.Identity.TestLibrary.StoreTests
                     AccessFailedCount = 0,
                     LockedOutPermanently = false
                 };
-                var createResult = store.CreateAsync(user, new CancellationToken()).Result;
+                var createResult = store.CreateAsync(user, CancellationToken.None).Result;
 
-                var dbEntity = store.FindByNameAsync(user.Name, new CancellationToken()).Result;
+                var dbEntity = store.FindByNameAsync(user.Name, CancellationToken.None).Result;
                 Assert.AreEqual(user.Email, dbEntity.Email);
             }
         }
@@ -122,12 +122,12 @@ namespace FluiTec.AppFx.Identity.TestLibrary.StoreTests
                     AccessFailedCount = 0,
                     LockedOutPermanently = false
                 };
-                var createResult = store.CreateAsync(user, new CancellationToken()).Result;
+                var createResult = store.CreateAsync(user, CancellationToken.None).Result;
 
                 user.Name = "test2@test.de";
-                var updateResult = store.UpdateAsync(user, new CancellationToken()).Result;
+                var updateResult = store.UpdateAsync(user, CancellationToken.None).Result;
 
-                var dbEntity = store.FindByIdAsync(user.Id.ToString(), new CancellationToken()).Result;
+                var dbEntity = store.FindByIdAsync(user.Id.ToString(), CancellationToken.None).Result;
                 Assert.AreEqual(user.Name, dbEntity.Name);
             }
         }
@@ -154,11 +154,11 @@ namespace FluiTec.AppFx.Identity.TestLibrary.StoreTests
                     AccessFailedCount = 0,
                     LockedOutPermanently = false
                 };
-                var createResult = store.CreateAsync(user, new CancellationToken()).Result;
+                var createResult = store.CreateAsync(user, CancellationToken.None).Result;
 
-                var updateResult = store.DeleteAsync(user, new CancellationToken()).Result;
+                var updateResult = store.DeleteAsync(user, CancellationToken.None).Result;
 
-                var dbEntity = store.FindByIdAsync(user.Id.ToString(), new CancellationToken()).Result;
+                var dbEntity = store.FindByIdAsync(user.Id.ToString(), CancellationToken.None).Result;
                 Assert.AreEqual(null, dbEntity);
             }
         }
@@ -185,9 +185,9 @@ namespace FluiTec.AppFx.Identity.TestLibrary.StoreTests
                     AccessFailedCount = 0,
                     LockedOutPermanently = false
                 };
-                var createResult = store.CreateAsync(user, new CancellationToken()).Result;
+                var createResult = store.CreateAsync(user, CancellationToken.None).Result;
 
-                Assert.AreEqual(user.Id.ToString(), store.GetUserIdAsync(user, new CancellationToken()).Result);
+                Assert.AreEqual(user.Id.ToString(), store.GetUserIdAsync(user, CancellationToken.None).Result);
             }
         }
 
@@ -213,9 +213,9 @@ namespace FluiTec.AppFx.Identity.TestLibrary.StoreTests
                     AccessFailedCount = 0,
                     LockedOutPermanently = false
                 };
-                var createResult = store.CreateAsync(user, new CancellationToken()).Result;
+                var createResult = store.CreateAsync(user, CancellationToken.None).Result;
 
-                Assert.AreEqual(user.Name, store.GetUserNameAsync(user, new CancellationToken()).Result);
+                Assert.AreEqual(user.Name, store.GetUserNameAsync(user, CancellationToken.None).Result);
             }
         }
 
@@ -241,11 +241,11 @@ namespace FluiTec.AppFx.Identity.TestLibrary.StoreTests
                     AccessFailedCount = 0,
                     LockedOutPermanently = false
                 };
-                var createResult = store.CreateAsync(user, new CancellationToken()).Result;
+                var createResult = store.CreateAsync(user, CancellationToken.None).Result;
 
-                store.SetUserNameAsync(user, "test2@test.de", new CancellationToken()).Wait();
+                store.SetUserNameAsync(user, "test2@test.de", CancellationToken.None).Wait();
 
-                var dbEntity = store.FindByIdAsync(user.Id.ToString(), new CancellationToken()).Result;
+                var dbEntity = store.FindByIdAsync(user.Id.ToString(), CancellationToken.None).Result;
                 Assert.AreEqual(user.Name, dbEntity.Name);
             }
         }

@@ -41,6 +41,8 @@ namespace FluiTec.AppFx.Identity.TestLibrary.StoreTests
         [TestCleanup]
         public void CleanDatabase()
         {
+            CleanUserLogins();
+            CleanUserClaims();
             CleanUsers();
         }
 
@@ -52,6 +54,32 @@ namespace FluiTec.AppFx.Identity.TestLibrary.StoreTests
                 foreach (var entity in uow.UserRepository.GetAll())
                 {
                     uow.UserRepository.Delete(entity);
+                }
+                uow.Commit();
+            }
+        }
+
+        /// <summary>   Clean user claims.</summary>
+        private void CleanUserClaims()
+        {
+            using (var uow = DataService.BeginUnitOfWork())
+            {
+                foreach (var entity in uow.UserClaimRepository.GetAll())
+                {
+                    uow.UserClaimRepository.Delete(entity);
+                }
+                uow.Commit();
+            }
+        }
+
+        /// <summary>   Clean user logins.</summary>
+        private void CleanUserLogins()
+        {
+            using (var uow = DataService.BeginUnitOfWork())
+            {
+                foreach (var entity in uow.LoginRepository.GetAll())
+                {
+                    uow.LoginRepository.Delete(entity);
                 }
                 uow.Commit();
             }

@@ -54,4 +54,30 @@ namespace FluiTec.AppFx.Identity.Dapper.Mysql.IntegrationTests.StoreTests
             ServiceOptions = MysqlInitialize.ServiceOptions;
         }
     }
+
+    /// <summary>   (Unit Test Class) a mysql user claim store test.</summary>
+    [TestClass]
+    [TestCategory("Integration")]
+    public class MysqlUserClaimStoreTest : UserClaimStoreTest
+    {
+        /// <summary>   Initializes the options and data service.</summary>
+        protected override void InitOptionsAndDataService()
+        {
+            DataService = MysqlInitialize.DataService;
+            ServiceOptions = MysqlInitialize.ServiceOptions;
+        }
+    }
+
+    /// <summary>   (Unit Test Class) a mysql user login store test.</summary>
+    [TestClass]
+    [TestCategory("Integration")]
+    public class MysqlUserLoginStoreTest : UserLoginStoreTest
+    {
+        /// <summary>   Initializes the options and data service.</summary>
+        protected override void InitOptionsAndDataService()
+        {
+            DataService = MysqlInitialize.DataService;
+            ServiceOptions = MysqlInitialize.ServiceOptions;
+        }
+    }
 }
