@@ -35,20 +35,17 @@ namespace FluiTec.AppFx.Identity.EntityStores
         ///     A <see cref="T:System.Threading.Tasks.Task`1" /> that represents the
         ///     <see cref="T:Microsoft.AspNetCore.Identity.IdentityResult" /> of the asynchronous query.
         /// </returns>
-        public Task<IdentityResult> CreateAsync(RoleEntity role, CancellationToken cancellationToken)
+        public async Task<IdentityResult> CreateAsync(RoleEntity role, CancellationToken cancellationToken)
         {
-            return Task<IdentityResult>.Factory.StartNew(() =>
+            try
             {
-                try
-                {
-                    UnitOfWork.RoleRepository.Add(role);
-                    return IdentityResult.Success;
-                }
-                catch (Exception)
-                {
-                    return IdentityResult.Failed();
-                }
-            }, cancellationToken);
+                await UnitOfWork.RoleRepository.AddAsync(role);
+                return IdentityResult.Success;
+            }
+            catch (Exception)
+            {
+                return IdentityResult.Failed();
+            }
         }
 
         /// <summary>   Finds the role who has the specified ID as an asynchronous operation. </summary>
@@ -61,10 +58,9 @@ namespace FluiTec.AppFx.Identity.EntityStores
         /// <returns>
         ///     A <see cref="T:System.Threading.Tasks.Task`1" /> that result of the look up.
         /// </returns>
-        Task<RoleEntity> IRoleStore<RoleEntity>.FindByIdAsync(string roleId, CancellationToken cancellationToken)
+        async Task<RoleEntity> IRoleStore<RoleEntity>.FindByIdAsync(string roleId, CancellationToken cancellationToken)
         {
-            return Task<RoleEntity>.Factory.StartNew(() => UnitOfWork.RoleRepository.Get(roleId),
-                cancellationToken);
+            return await UnitOfWork.RoleRepository.GetAsync(roleId);
         }
 
         /// <summary>
@@ -79,11 +75,10 @@ namespace FluiTec.AppFx.Identity.EntityStores
         /// <returns>
         ///     A <see cref="T:System.Threading.Tasks.Task`1" /> that result of the look up.
         /// </returns>
-        Task<RoleEntity> IRoleStore<RoleEntity>.FindByNameAsync(string normalizedRoleName,
+        async Task<RoleEntity> IRoleStore<RoleEntity>.FindByNameAsync(string normalizedRoleName,
             CancellationToken cancellationToken)
         {
-            return Task<RoleEntity>.Factory.StartNew(
-                () => UnitOfWork.RoleRepository.FindByNormalizedName(normalizedRoleName), cancellationToken);
+            return await UnitOfWork.RoleRepository.FindByNormalizedNameAsync(normalizedRoleName);
         }
 
         /// <summary>   Updates a role in a store as an asynchronous operation. </summary>
@@ -97,20 +92,17 @@ namespace FluiTec.AppFx.Identity.EntityStores
         ///     A <see cref="T:System.Threading.Tasks.Task`1" /> that represents the
         ///     <see cref="T:Microsoft.AspNetCore.Identity.IdentityResult" /> of the asynchronous query.
         /// </returns>
-        public Task<IdentityResult> UpdateAsync(RoleEntity role, CancellationToken cancellationToken)
+        public async Task<IdentityResult> UpdateAsync(RoleEntity role, CancellationToken cancellationToken)
         {
-            return Task<IdentityResult>.Factory.StartNew(() =>
+            try
             {
-                try
-                {
-                    UnitOfWork.RoleRepository.Update(role);
-                    return IdentityResult.Success;
-                }
-                catch (Exception)
-                {
-                    return IdentityResult.Failed();
-                }
-            }, cancellationToken);
+                await UnitOfWork.RoleRepository.UpdateAsync(role);
+                return IdentityResult.Success;
+            }
+            catch (Exception)
+            {
+                return IdentityResult.Failed();
+            }
         }
 
         /// <summary>   Deletes a role from the store as an asynchronous operation. </summary>
@@ -124,21 +116,18 @@ namespace FluiTec.AppFx.Identity.EntityStores
         ///     A <see cref="T:System.Threading.Tasks.Task`1" /> that represents the
         ///     <see cref="T:Microsoft.AspNetCore.Identity.IdentityResult" /> of the asynchronous query.
         /// </returns>
-        public Task<IdentityResult> DeleteAsync(RoleEntity role, CancellationToken cancellationToken)
+        public async Task<IdentityResult> DeleteAsync(RoleEntity role, CancellationToken cancellationToken)
         {
-            return Task<IdentityResult>.Factory.StartNew(() =>
+            try
             {
-                try
-                {
-                    UnitOfWork.UserRoleRepository.RemoveByRole(role);
-                    UnitOfWork.RoleRepository.Delete(role);
-                    return IdentityResult.Success;
-                }
-                catch (Exception)
-                {
-                    return IdentityResult.Failed();
-                }
-            }, cancellationToken);
+                await UnitOfWork.UserRoleRepository.RemoveByRoleAsync(role);
+                await UnitOfWork.RoleRepository.DeleteAsync(role);
+                return IdentityResult.Success;
+            }
+            catch (Exception)
+            {
+                return IdentityResult.Failed();
+            }
         }
 
         /// <summary>   Gets the ID for a role from the store as an asynchronous operation. </summary>
@@ -183,13 +172,10 @@ namespace FluiTec.AppFx.Identity.EntityStores
         ///     The <see cref="T:System.Threading.Tasks.Task" /> that represents the asynchronous
         ///     operation.
         /// </returns>
-        public Task SetRoleNameAsync(RoleEntity role, string roleName, CancellationToken cancellationToken)
+        public async Task SetRoleNameAsync(RoleEntity role, string roleName, CancellationToken cancellationToken)
         {
-            return Task.Factory.StartNew(() =>
-            {
-                role.Name = roleName;
-                UnitOfWork.RoleRepository.Update(role);
-            }, cancellationToken);
+            role.Name = roleName;
+            await UnitOfWork.RoleRepository.UpdateAsync(role);
         }
 
         /// <summary>   Get a role's normalized name as an asynchronous operation. </summary>
@@ -241,13 +227,10 @@ namespace FluiTec.AppFx.Identity.EntityStores
         ///     The <see cref="T:System.Threading.Tasks.Task" /> that represents the asynchronous
         ///     operation.
         /// </returns>
-        public Task AddToRoleAsync(UserEntity user, string roleName, CancellationToken cancellationToken)
+        public async Task AddToRoleAsync(UserEntity user, string roleName, CancellationToken cancellationToken)
         {
-            return Task.Factory.StartNew(() =>
-            {
-                var role = UnitOfWork.RoleRepository.FindByNormalizedName(roleName.ToUpper());
-                UnitOfWork.UserRoleRepository.Add(new UserRoleEntity {RoleId = role.Id, UserId = user.Id});
-            }, cancellationToken);
+            var role = await UnitOfWork.RoleRepository.FindByNormalizedNameAsync(roleName.ToUpper());
+            await UnitOfWork.UserRoleRepository.AddAsync(new UserRoleEntity { RoleId = role.Id, UserId = user.Id });
         }
 
         /// <summary>   Remove the specified <paramref name="user" /> from the named role. </summary>
@@ -262,14 +245,11 @@ namespace FluiTec.AppFx.Identity.EntityStores
         ///     The <see cref="T:System.Threading.Tasks.Task" /> that represents the asynchronous
         ///     operation.
         /// </returns>
-        public Task RemoveFromRoleAsync(UserEntity user, string roleName, CancellationToken cancellationToken)
+        public async Task RemoveFromRoleAsync(UserEntity user, string roleName, CancellationToken cancellationToken)
         {
-            return Task.Factory.StartNew(() =>
-            {
-                var role = UnitOfWork.RoleRepository.FindByNormalizedName(roleName.ToUpper());
-                var userRole = UnitOfWork.UserRoleRepository.FindByUserIdAndRoleId(user.Id, role.Id);
-                UnitOfWork.UserRoleRepository.Delete(userRole);
-            }, cancellationToken);
+            var role = await UnitOfWork.RoleRepository.FindByNormalizedNameAsync(roleName.ToUpper());
+            var userRole = await UnitOfWork.UserRoleRepository.FindByUserIdAndRoleIdAsync(user.Id, role.Id);
+            await UnitOfWork.UserRoleRepository.DeleteAsync(userRole);
         }
 
         /// <summary>
@@ -285,11 +265,10 @@ namespace FluiTec.AppFx.Identity.EntityStores
         ///     The <see cref="T:System.Threading.Tasks.Task" /> that represents the asynchronous
         ///     operation, containing a list of role names.
         /// </returns>
-        public Task<IList<string>> GetRolesAsync(UserEntity user, CancellationToken cancellationToken)
+        public async Task<IList<string>> GetRolesAsync(UserEntity user, CancellationToken cancellationToken)
         {
-            return Task<IList<string>>.Factory.StartNew(
-                () => { return UnitOfWork.UserRoleRepository.FindByUser(user).Select(r => r.Name).ToList(); },
-                cancellationToken);
+            var userRoles = await UnitOfWork.UserRoleRepository.FindByUserAsync(user);
+            return userRoles.Select(r => r.Name).ToList();
         }
 
         /// <summary>
@@ -325,13 +304,11 @@ namespace FluiTec.AppFx.Identity.EntityStores
         ///     The <see cref="T:System.Threading.Tasks.Task" /> that represents the asynchronous
         ///     operation, containing a list of users who are in the named role.
         /// </returns>
-        public Task<IList<UserEntity>> GetUsersInRoleAsync(string roleName, CancellationToken cancellationToken)
+        public async Task<IList<UserEntity>> GetUsersInRoleAsync(string roleName, CancellationToken cancellationToken)
         {
-            return Task<IList<UserEntity>>.Factory.StartNew(() =>
-            {
-                var role = UnitOfWork.RoleRepository.FindByNormalizedName(roleName.ToUpper());
-                return UnitOfWork.UserRoleRepository.FindByRole(role).ToList();
-            }, cancellationToken);
+            var role = await UnitOfWork.RoleRepository.FindByNormalizedNameAsync(roleName.ToUpper());
+            var userRoles = await UnitOfWork.UserRoleRepository.FindByRoleAsync(role);
+            return userRoles.ToList();
         }
 
         #endregion

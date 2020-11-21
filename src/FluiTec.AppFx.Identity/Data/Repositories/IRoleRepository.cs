@@ -14,10 +14,20 @@ namespace FluiTec.AppFx.Identity.Data.Repositories
         /// <returns>   A RoleEntity. </returns>
         RoleEntity Get(string identifier);
 
+        /// <summary>   Gets an asynchronous.</summary>
+        /// <param name="identifier">   The identifier to get. </param>
+        /// <returns>   The asynchronous.</returns>
+        Task<RoleEntity> GetAsync(string identifier);
+
         /// <summary>   Searches for the first normalized name.</summary>
         /// <param name="normalizedName">   Name of the normalized. </param>
         /// <returns>   The found normalized name.</returns>
         RoleEntity FindByNormalizedName(string normalizedName);
+
+        /// <summary>   Searches for the first normalized name asynchronous.</summary>
+        /// <param name="normalizedName">   Name of the normalized. </param>
+        /// <returns>   The find by normalized name.</returns>
+        Task<RoleEntity> FindByNormalizedNameAsync(string normalizedName);
 
         /// <summary>   Finds the names in this collection. </summary>
         /// <param name="names">    The names. </param>

@@ -40,6 +40,18 @@ namespace FluiTec.AppFx.Identity.Dapper.Repositories
                 new {Id = guidResult}, UnitOfWork.Transaction);
         }
 
+        /// <summary>   Gets an asynchronous.</summary>
+        /// <param name="identifier">   The identifier to get. </param>
+        /// <returns>   The asynchronous.</returns>
+        public Task<RoleEntity> GetAsync(string identifier)
+        {
+            if (!Guid.TryParse(identifier, out var guidResult)) return null;
+
+            var command = SqlBuilder.SelectByFilter(EntityType, nameof(RoleEntity.Id));
+            return UnitOfWork.Connection.QuerySingleOrDefaultAsync<RoleEntity>(command,
+                new { Id = guidResult }, UnitOfWork.Transaction);
+        }
+
         /// <summary>   Searches for the first normalized name.</summary>
         /// <param name="normalizedName">   Name of the normalized. </param>
         /// <returns>   The found normalized name.</returns>
@@ -48,6 +60,16 @@ namespace FluiTec.AppFx.Identity.Dapper.Repositories
             var command = SqlBuilder.SelectByFilter(EntityType, nameof(RoleEntity.NormalizedName));
             return UnitOfWork.Connection.QuerySingleOrDefault<RoleEntity>(command,
                 new {NormalizedName = normalizedName}, UnitOfWork.Transaction);
+        }
+
+        /// <summary>   Searches for the first normalized name asynchronous.</summary>
+        /// <param name="normalizedName">   Name of the normalized. </param>
+        /// <returns>   The find by normalized name.</returns>
+        public Task<RoleEntity> FindByNormalizedNameAsync(string normalizedName)
+        {
+            var command = SqlBuilder.SelectByFilter(EntityType, nameof(RoleEntity.NormalizedName));
+            return UnitOfWork.Connection.QuerySingleOrDefaultAsync<RoleEntity>(command,
+                new { NormalizedName = normalizedName }, UnitOfWork.Transaction);
         }
 
         /// <summary>   Finds the names in this collection.</summary>
