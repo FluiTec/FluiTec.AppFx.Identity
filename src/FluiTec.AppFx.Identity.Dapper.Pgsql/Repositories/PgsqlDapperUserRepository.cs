@@ -28,7 +28,8 @@ namespace FluiTec.AppFx.Identity.Dapper.Pgsql.Repositories
         /// </returns>
         protected override IEnumerable<ClaimEntity> FindAllClaimsIncludingDuplicates(UserEntity user)
         {
-            var command = @"SELECT ""uclaim"".""Type"", ""uclaim"".""Value""
+            var command = GetFromCache(() =>
+                            @"SELECT ""uclaim"".""Type"", ""uclaim"".""Value""
                             FROM ""AppFxIdentity"".""UserClaim"" AS uclaim
                             WHERE ""uclaim"".""UserId"" = @UserId
                             UNION
@@ -36,7 +37,8 @@ namespace FluiTec.AppFx.Identity.Dapper.Pgsql.Repositories
                             FROM ""AppFxIdentity"".""UserRole"" AS userRole
                             INNER JOIN ""AppFxIdentity"".""RoleClaim"" AS roleClaim
                             ON userRole.""RoleId"" = roleClaim.""RoleId""
-                            WHERE userRole.""UserId"" = @UserId";
+                            WHERE userRole.""UserId"" = @UserId");
+
             return UnitOfWork.Connection.Query<ClaimEntity>(command, new {UserId = user.Id}, UnitOfWork.Transaction);
         }
     }

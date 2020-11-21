@@ -75,16 +75,20 @@ namespace FluiTec.AppFx.Identity.Dapper.Repositories
         /// </returns>
         public IEnumerable<UserEntity> GetUsersForClaimType(string claimType)
         {
-            var sql = SqlBuilder.Adapter;
+            var command = GetFromCache(() =>
+            {
+                var sql = SqlBuilder.Adapter;
+                return
+                    $"SELECT {SqlBuilder.Adapter.RenderPropertyList(typeof(UserEntity), SqlCache.TypePropertiesChache(typeof(UserEntity)).ToArray())} " +
+                    $"FROM {sql.RenderTableName(typeof(UserEntity))} " +
+                    $"INNER JOIN {sql.RenderTableName(typeof(UserRoleEntity))} " +
+                    $"ON {sql.RenderTableName(typeof(UserRoleEntity))}.{sql.RenderPropertyName(nameof(UserRoleEntity.UserId))} = {sql.RenderTableName(typeof(UserEntity))}.{sql.RenderPropertyName(nameof(UserEntity.Id))} " +
+                    $"INNER JOIN {sql.RenderTableName(typeof(RoleClaimEntity))} " +
+                    $"ON {sql.RenderTableName(typeof(RoleClaimEntity))}.{sql.RenderPropertyName(nameof(RoleClaimEntity.RoleId))} = {sql.RenderTableName(typeof(UserRoleEntity))}.{sql.RenderPropertyName(nameof(UserRoleEntity.RoleId))} " +
+                    $"WHERE {sql.RenderTableName(typeof(RoleClaimEntity))}.{sql.RenderPropertyName(nameof(RoleClaimEntity.Type))} = @ClaimType";
+            });
 
-            var command =
-                $"SELECT {SqlBuilder.Adapter.RenderPropertyList(typeof(UserEntity), SqlCache.TypePropertiesChache(typeof(UserEntity)).ToArray())} " +
-                $"FROM {sql.RenderTableName(typeof(UserEntity))} " +
-                $"INNER JOIN {sql.RenderTableName(typeof(UserRoleEntity))} " +
-                $"ON {sql.RenderTableName(typeof(UserRoleEntity))}.{sql.RenderPropertyName(nameof(UserRoleEntity.UserId))} = {sql.RenderTableName(typeof(UserEntity))}.{sql.RenderPropertyName(nameof(UserEntity.Id))} " +
-                $"INNER JOIN {sql.RenderTableName(typeof(RoleClaimEntity))} " +
-                $"ON {sql.RenderTableName(typeof(RoleClaimEntity))}.{sql.RenderPropertyName(nameof(RoleClaimEntity.RoleId))} = {sql.RenderTableName(typeof(UserRoleEntity))}.{sql.RenderPropertyName(nameof(UserRoleEntity.RoleId))} " +
-                $"WHERE {sql.RenderTableName(typeof(RoleClaimEntity))}.{sql.RenderPropertyName(nameof(RoleClaimEntity.Type))} = @ClaimType";
+            
             return UnitOfWork.Connection.Query<UserEntity>(command,
                 new {ClaimType = claimType},
                 UnitOfWork.Transaction);

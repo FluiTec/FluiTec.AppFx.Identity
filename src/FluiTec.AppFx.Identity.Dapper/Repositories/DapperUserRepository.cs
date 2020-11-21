@@ -72,14 +72,17 @@ namespace FluiTec.AppFx.Identity.Dapper.Repositories
         /// <returns>   The found login. </returns>
         public virtual UserEntity FindByLogin(string providerName, string providerKey)
         {
-            var sql = SqlBuilder.Adapter;
-
-            var command =
-                $"SELECT {SqlBuilder.Adapter.RenderPropertyList(EntityType, SqlCache.TypePropertiesChache(typeof(UserEntity)).ToArray())} FROM {sql.RenderTableName(EntityType)} " +
-                $"INNER JOIN {sql.RenderTableName(typeof(UserLoginEntity))} ON " +
-                $"{sql.RenderTableName(EntityType)}.{sql.RenderPropertyName(nameof(UserEntity.Id))} = {sql.RenderTableName(typeof(UserLoginEntity))}.{sql.RenderPropertyName(nameof(UserLoginEntity.UserId))} " +
-                $"WHERE {sql.RenderTableName(typeof(UserLoginEntity))}.{sql.RenderPropertyName(nameof(UserLoginEntity.ProviderName))} = @ProviderName " +
-                $"AND {sql.RenderTableName(typeof(UserLoginEntity))}.{sql.RenderPropertyName(nameof(UserLoginEntity.ProviderKey))} = @ProviderKey";
+            var command = GetFromCache(() =>
+            {
+                var sql = SqlBuilder.Adapter;
+                return
+                    $"SELECT {SqlBuilder.Adapter.RenderPropertyList(EntityType, SqlCache.TypePropertiesChache(typeof(UserEntity)).ToArray())} FROM {sql.RenderTableName(EntityType)} " +
+                    $"INNER JOIN {sql.RenderTableName(typeof(UserLoginEntity))} ON " +
+                    $"{sql.RenderTableName(EntityType)}.{sql.RenderPropertyName(nameof(UserEntity.Id))} = {sql.RenderTableName(typeof(UserLoginEntity))}.{sql.RenderPropertyName(nameof(UserLoginEntity.UserId))} " +
+                    $"WHERE {sql.RenderTableName(typeof(UserLoginEntity))}.{sql.RenderPropertyName(nameof(UserLoginEntity.ProviderName))} = @ProviderName " +
+                    $"AND {sql.RenderTableName(typeof(UserLoginEntity))}.{sql.RenderPropertyName(nameof(UserLoginEntity.ProviderKey))} = @ProviderKey";
+            });
+            
             return UnitOfWork.Connection.QuerySingleOrDefault<UserEntity>(command,
                 new {ProviderName = providerName, ProviderKey = providerKey},
                 UnitOfWork.Transaction);

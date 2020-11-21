@@ -27,11 +27,14 @@ namespace FluiTec.AppFx.Identity.Dapper.Repositories
         /// <param name="providerKey">  The provider key. </param>
         public void RemoveByNameAndKey(string providerName, string providerKey)
         {
-            var sql = SqlBuilder.Adapter;
-
-            var command =
-                $"DELETE FROM {sql.RenderTableName(EntityType)} WHERE {sql.RenderPropertyName(nameof(UserLoginEntity.ProviderName))} = @ProviderName " +
-                $"AND {sql.RenderPropertyName(nameof(UserLoginEntity.ProviderKey))} = @ProviderKey";
+            var command = GetFromCache(() =>
+            {
+                var sql = SqlBuilder.Adapter;
+                return
+                    $"DELETE FROM {sql.RenderTableName(EntityType)} WHERE {sql.RenderPropertyName(nameof(UserLoginEntity.ProviderName))} = @ProviderName " +
+                    $"AND {sql.RenderPropertyName(nameof(UserLoginEntity.ProviderKey))} = @ProviderKey";
+            });
+            
             UnitOfWork.Connection.Execute(command, new {ProviderName = providerName, ProviderKey = providerKey},
                 UnitOfWork.Transaction);
         }
