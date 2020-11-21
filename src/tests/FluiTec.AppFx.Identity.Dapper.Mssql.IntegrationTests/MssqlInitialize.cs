@@ -62,6 +62,8 @@ namespace FluiTec.AppFx.Identity.Dapper.Mssql.IntegrationTests
                     Console.WriteLine(e);
                 }
             }
+
+            BaseInitialize.MigrateUp(ServiceOptions, DataService);
         }
     }
 }

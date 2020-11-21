@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using FluiTec.AppFx.Data.Dapper.Mysql;
+using FluiTec.AppFx.Identity.TestLibrary;
 using FluiTec.AppFx.Identity.TestLibrary.Configuration;
 using FluiTec.AppFx.Options.Helpers;
 using FluiTec.AppFx.Options.Managers;
@@ -70,6 +71,8 @@ namespace FluiTec.AppFx.Identity.Dapper.Mysql.IntegrationTests
                     Console.WriteLine(e);
                 }
             }
+
+            BaseInitialize.MigrateUp(ServiceOptions, DataService);
         }
     }
 }
