@@ -80,4 +80,43 @@ namespace FluiTec.AppFx.Identity.Dapper.Pgsql.IntegrationTests.StoreTests
             ServiceOptions = PgsqlInitialize.ServiceOptions;
         }
     }
+
+    /// <summary>   (Unit Test Class) a Pgsql user security stamp store test.</summary>
+    [TestClass]
+    [TestCategory("Integration")]
+    public class PgsqlUserSecurityStampStoreTest : UserSecurityStampStoreTest
+    {
+        /// <summary>   Initializes the options and data service.</summary>
+        protected override void InitOptionsAndDataService()
+        {
+            DataService = PgsqlInitialize.DataService;
+            ServiceOptions = PgsqlInitialize.ServiceOptions;
+        }
+    }
+
+    /// <summary>   (Unit Test Class) a Pgsql two factor store test.</summary>
+    [TestClass]
+    [TestCategory("Integration")]
+    public class PgsqlTwoFactorStoreTest : UserTwoFactorStoreTest
+    {
+        /// <summary>   Initializes the options and data service.</summary>
+        protected override void InitOptionsAndDataService()
+        {
+            DataService = PgsqlInitialize.DataService;
+            ServiceOptions = PgsqlInitialize.ServiceOptions;
+        }
+    }
+
+    /// <summary>   (Unit Test Class) a Pgsql lockout store test.</summary>
+    [TestClass]
+    [TestCategory("Integration")]
+    public class PgsqlLockoutStoreTest : UserLockoutStoreTest
+    {
+        /// <summary>   Initializes the options and data service.</summary>
+        protected override void InitOptionsAndDataService()
+        {
+            DataService = PgsqlInitialize.DataService;
+            ServiceOptions = PgsqlInitialize.ServiceOptions;
+        }
+    }
 }

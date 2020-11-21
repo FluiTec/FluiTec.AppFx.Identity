@@ -80,4 +80,43 @@ namespace FluiTec.AppFx.Identity.Dapper.Mssql.IntegrationTests.StoreTests
             ServiceOptions = MssqlInitialize.ServiceOptions;
         }
     }
+
+    /// <summary>   (Unit Test Class) a mssql user security stamp store test.</summary>
+    [TestClass]
+    [TestCategory("Integration")]
+    public class MssqlUserSecurityStampStoreTest : UserSecurityStampStoreTest
+    {
+        /// <summary>   Initializes the options and data service.</summary>
+        protected override void InitOptionsAndDataService()
+        {
+            DataService = MssqlInitialize.DataService;
+            ServiceOptions = MssqlInitialize.ServiceOptions;
+        }
+    }
+
+    /// <summary>   (Unit Test Class) a mssql two factor store test.</summary>
+    [TestClass]
+    [TestCategory("Integration")]
+    public class MssqlTwoFactorStoreTest : UserTwoFactorStoreTest
+    {
+        /// <summary>   Initializes the options and data service.</summary>
+        protected override void InitOptionsAndDataService()
+        {
+            DataService = MssqlInitialize.DataService;
+            ServiceOptions = MssqlInitialize.ServiceOptions;
+        }
+    }
+
+    /// <summary>   (Unit Test Class) a mssql lockout store test.</summary>
+    [TestClass]
+    [TestCategory("Integration")]
+    public class MssqlLockoutStoreTest : UserLockoutStoreTest
+    {
+        /// <summary>   Initializes the options and data service.</summary>
+        protected override void InitOptionsAndDataService()
+        {
+            DataService = MssqlInitialize.DataService;
+            ServiceOptions = MssqlInitialize.ServiceOptions;
+        }
+    }
 }

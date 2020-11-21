@@ -80,4 +80,43 @@ namespace FluiTec.AppFx.Identity.Dapper.Mysql.IntegrationTests.StoreTests
             ServiceOptions = MysqlInitialize.ServiceOptions;
         }
     }
+
+    /// <summary>   (Unit Test Class) a Mysql user security stamp store test.</summary>
+    [TestClass]
+    [TestCategory("Integration")]
+    public class MysqlUserSecurityStampStoreTest : UserSecurityStampStoreTest
+    {
+        /// <summary>   Initializes the options and data service.</summary>
+        protected override void InitOptionsAndDataService()
+        {
+            DataService = MysqlInitialize.DataService;
+            ServiceOptions = MysqlInitialize.ServiceOptions;
+        }
+    }
+
+    /// <summary>   (Unit Test Class) a Mysql two factor store test.</summary>
+    [TestClass]
+    [TestCategory("Integration")]
+    public class MysqlTwoFactorStoreTest : UserTwoFactorStoreTest
+    {
+        /// <summary>   Initializes the options and data service.</summary>
+        protected override void InitOptionsAndDataService()
+        {
+            DataService = MysqlInitialize.DataService;
+            ServiceOptions = MysqlInitialize.ServiceOptions;
+        }
+    }
+
+    /// <summary>   (Unit Test Class) a Mysql lockout store test.</summary>
+    [TestClass]
+    [TestCategory("Integration")]
+    public class MysqlLockoutStoreTest : UserLockoutStoreTest
+    {
+        /// <summary>   Initializes the options and data service.</summary>
+        protected override void InitOptionsAndDataService()
+        {
+            DataService = MysqlInitialize.DataService;
+            ServiceOptions = MysqlInitialize.ServiceOptions;
+        }
+    }
 }
