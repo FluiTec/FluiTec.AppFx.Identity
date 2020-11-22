@@ -119,4 +119,30 @@ namespace FluiTec.AppFx.Identity.Dapper.Pgsql.IntegrationTests.StoreTests
             ServiceOptions = PgsqlInitialize.ServiceOptions;
         }
     }
+
+    /// <summary>   (Unit Test Class) a Pgsql role store test.</summary>
+    [TestClass]
+    [TestCategory("Integration")]
+    public class PgsqlRoleStoreTest : RoleStoreTest
+    {
+        /// <summary>   Initializes the options and data service.</summary>
+        protected override void InitOptionsAndDataService()
+        {
+            DataService = PgsqlInitialize.DataService;
+            ServiceOptions = PgsqlInitialize.ServiceOptions;
+        }
+    }
+
+    /// <summary>   (Unit Test Class) a Pgsql user role store test.</summary>
+    [TestClass]
+    [TestCategory("Integration")]
+    public class PgsqlUserRoleStoreTest : UserRoleStoreTest
+    {
+        /// <summary>   Initializes the options and data service.</summary>
+        protected override void InitOptionsAndDataService()
+        {
+            DataService = PgsqlInitialize.DataService;
+            ServiceOptions = PgsqlInitialize.ServiceOptions;
+        }
+    }
 }

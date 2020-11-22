@@ -119,4 +119,30 @@ namespace FluiTec.AppFx.Identity.Dapper.Mssql.IntegrationTests.StoreTests
             ServiceOptions = MssqlInitialize.ServiceOptions;
         }
     }
+
+    /// <summary>   (Unit Test Class) a mssql role store test.</summary>
+    [TestClass]
+    [TestCategory("Integration")]
+    public class MssqlRoleStoreTest : RoleStoreTest
+    {
+        /// <summary>   Initializes the options and data service.</summary>
+        protected override void InitOptionsAndDataService()
+        {
+            DataService = MssqlInitialize.DataService;
+            ServiceOptions = MssqlInitialize.ServiceOptions;
+        }
+    }
+
+    /// <summary>   (Unit Test Class) a mssql user role store test.</summary>
+    [TestClass]
+    [TestCategory("Integration")]
+    public class MssqlUserRoleStoreTest : UserRoleStoreTest
+    {
+        /// <summary>   Initializes the options and data service.</summary>
+        protected override void InitOptionsAndDataService()
+        {
+            DataService = MssqlInitialize.DataService;
+            ServiceOptions = MssqlInitialize.ServiceOptions;
+        }
+    }
 }

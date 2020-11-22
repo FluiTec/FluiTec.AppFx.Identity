@@ -78,7 +78,7 @@ namespace FluiTec.AppFx.Identity.EntityStores
         async Task<RoleEntity> IRoleStore<RoleEntity>.FindByNameAsync(string normalizedRoleName,
             CancellationToken cancellationToken)
         {
-            return await UnitOfWork.RoleRepository.FindByNormalizedNameAsync(normalizedRoleName);
+            return await UnitOfWork.RoleRepository.FindByNormalizedNameAsync(normalizedRoleName?.ToUpper());
         }
 
         /// <summary>   Updates a role in a store as an asynchronous operation. </summary>
