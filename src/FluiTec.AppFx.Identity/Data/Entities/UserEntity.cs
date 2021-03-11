@@ -97,8 +97,7 @@ namespace FluiTec.AppFx.Identity.Data.Entities
         public bool Equals(UserEntity x, UserEntity y)
         {
             if (ReferenceEquals(x, y)) return true;
-            if (ReferenceEquals(x, null)) return false;
-            if (ReferenceEquals(y, null)) return false;
+            if (x is null || y is null) return false;
             if (x.GetType() != y.GetType()) return false;
             return x.Id.Equals(y.Id) && x.Name == y.Name && x.Phone == y.Phone &&
                    x.PhoneConfirmed == y.PhoneConfirmed && x.Email == y.Email && x.EmailConfirmed == y.EmailConfirmed &&

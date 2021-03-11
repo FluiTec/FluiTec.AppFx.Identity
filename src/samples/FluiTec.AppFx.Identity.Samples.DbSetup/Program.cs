@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace FluiTec.AppFx.Identity.Samples.DbSetup
 {
+    /// <summary>   A program. </summary>
     internal class Program
     {
         /// <summary>   Main entry-point for this application. </summary>
