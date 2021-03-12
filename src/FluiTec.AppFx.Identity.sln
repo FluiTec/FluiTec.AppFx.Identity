@@ -101,13 +101,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IntegrationTests", "IntegrationTests", "{E730EFF3-A213-4C52-8247-518B56DC8F0D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluiTec.AppFx.Identity.TestLibrary", "tests\FluiTec.AppFx.Identity.TestLibrary\FluiTec.AppFx.Identity.TestLibrary.csproj", "{C593178B-093A-414C-97D8-4A3AED005BFA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluiTec.AppFx.Identity.TestLibrary", "tests\FluiTec.AppFx.Identity.TestLibrary\FluiTec.AppFx.Identity.TestLibrary.csproj", "{C593178B-093A-414C-97D8-4A3AED005BFA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluiTec.AppFx.Identity.Dapper.Mssql.IntegrationTests", "tests\FluiTec.AppFx.Identity.Dapper.Mssql.IntegrationTests\FluiTec.AppFx.Identity.Dapper.Mssql.IntegrationTests.csproj", "{24252BD8-CA7E-4C45-9F85-9DE66932A985}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluiTec.AppFx.Identity.Dapper.Mssql.IntegrationTests", "tests\FluiTec.AppFx.Identity.Dapper.Mssql.IntegrationTests\FluiTec.AppFx.Identity.Dapper.Mssql.IntegrationTests.csproj", "{24252BD8-CA7E-4C45-9F85-9DE66932A985}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluiTec.AppFx.Identity.Dapper.Mysql.IntegrationTests", "tests\FluiTec.AppFx.Identity.Dapper.Mysql.IntegrationTests\FluiTec.AppFx.Identity.Dapper.Mysql.IntegrationTests.csproj", "{420E8A41-A2D1-43D4-9F03-7A9407701A86}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluiTec.AppFx.Identity.Dapper.Mysql.IntegrationTests", "tests\FluiTec.AppFx.Identity.Dapper.Mysql.IntegrationTests\FluiTec.AppFx.Identity.Dapper.Mysql.IntegrationTests.csproj", "{420E8A41-A2D1-43D4-9F03-7A9407701A86}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluiTec.AppFx.Identity.Dapper.Pgsql.IntegrationTests", "tests\FluiTec.AppFx.Identity.Dapper.Pgsql.IntegrationTests\FluiTec.AppFx.Identity.Dapper.Pgsql.IntegrationTests.csproj", "{31BB7890-DE1C-4414-8967-98F2C01FDF45}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluiTec.AppFx.Identity.Dapper.Pgsql.IntegrationTests", "tests\FluiTec.AppFx.Identity.Dapper.Pgsql.IntegrationTests\FluiTec.AppFx.Identity.Dapper.Pgsql.IntegrationTests.csproj", "{31BB7890-DE1C-4414-8967-98F2C01FDF45}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluiTec.AppFx.Identity.Samples.Minimal", "samples\FluiTec.AppFx.Identity.Samples.Minimal\FluiTec.AppFx.Identity.Samples.Minimal.csproj", "{AB34C7A5-7633-491D-B821-0F78FDCCEBF3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -263,6 +265,10 @@ Global
 		{31BB7890-DE1C-4414-8967-98F2C01FDF45}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31BB7890-DE1C-4414-8967-98F2C01FDF45}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31BB7890-DE1C-4414-8967-98F2C01FDF45}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB34C7A5-7633-491D-B821-0F78FDCCEBF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB34C7A5-7633-491D-B821-0F78FDCCEBF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB34C7A5-7633-491D-B821-0F78FDCCEBF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB34C7A5-7633-491D-B821-0F78FDCCEBF3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -306,6 +312,7 @@ Global
 		{24252BD8-CA7E-4C45-9F85-9DE66932A985} = {E730EFF3-A213-4C52-8247-518B56DC8F0D}
 		{420E8A41-A2D1-43D4-9F03-7A9407701A86} = {E730EFF3-A213-4C52-8247-518B56DC8F0D}
 		{31BB7890-DE1C-4414-8967-98F2C01FDF45} = {E730EFF3-A213-4C52-8247-518B56DC8F0D}
+		{AB34C7A5-7633-491D-B821-0F78FDCCEBF3} = {53AA8814-D861-4976-84C3-26879A0A8825}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {548BF836-38D4-4567-AAB6-73D3F7BE4964}
