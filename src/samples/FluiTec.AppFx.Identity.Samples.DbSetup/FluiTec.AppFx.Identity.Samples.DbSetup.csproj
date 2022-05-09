@@ -14,7 +14,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\fluitec.appfx.options\src\FluiTec.AppFx.Options\FluiTec.AppFx.Options.csproj" />
-    <ProjectReference Include="..\..\FluiTec.AppFx.Identity.Dynamic\FluiTec.AppFx.Identity.Dynamic.csproj" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
