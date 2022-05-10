@@ -1,0 +1,49 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.1</TargetFramework>
+		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+		<PackageProjectUrl>https://www.nuget.org/packages/FluiTec.AppFx.Identity/</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/FluiTec/FluiTec.AppFx.Identity</RepositoryUrl>
+		<NeutralLanguage>en</NeutralLanguage>
+		<PostBuildEvent></PostBuildEvent>
+		<PreBuildEvent></PreBuildEvent>
+		<RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+		<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+		<LangVersion>latest</LangVersion>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="..\..\LICENSE.md">
+			<Pack>True</Pack>
+			<PackagePath></PackagePath>
+		</None>
+		<None Include="..\..\THIRD_PARTY_LICENSES.md">
+			<Pack>True</Pack>
+			<PackagePath></PackagePath>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="Data\Repositories\" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.Identity.Core" Version="6.0.4" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\fluitec.appfx.options\src\FluiTec.AppFx.Options\FluiTec.AppFx.Options.csproj" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(Configuration)'=='Debug'">
+		<ProjectReference Include="$(SolutionDir)\..\fluitec.appfx.data\src\FluiTec.AppFx.Data\FluiTec.AppFx.Data.csproj" />
+		<ProjectReference Include="$(SolutionDir)\..\fluitec.appfx.data\src\FluiTec.AppFx.Data.Migration\FluiTec.AppFx.Data.Migration.csproj" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(Configuration)'=='Release'">
+		<PackageReference Include="FluiTec.AppFx.Data" Version="1.1.2"></PackageReference>
+		<PackageReference Include="FluiTec.AppFx.Data.Migration" Version="1.1.2"></PackageReference>
+	</ItemGroup>
+
+</Project>
