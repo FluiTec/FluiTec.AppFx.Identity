@@ -114,8 +114,7 @@ public class UserStore : IdentityStore, IUserStore<UserEntity>
     /// </returns>
     public Task SetNormalizedUserNameAsync(UserEntity user, string normalizedName, CancellationToken cancellationToken)
     {
-        user.NormalizedEmail = normalizedName;
-        return UnitOfWork.UserRepository.UpdateAsync(user, cancellationToken);
+        return Task.CompletedTask;
     }
 
     #endregion

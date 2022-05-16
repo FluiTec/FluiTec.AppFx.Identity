@@ -3,7 +3,7 @@
 /// <summary>
 ///     A schema globals.
 /// </summary>
-public class SchemaGlobals
+public static class SchemaGlobals
 {
     /// <summary>
     ///     (Immutable) the schema.
