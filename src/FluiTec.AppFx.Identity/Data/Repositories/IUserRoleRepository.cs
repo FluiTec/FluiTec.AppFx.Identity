@@ -29,21 +29,35 @@ public interface IUserRoleRepository : IWritableKeyTableDataRepository<UserRoleE
     /// Searches for the first user asynchronous.
     /// </summary>
     ///
-    /// <param name="user"> The user. </param>
+    /// <param name="user">                 The user. </param>
+    /// <param name="cancellationToken">    A token that allows processing to be cancelled. </param>
     ///
     /// <returns>
     /// The find by user.
     /// </returns>
-    Task<IEnumerable<RoleEntity>> FindByUserAsync(UserEntity user);
+    Task<IEnumerable<RoleEntity>> FindByUserAsync(UserEntity user, CancellationToken cancellationToken);
 
     /// <summary>
     /// Searches for the first role asynchronous.
     /// </summary>
     ///
-    /// <param name="role"> The role. </param>
+    /// <param name="role">                 The role. </param>
+    /// <param name="cancellationToken">    A token that allows processing to be cancelled. </param>
     ///
     /// <returns>
     /// The find by role.
     /// </returns>
-    Task<IEnumerable<UserEntity>> FindByRoleAsync(RoleEntity role);
+    Task<IEnumerable<UserEntity>> FindByRoleAsync(RoleEntity role, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Searches for the first roles asynchronous.
+    /// </summary>
+    ///
+    /// <param name="roleIds">              List of identifiers for the roles. </param>
+    /// <param name="cancellationToken">    A token that allows processing to be cancelled. </param>
+    ///
+    /// <returns>
+    /// The find by roles.
+    /// </returns>
+    Task<IEnumerable<UserEntity>> FindByRolesAsync(IEnumerable<Guid> roleIds, CancellationToken cancellationToken);
 }

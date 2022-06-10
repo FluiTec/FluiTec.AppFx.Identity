@@ -9,7 +9,7 @@ namespace FluiTec.AppFx.Identity.Data.Entities;
 /// A user login entity.
 /// </summary>
 [EntityName(SchemaGlobals.Schema, SchemaGlobals.UserLoginTable)]
-public class UserLoginEntity : IKeyEntity<int>
+public class UserLoginEntity : IKeyEntity<int>, IEquatable<UserLoginEntity>
 {
     /// <summary>
     /// Gets or sets the identifier.
@@ -55,4 +55,21 @@ public class UserLoginEntity : IKeyEntity<int>
     /// The name of the provider dispay.
     /// </value>
     public string ProviderDispayName { get; set; }
+
+    /// <summary>
+    /// Indicates whether the current object is equal to another object of the same type.
+    /// </summary>
+    ///
+    /// <param name="other">    An object to compare with this object. </param>
+    ///
+    /// <returns>
+    /// <see langword="true" /> if the current object is equal to the <paramref name="other" />
+    /// parameter; otherwise, <see langword="false" />.
+    /// </returns>
+    public bool Equals(UserLoginEntity other)
+    {
+        if (ReferenceEquals(null, other)) return false;
+        if (ReferenceEquals(this, other)) return true;
+        return Id == other.Id && UserId.Equals(other.UserId) && Provider == other.Provider && ProviderKey == other.ProviderKey && ProviderDispayName == other.ProviderDispayName;
+    }
 }

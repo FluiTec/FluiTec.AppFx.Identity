@@ -82,7 +82,7 @@ public class UserRoleStore : RoleStore, IUserRoleStore<UserEntity>
     /// </returns>
     public async Task<IList<string>> GetRolesAsync(UserEntity user, CancellationToken cancellationToken)
     {
-        var roles = await UnitOfWork.UserRoleRepository.FindByUserAsync(user);
+        var roles = await UnitOfWork.UserRoleRepository.FindByUserAsync(user, cancellationToken);
         return roles.Select(r => r.Name).ToList();
     }
 
@@ -124,7 +124,7 @@ public class UserRoleStore : RoleStore, IUserRoleStore<UserEntity>
     public async Task<IList<UserEntity>> GetUsersInRoleAsync(string roleName, CancellationToken cancellationToken)
     {
         var role = await UnitOfWork.RoleRepository.FindByNormalizedNameAsync(roleName.ToUpper(), cancellationToken);
-        var users = await UnitOfWork.UserRoleRepository.FindByRoleAsync(role);
+        var users = await UnitOfWork.UserRoleRepository.FindByRoleAsync(role, cancellationToken);
         return users.ToList();
     }
 

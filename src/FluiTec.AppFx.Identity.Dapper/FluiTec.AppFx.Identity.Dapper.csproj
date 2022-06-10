@@ -1,8 +1,40 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-    <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageProjectUrl>https://www.nuget.org/packages/FluiTec.AppFx.Data/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/FluiTec/FluiTec.AppFx.Data</RepositoryUrl>
+    <NeutralLanguage>en</NeutralLanguage>
+    <PostBuildEvent />
+    <PreBuildEvent />
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Include="..\..\LICENSE.md">
+      <Pack>True</Pack>
+      <PackagePath />
+    </None>
+    <None Include="..\..\THIRD_PARTY_LICENSES.md">
+      <Pack>True</Pack>
+      <PackagePath />
+    </None>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(Configuration)'=='Debug'">
+    <ProjectReference Include="$(SolutionDir)\..\fluitec.appfx.data\src\FluiTec.AppFx.Data.Dapper\FluiTec.AppFx.Data.Dapper.csproj" />
+    <ProjectReference Include="$(SolutionDir)\..\fluitec.appfx.data\src\FluiTec.AppFx.Data.Migration\FluiTec.AppFx.Data.Migration.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(Configuration)'=='Release'">
+    <PackageReference Include="FluiTec.AppFx.Data.Dapper" Version="1.1.9" />
+    <PackageReference Include="FluiTec.AppFx.Data.Migration" Version="1.1.9" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FluiTec.AppFx.Identity\FluiTec.AppFx.Identity.csproj" />
+  </ItemGroup>
+  
 </Project>

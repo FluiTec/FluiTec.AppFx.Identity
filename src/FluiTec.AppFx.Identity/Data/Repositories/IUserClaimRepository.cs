@@ -48,4 +48,16 @@ public interface IUserClaimRepository : IWritableKeyTableDataRepository<UserClai
     /// A Task.
     /// </returns>
     Task DeleteAsync(IEnumerable<BaseClaim> userClaims, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Gets by claim asynchronous.
+    /// </summary>
+    ///
+    /// <param name="claim">                The claim. </param>
+    /// <param name="cancellationToken">    A token that allows processing to be cancelled. </param>
+    ///
+    /// <returns>
+    /// The by claim.
+    /// </returns>
+    Task<IEnumerable<UserClaimEntity>> GetByClaimAsync(BaseClaim claim, CancellationToken cancellationToken);
 }

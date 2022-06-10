@@ -91,8 +91,15 @@ public class UserLoginStore : UserClaimStore, IUserLoginStore<UserEntity>
     /// </returns>
     public async Task<IList<UserLoginInfo>> GetLoginsAsync(UserEntity user, CancellationToken cancellationToken)
     {
-        var result = await UnitOfWork.UserLoginRepository.GetByUserAsync(user, cancellationToken);
-        return result.ToList();
+        var result = await UnitOfWork
+            .UserLoginRepository
+            .GetByUserAsync(user, cancellationToken);
+        return result.Select(login => new UserLoginInfo
+        (
+            login.Provider,
+            login.ProviderKey,
+            login.ProviderDispayName
+        )).ToList();
     }
 
     /// <summary>

@@ -191,8 +191,7 @@ public class RoleStore : UserSecurityStampStore, IRoleStore<RoleEntity>
     /// </returns>
     Task IRoleStore<RoleEntity>.SetNormalizedRoleNameAsync(RoleEntity role, string normalizedName, CancellationToken cancellationToken)
     {
-        role.NormalizedName = normalizedName;
-        return UnitOfWork.RoleRepository.UpdateAsync(role, cancellationToken);
+        return Task.CompletedTask;
     }
 
     /// <summary>

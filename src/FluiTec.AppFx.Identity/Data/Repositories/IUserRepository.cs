@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using FluiTec.AppFx.Data.Repositories;
@@ -48,4 +49,16 @@ public interface IUserRepository : IWritableKeyTableDataRepository<UserEntity, G
     /// The find by login.
     /// </returns>
     Task<UserEntity> FindByLoginAsync(string provider, string providerKey, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Gets by user identifiers asynchronous.
+    /// </summary>
+    ///
+    /// <param name="userIds">              List of identifiers for the users. </param>
+    /// <param name="cancellationToken">    A token that allows processing to be cancelled. </param>
+    ///
+    /// <returns>
+    /// The by user identifiers.
+    /// </returns>
+    Task<IEnumerable<UserEntity>> GetByUserIdsAsync(IEnumerable<Guid> userIds, CancellationToken cancellationToken);
 }

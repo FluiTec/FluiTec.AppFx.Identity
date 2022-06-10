@@ -22,4 +22,16 @@ public interface IRoleClaimRepository : IWritableKeyTableDataRepository<RoleClai
     /// The by user.
     /// </returns>
     Task<IEnumerable<RoleClaimEntity>> GetByUserAsync(UserEntity user, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Gets by claim asynchronous.
+    /// </summary>
+    ///
+    /// <param name="claim">                The claim. </param>
+    /// <param name="cancellationToken">    A token that allows processing to be cancelled. </param>
+    ///
+    /// <returns>
+    /// The by claim.
+    /// </returns>
+    Task<IEnumerable<RoleClaimEntity>> GetByClaimAsync(BaseClaim claim, CancellationToken cancellationToken);
 }

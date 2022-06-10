@@ -9,7 +9,7 @@ namespace FluiTec.AppFx.Identity.Data.Entities;
 /// A user entity.
 /// </summary>
 [EntityName(SchemaGlobals.Schema, SchemaGlobals.UserTable)]
-public class UserEntity : IKeyEntity<Guid>
+public class UserEntity : IKeyEntity<Guid>, IEquatable<UserEntity>
 {
     #region Basic
 
@@ -17,10 +17,24 @@ public class UserEntity : IKeyEntity<Guid>
     /// <value> The identifier. </value>
     public Guid Id { get; set; }
 
-    /// <summary>   Gets or sets the name. </summary>
-    /// <value> The name. </value>
-    public string Name { get; set; }
+    /// <summary>	Gets or sets the email. </summary>
+    /// <value>	The email. </value>
+    public string Email { get; set; }
 
+    /// <summary>   Gets or sets the normalized email. </summary>
+    /// <value> The normalized email. </value>
+    public string NormalizedEmail
+    {
+        get => Email?.ToUpper();
+        // empty setter for nmemory
+        // ReSharper disable once ValueParameterNotUsed
+        set { }
+    }
+
+    /// <summary>	Gets or sets a value indicating whether the email confirmed. </summary>
+    /// <value>	True if email confirmed, false if not. </value>
+    public bool EmailConfirmed { get; set; }
+    
     /// <summary>	Gets or sets the phone. </summary>
     /// <value>	The phone. </value>
     public string Phone { get; set; }
@@ -28,22 +42,6 @@ public class UserEntity : IKeyEntity<Guid>
     /// <summary>	Gets or sets a value indicating whether the phone confirmed. </summary>
     /// <value>	True if phone confirmed, false if not. </value>
     public bool PhoneConfirmed { get; set; }
-
-    /// <summary>	Gets or sets the email. </summary>
-    /// <value>	The email. </value>
-    public string Email { get; set; }
-
-    /// <summary>   Gets or sets the normalized email. </summary>
-    /// <value> The normalized email. </value>
-    public string NormalizedEmail => Email?.ToUpper();
-
-    /// <summary>	Gets or sets a value indicating whether the email confirmed. </summary>
-    /// <value>	True if email confirmed, false if not. </value>
-    public bool EmailConfirmed { get; set; }
-
-    /// <summary>   Gets or sets the name of the full. </summary>
-    /// <value> The name of the full. </value>
-    public string FullName { get; set; }
 
     #endregion
 
@@ -82,4 +80,21 @@ public class UserEntity : IKeyEntity<Guid>
     public bool LockedOutPermanently { get; set; }
 
     #endregion
+
+    /// <summary>
+    /// Indicates whether the current object is equal to another object of the same type.
+    /// </summary>
+    ///
+    /// <param name="other">    An object to compare with this object. </param>
+    ///
+    /// <returns>
+    /// <see langword="true" /> if the current object is equal to the <paramref name="other" />
+    /// parameter; otherwise, <see langword="false" />.
+    /// </returns>
+    public bool Equals(UserEntity other)
+    {
+        if (ReferenceEquals(null, other)) return false;
+        if (ReferenceEquals(this, other)) return true;
+        return Id.Equals(other.Id) && Email == other.Email && EmailConfirmed == other.EmailConfirmed && Phone == other.Phone && PhoneConfirmed == other.PhoneConfirmed && PasswordHash == other.PasswordHash && SecurityStamp == other.SecurityStamp && TwoFactorEnabled == other.TwoFactorEnabled && LockoutEnabled == other.LockoutEnabled && AccessFailedCount == other.AccessFailedCount && Nullable.Equals(LockedOutTill, other.LockedOutTill) && LockedOutPermanently == other.LockedOutPermanently;
+    }
 }

@@ -9,7 +9,7 @@ namespace FluiTec.AppFx.Identity.Data.Entities;
 /// A user role entity.
 /// </summary>
 [EntityName(SchemaGlobals.Schema, SchemaGlobals.UserRoleTable)]
-public class UserRoleEntity : IKeyEntity<int>
+public class UserRoleEntity : IKeyEntity<int>, IEquatable<UserRoleEntity>
 {
     /// <summary>   Gets or sets the identifier of the user. </summary>
     /// <value> The identifier of the user. </value>
@@ -22,4 +22,21 @@ public class UserRoleEntity : IKeyEntity<int>
     /// <summary>   Gets or sets the identifier. </summary>
     /// <value> The identifier. </value>
     public int Id { get; set; }
+
+    /// <summary>
+    /// Indicates whether the current object is equal to another object of the same type.
+    /// </summary>
+    ///
+    /// <param name="other">    An object to compare with this object. </param>
+    ///
+    /// <returns>
+    /// <see langword="true" /> if the current object is equal to the <paramref name="other" />
+    /// parameter; otherwise, <see langword="false" />.
+    /// </returns>
+    public bool Equals(UserRoleEntity other)
+    {
+        if (ReferenceEquals(null, other)) return false;
+        if (ReferenceEquals(this, other)) return true;
+        return UserId.Equals(other.UserId) && RoleId.Equals(other.RoleId) && Id == other.Id;
+    }
 }

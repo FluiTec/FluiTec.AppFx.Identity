@@ -5,4 +5,20 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Repositories\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FluiTec.AppFx.Identity\FluiTec.AppFx.Identity.csproj" />
+  </ItemGroup>
+
+	<ItemGroup Condition="'$(Configuration)'=='Debug'">
+		<ProjectReference Include="$(SolutionDir)\..\fluitec.appfx.data\src\FluiTec.AppFx.Data.NMemory\FluiTec.AppFx.Data.NMemory.csproj"/>
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(Configuration)'=='Release'">
+		<PackageReference Include="FluiTec.AppFx.Data.NMemory" Version="1.1.9"></PackageReference>
+	</ItemGroup>
+
 </Project>
