@@ -44,7 +44,7 @@ public class UserLockoutStore : UserTwoFactorStore, IUserLockoutStore<UserEntity
     /// </returns>
     public Task<DateTimeOffset?> GetLockoutEndDateAsync(UserEntity user, CancellationToken cancellationToken)
     {
-        if (!user.LockoutEnabled || !user.LockedOutTill.HasValue) return null;
+        if (!user.LockoutEnabled || !user.LockedOutTill.HasValue) return Task.FromResult(default(DateTimeOffset?));
         return Task.FromResult(user.LockedOutPermanently == false ? user.LockedOutTill : DateTimeOffset.MaxValue);
     }
 

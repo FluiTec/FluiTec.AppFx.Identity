@@ -15,7 +15,7 @@ namespace FluiTec.AppFx.Identity.NMemory.Repositories
     /// <summary>
     /// A memory role repository.
     /// </summary>
-    public class NMemoryRoleRepository : NMemoryWritableKeyTableDataRepository<RoleEntity, Guid>, IRoleRepository
+    public class NMemoryRoleRepository : NMemorySequentialGuidRepository<RoleEntity>, IRoleRepository
     {
         /// <summary>
         /// Constructor.
@@ -25,7 +25,6 @@ namespace FluiTec.AppFx.Identity.NMemory.Repositories
         /// <param name="logger">       The logger. </param>
         public NMemoryRoleRepository(NMemoryUnitOfWork unitOfWork, ILogger<IRepository> logger) : base(unitOfWork, logger)
         {
-            ExpectIdentityKey = false;
         }
 
         /// <summary>

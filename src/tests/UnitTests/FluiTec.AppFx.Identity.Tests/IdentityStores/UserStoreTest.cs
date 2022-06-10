@@ -14,15 +14,15 @@ namespace FluiTec.AppFx.Identity.Tests.IdentityStores;
 public class UserStoreTest
 {
     private readonly IUserStore<UserEntity> _userStore;
-    private readonly IIdentityDataService _dataService;
+    protected readonly IIdentityDataService DataService;
 
     /// <summary>
     /// Default constructor.
     /// </summary>
     public UserStoreTest()
     {
-        _dataService = new NMemoryIdentityDataService(null);
-        _userStore = new UserStore(_dataService);
+        DataService = new NMemoryIdentityDataService(null);
+        _userStore = new UserStore(DataService);
     }
 
     /// <summary>
@@ -36,7 +36,6 @@ public class UserStoreTest
     {
         return new UserEntity
         {
-            Id = _dataService.GuidGenerator.GenerateSequentialGuid(),
             Email = "m.mustermann@musterfirma.de",
             EmailConfirmed = true,
             Phone = "+49(1111)11111",

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Dapper;
 using FluiTec.AppFx.Data.Dapper.Repositories;
 using FluiTec.AppFx.Data.Dapper.UnitsOfWork;
 using FluiTec.AppFx.Data.Repositories;
@@ -15,7 +14,7 @@ namespace FluiTec.AppFx.Identity.Dapper.Repositories
     /// <summary>
     ///     Repository for roles using dapper.
     /// </summary>
-    public class DapperRoleRepository : DapperWritableKeyTableDataRepository<RoleEntity, Guid>, IRoleRepository
+    public class DapperRoleRepository : DapperSequentialGuidRepository<RoleEntity>, IRoleRepository
     {
         public DapperRoleRepository(DapperUnitOfWork unitOfWork, ILogger<IRepository> logger) : base(unitOfWork, logger)
         {
