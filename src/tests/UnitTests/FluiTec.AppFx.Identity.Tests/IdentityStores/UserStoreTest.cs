@@ -1,4 +1,5 @@
-﻿using FluiTec.AppFx.Identity.Data.Entities;
+﻿using FluiTec.AppFx.Identity.Data;
+using FluiTec.AppFx.Identity.Data.Entities;
 using FluiTec.AppFx.Identity.IdentityStores;
 using FluiTec.AppFx.Identity.NMemory;
 using Microsoft.AspNetCore.Identity;
@@ -13,14 +14,15 @@ namespace FluiTec.AppFx.Identity.Tests.IdentityStores;
 public class UserStoreTest
 {
     private readonly IUserStore<UserEntity> _userStore;
+    private readonly IIdentityDataService _dataService;
 
     /// <summary>
     /// Default constructor.
     /// </summary>
     public UserStoreTest()
     {
-        var dataService = new NMemoryIdentityDataService(null);
-        _userStore = new UserStore(dataService);
+        _dataService = new NMemoryIdentityDataService(null);
+        _userStore = new UserStore(_dataService);
     }
 
     /// <summary>
@@ -34,7 +36,7 @@ public class UserStoreTest
     {
         return new UserEntity
         {
-            Id = Guid.NewGuid(),
+            Id = _dataService.GuidGenerator.GenerateSequentialGuid(),
             Email = "m.mustermann@musterfirma.de",
             EmailConfirmed = true,
             Phone = "+49(1111)11111",
