@@ -1,14 +1,18 @@
-image: mcr.microsoft.com/dotnet/core/sdk:3.1
+image: mcr.microsoft.com/dotnet/sdk:6.0
 
 stages:
     - build
     - unittest
     - integrationtest
 
+# alias = hostname
 services:
-    - postgres:latest                       #Hostname: postgres
-    - microsoft/mssql-server-linux:latest   #Hostname: microsoft-mssql-server-linux
-    - mysql:latest                          #Hostname: mysql
+  - name: postgres:latest
+    alias: postgres
+  - name: mcr.microsoft.com/mssql/server:latest
+    alias: mssql
+  - name: mysql:latest
+    alias: mysql
 
 variables:
     srcDir: "src"
@@ -17,7 +21,7 @@ variables:
     integrationfilter: "FullyQualifiedName~FluiTec.AppFx.Identity&FullyQualifiedName~.IntegrationTests"
     GIT_SUBMODULE_STRATEGY: recursive
     # PGSQL-Service
-    POSTGRES_DB: appfxdata
+    POSTGRES_DB: appfxidentity
     POSTGRES_USER: appfx
     POSTGRES_PASSWORD: ""
     POSTGRES_HOST_AUTH_METHOD: trust
@@ -25,7 +29,7 @@ variables:
     ACCEPT_EULA: Y
     SA_PASSWORD: "[[e(/?5$UcaWF[(X"
     # MYSQL-Service
-    MYSQL_DATABASE: appfxdata
+    MYSQL_DATABASE: appfxidentity
     MYSQL_ROOT_PASSWORD: "[[e(/?5$UcaWF[(X"
     
 before_script:
