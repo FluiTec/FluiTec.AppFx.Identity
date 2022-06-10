@@ -1,9 +1,10 @@
 image: mcr.microsoft.com/dotnet/sdk:6.0
 
 stages:
-    - build
-    - unittest
-    - integrationtest
+  - build
+  - unittest
+  - integrationtest
+  - publish
 
 # alias = hostname
 services:
