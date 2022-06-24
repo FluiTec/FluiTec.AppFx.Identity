@@ -61,7 +61,7 @@ namespace FluiTec.AppFx.Identity.NMemory.Repositories
         public Task<IEnumerable<RoleClaimEntity>> GetByClaimAsync(BaseClaim claim, CancellationToken cancellationToken)
         {
             var result = Table
-                .Where(c => c.Type == claim.Type && c.Value == claim.Value || claim.Value == null)
+                .Where(c => c.Type == claim.Type && c.Value == claim.Value || string.IsNullOrEmpty(claim.Value))
                 .AsEnumerable();
             return Task.FromResult(result);
         }

@@ -4,17 +4,16 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace FluiTec.AppFx.Identity.Tests.Data.Entities;
 
 /// <summary>
-/// (Unit Test Class) a role claim entity test.
+///     (Unit Test Class) a role claim entity test.
 /// </summary>
 [TestClass]
 public class RoleClaimEntityTest : EntityTest<RoleClaimEntity>
 {
     /// <summary>
-    /// Creates the entity.
+    ///     Creates the entity.
     /// </summary>
-    ///
     /// <returns>
-    /// The new entity.
+    ///     The new entity.
     /// </returns>
     protected override RoleClaimEntity CreateEntity()
     {
@@ -28,11 +27,10 @@ public class RoleClaimEntityTest : EntityTest<RoleClaimEntity>
     }
 
     /// <summary>
-    /// Creates other entity.
+    ///     Creates other entity.
     /// </summary>
-    ///
     /// <returns>
-    /// The new other entity.
+    ///     The new other entity.
     /// </returns>
     protected override RoleClaimEntity CreateOtherEntity()
     {

@@ -4,17 +4,16 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace FluiTec.AppFx.Identity.Tests.Data.Entities;
 
 /// <summary>
-/// A user login entity test.
+///     A user login entity test.
 /// </summary>
 [TestClass]
 public class UserLoginEntityTest : EntityTest<UserLoginEntity>
 {
     /// <summary>
-    /// Creates the entity.
+    ///     Creates the entity.
     /// </summary>
-    ///
     /// <returns>
-    /// The new entity.
+    ///     The new entity.
     /// </returns>
     protected override UserLoginEntity CreateEntity()
     {
@@ -29,11 +28,10 @@ public class UserLoginEntityTest : EntityTest<UserLoginEntity>
     }
 
     /// <summary>
-    /// Creates other entity.
+    ///     Creates other entity.
     /// </summary>
-    ///
     /// <returns>
-    /// The new other entity.
+    ///     The new other entity.
     /// </returns>
     protected override UserLoginEntity CreateOtherEntity()
     {

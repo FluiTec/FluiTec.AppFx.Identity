@@ -83,7 +83,7 @@ public class UserRoleStore : RoleStore, IUserRoleStore<UserEntity>
     public async Task<IList<string>> GetRolesAsync(UserEntity user, CancellationToken cancellationToken)
     {
         var roles = await UnitOfWork.UserRoleRepository.FindByUserAsync(user, cancellationToken);
-        return roles.Select(r => r.Name).ToList();
+        return roles.Select(r => r.NormalizedName).ToList();
     }
 
     /// <summary>
