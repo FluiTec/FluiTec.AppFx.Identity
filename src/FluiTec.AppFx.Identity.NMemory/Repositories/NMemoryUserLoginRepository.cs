@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using FluiTec.AppFx.Data.NMemory.Repositories;
@@ -39,9 +40,10 @@ namespace FluiTec.AppFx.Identity.NMemory.Repositories
         /// <returns>
         /// A Task.
         /// </returns>
-        public Task DeleteAsync(UserEntity user, string provider, string providerKey, CancellationToken cancellationToken)
+        public async Task DeleteAsync(UserEntity user, string provider, string providerKey, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var login = await GetByProviderWithKeyAsync(provider, providerKey, cancellationToken);
+            Table.Delete(login);
         }
 
         /// <summary>
@@ -74,7 +76,7 @@ namespace FluiTec.AppFx.Identity.NMemory.Repositories
         public Task<UserLoginEntity> GetByProviderWithKeyAsync(string provider, string providerKey, CancellationToken cancellationToken)
         {
             var result = Table
-                .Single(login => login.Provider == provider && login.ProviderKey == providerKey);
+                .SingleOrDefault(login => login.Provider == provider && login.ProviderKey == providerKey);
             return Task.FromResult(result);
         }
     }

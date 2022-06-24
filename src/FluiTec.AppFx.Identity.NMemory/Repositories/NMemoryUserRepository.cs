@@ -90,6 +90,9 @@ namespace FluiTec.AppFx.Identity.NMemory.Repositories
             var login = await UnitOfWork
                 .GetRepository<IUserLoginRepository>()
                 .GetByProviderWithKeyAsync(provider, providerKey, cancellationToken);
+            
+            if (login == null) 
+                return null!;
 
             return await GetAsync(login.UserId, cancellationToken);
         }
