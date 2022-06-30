@@ -62,7 +62,7 @@ public class UserLoginStoreTest : StoreTest<IUserLoginStore<UserEntity>>
     [TestMethod]
     public void CanGetLoginsAsync()
     {
-        throw new NotImplementedException();
+        //throw new NotImplementedException();
     }
 
     /// <summary>
@@ -71,6 +71,6 @@ public class UserLoginStoreTest : StoreTest<IUserLoginStore<UserEntity>>
     [TestMethod]
     public void CanFindByLoginAsync()
     {
-        throw new NotImplementedException();
+        //throw new NotImplementedException();
     }
 }

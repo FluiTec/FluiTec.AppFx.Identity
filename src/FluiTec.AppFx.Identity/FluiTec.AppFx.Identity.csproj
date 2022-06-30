@@ -29,22 +29,21 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Extensions.Identity.Core" Version="6.0.4" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<ProjectReference Include="..\..\fluitec.appfx.data\src\FluiTec.AppFx.Data.Sql\FluiTec.AppFx.Data.Sql.csproj" />
-		<ProjectReference Include="..\..\fluitec.appfx.options\src\FluiTec.AppFx.Options\FluiTec.AppFx.Options.csproj" />
+		<PackageReference Include="Microsoft.Extensions.Identity.Core" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(Configuration)'=='Debug'">
+		<ProjectReference Include="$(SolutionDir)\..\fluitec.appfx.options\src\FluiTec.AppFx.Options\FluiTec.AppFx.Options.csproj" />
 		<ProjectReference Include="$(SolutionDir)\..\fluitec.appfx.data\src\FluiTec.AppFx.Data\FluiTec.AppFx.Data.csproj" />
+		<ProjectReference Include="$(SolutionDir)\..\fluitec.appfx.data\src\FluiTec.AppFx.Data.Sql\FluiTec.AppFx.Data.Sql.csproj" />
 		<ProjectReference Include="$(SolutionDir)\..\fluitec.appfx.data\src\FluiTec.AppFx.Data.Migration\FluiTec.AppFx.Data.Migration.csproj" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(Configuration)'=='Release'">
-		<PackageReference Include="FluiTec.AppFx.Data" Version="1.1.5"></PackageReference>
-		<PackageReference Include="FluiTec.AppFx.Data.Migration" Version="1.1.5"></PackageReference>
+		<PackageReference Include="FluiTec.AppFx.Options" />
+		<PackageReference Include="FluiTec.AppFx.Data" />
+		<PackageReference Include="FluiTec.AppFx.Data.Sql" />
+		<PackageReference Include="FluiTec.AppFx.Data.Migration" />
 	</ItemGroup>
 
 </Project>

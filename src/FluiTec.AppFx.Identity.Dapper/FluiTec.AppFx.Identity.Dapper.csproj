@@ -29,8 +29,8 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(Configuration)'=='Release'">
-    <PackageReference Include="FluiTec.AppFx.Data.Dapper" Version="1.1.9" />
-    <PackageReference Include="FluiTec.AppFx.Data.Migration" Version="1.1.9" />
+    <PackageReference Include="FluiTec.AppFx.Data.Dapper" />
+    <PackageReference Include="FluiTec.AppFx.Data.Migration" />
   </ItemGroup>
 
   <ItemGroup>

@@ -41,6 +41,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		..\.version = ..\.version
 		..\appsettings.integration.json = ..\appsettings.integration.json
 		..\appsettings.integration.secret.json = ..\appsettings.integration.secret.json
+		Directory.Packages.props = Directory.Packages.props
 		..\LICENSE.md = ..\LICENSE.md
 		..\README.md = ..\README.md
 		..\THIRD_PARTY_LICENSES.md = ..\THIRD_PARTY_LICENSES.md
@@ -85,6 +86,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluiTec.AppFx.Identity.Tests", "tests\UnitTests\FluiTec.AppFx.Identity.Tests\FluiTec.AppFx.Identity.Tests.csproj", "{94D985D5-0E29-411B-B248-6A7636BAD0D5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluiTec.AppFx.Data.NMemory", "..\fluitec.appfx.data\src\FluiTec.AppFx.Data.NMemory\FluiTec.AppFx.Data.NMemory.csproj", "{1BF6C7C4-6D2F-4C8F-AD51-24C243FEA8F6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Projektmappenelemente", "Projektmappenelemente", "{A5933B38-4E4E-4836-981E-B2D504CD1AD5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

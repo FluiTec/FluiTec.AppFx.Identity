@@ -1,0 +1,28 @@
+﻿<Project>
+	<PropertyGroup>
+		<ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageVersion Include="Microsoft.Extensions.Identity.Core" Version="6.0.4" />
+		<PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
+		<PackageVersion Include="MSTest.TestAdapter" Version="2.2.10" />
+		<PackageVersion Include="MSTest.TestFramework" Version="2.2.10" />
+		<PackageVersion Include="coverlet.collector" Version="3.1.2" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(Configuration)'=='Release'">
+		<PackageVersion Include="FluiTec.AppFx.Options" Version="1.1.82" />
+		<PackageVersion Include="FluiTec.AppFx.Data" Version="1.1.11" />
+		<PackageVersion Include="FluiTec.AppFx.Data.Dapper" Version="1.1.11" />
+		<PackageVersion Include="FluiTec.AppFx.Data.Dapper.Mssql" Version="1.1.11" />
+		<PackageVersion Include="FluiTec.AppFx.Data.Dapper.Mysql" Version="1.1.11" />
+		<PackageVersion Include="FluiTec.AppFx.Data.Dapper.Pgsql" Version="1.1.11" />
+		<PackageVersion Include="FluiTec.AppFx.Data.Dapper.Sqlite" Version="1.1.11" />
+		<PackageVersion Include="FluiTec.AppFx.Data.Sql" Version="1.1.11" />
+		<PackageVersion Include="FluiTec.AppFx.Data.Migration" Version="1.1.11" />
+		<PackageVersion Include="FluiTec.AppFx.Data.Dynamic" Version="1.1.11" />
+		<PackageVersion Include="FluiTec.AppFx.Data.LiteDb" Version="1.1.11" />
+		<PackageVersion Include="FluiTec.AppFx.Data.NMemory" Version="1.1.11" />
+	</ItemGroup>
+</Project>
