@@ -54,6 +54,7 @@ public class UserLoginStoreTest : StoreTest<IUserLoginStore<UserEntity>>
             .RemoveLoginAsync(user, "provider", "providerKey", CancellationToken.None)
             .Wait();
         var result = Store.FindByLoginAsync("provider", "providerKey", CancellationToken.None).Result;
+        Assert.IsNull(result);
     }
 
     /// <summary>
@@ -62,7 +63,14 @@ public class UserLoginStoreTest : StoreTest<IUserLoginStore<UserEntity>>
     [TestMethod]
     public void CanGetLoginsAsync()
     {
-        //throw new NotImplementedException();
+        var user = GetSampleUser1();
+        Store.CreateAsync(user, CancellationToken.None).Wait();
+        Store
+            .AddLoginAsync(user, new UserLoginInfo("provider", "providerKey", "display"), CancellationToken.None)
+            .Wait();
+
+        var result = Store.GetLoginsAsync(user, CancellationToken.None).Result;
+        Assert.AreEqual(1, result.Count);
     }
 
     /// <summary>
@@ -71,6 +79,13 @@ public class UserLoginStoreTest : StoreTest<IUserLoginStore<UserEntity>>
     [TestMethod]
     public void CanFindByLoginAsync()
     {
-        //throw new NotImplementedException();
+        var user = GetSampleUser1();
+        Store.CreateAsync(user, CancellationToken.None).Wait();
+        Store
+            .AddLoginAsync(user, new UserLoginInfo("provider", "providerKey", "display"), CancellationToken.None)
+            .Wait();
+
+        var result = Store.FindByLoginAsync("provider", "providerKey", CancellationToken.None).Result;
+        Assert.IsNotNull(result);
     }
 }
